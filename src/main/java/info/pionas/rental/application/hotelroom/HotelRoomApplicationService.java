@@ -1,0 +1,35 @@
+package info.pionas.rental.application.hotelroom;
+
+import info.pionas.rental.domain.apartment.Booking;
+import info.pionas.rental.domain.apartment.BookingRepository;
+import info.pionas.rental.domain.eventchannel.EventChannel;
+import info.pionas.rental.domain.hotelroom.HotelRoom;
+import info.pionas.rental.domain.hotelroom.HotelRoomFactory;
+import info.pionas.rental.domain.hotelroom.HotelRoomRepository;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+import lombok.RequiredArgsConstructor;
+
+/**
+ *
+ * @author Adi
+ */
+@RequiredArgsConstructor
+public class HotelRoomApplicationService {
+
+    private final HotelRoomRepository hotelRoomRepository;
+    private final BookingRepository bookingRepository;
+    private final EventChannel eventChannel;
+
+    public void add(String hotelId, int number, Map<String, Double> spacesDefinition, String description) {
+        HotelRoom hotelRoom = new HotelRoomFactory().create(hotelId, number, spacesDefinition, description);
+        hotelRoomRepository.save(hotelRoom);
+    }
+
+    public void book(String id, String tenentId, List<LocalDate> days) {
+        HotelRoom hotelRoom = hotelRoomRepository.findById(id);
+        Booking booking = hotelRoom.book(tenentId, days, eventChannel);
+        bookingRepository.save(booking);
+    }
+}
