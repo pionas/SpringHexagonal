@@ -1,6 +1,9 @@
 package info.pionas.rental.application.booking;
 
-import info.pionas.rental.domain.apartment.*;
+import info.pionas.rental.domain.apartment.Booking;
+import info.pionas.rental.domain.apartment.BookingAssertion;
+import info.pionas.rental.domain.apartment.BookingRepository;
+import info.pionas.rental.domain.apartment.Period;
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -8,39 +11,37 @@ import org.mockito.Mockito;
 
 import java.time.LocalDate;
 
-import static java.util.Arrays.asList;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
 class BookingCommandHandlerTest {
     private static final String RENTAL_PLACE_ID = "123";
     private static final String TENANT_ID = "456";
-    private static final BookingRepository bookingRepository = Mockito.mock(BookingRepository.class);
-    private static final EventChannel eventChannel = Mockito.mock(EventChannel.class);
-    private static final BookingCommandHandler handler = new BookingCommandHandler(bookingRepository, eventChannel);
-    public static final String BOOKING_ID = "123";
+    private static final String BOOKING_ID = "789";
+
+    private final ArgumentCaptor<Booking> captor = ArgumentCaptor.forClass(Booking.class);
+    private final BookingRepository bookingRepository = Mockito.mock(BookingRepository.class);
+    private final EventChannel eventChannel = Mockito.mock(EventChannel.class);
+    private final BookingCommandHandler handler = new BookingCommandHandler(bookingRepository, eventChannel);
 
     @Test
     void shouldRejectBooking() {
-        ArgumentCaptor<Booking> captor = ArgumentCaptor.forClass(Booking.class);
-        BookingReject bookingReject = new BookingReject(BOOKING_ID);
         givenExistingBooking();
 
-        handler.reject(bookingReject);
+        handler.reject(new BookingReject(BOOKING_ID));
 
         then(bookingRepository).should().save(captor.capture());
-        BookingAssertion.assertThat(captor.getValue())
-                .isApartment()
-                .isReject()
-                .hasRentalPlaceIdEqualTo(RENTAL_PLACE_ID)
-                .hasTenantIdEqualTo(TENANT_ID)
-                .containsAllDays(
-                        asList(
-                                LocalDate.of(2020, 3, 4),
-                                LocalDate.of(2020, 3, 5),
-                                LocalDate.of(2020, 3, 6)
-                        )
-                );
+        BookingAssertion.assertThat(captor.getValue()).isReject();
+    }
+
+    @Test
+    void shouldAcceptBooking() {
+        givenExistingBooking();
+
+        handler.accept(new BookingAccept(BOOKING_ID));
+
+        then(bookingRepository).should().save(captor.capture());
+        BookingAssertion.assertThat(captor.getValue()).isAccept();
     }
 
     private void givenExistingBooking() {

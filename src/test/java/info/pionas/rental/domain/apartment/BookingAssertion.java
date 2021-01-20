@@ -35,7 +35,7 @@ class BookingAssertion {
         return this;
     }
 
-    BookingAssertion isAccept() {
+    public BookingAssertion isAccept() {
         Assertions.assertThat(actual).hasFieldOrPropertyWithValue("bookingStatus", BookingStatus.ACCEPTED);
         return this;
     }
