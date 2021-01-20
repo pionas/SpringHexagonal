@@ -28,6 +28,8 @@ public class ApartmentBookingHistoryEventListenerTest {
     private static final LocalDate START = LocalDate.of(2020, 10, 11);
     private static final LocalDate END = LocalDate.of(2020, 10, 12);
     private static final Period PERIOD = new Period(START, END);
+    public static final int FIRST_BOOKING = 1;
+    public static final int NEXT_BOOKING = 2;
 
     private final ArgumentCaptor<ApartmentBookingHistory> captor = ArgumentCaptor.forClass(ApartmentBookingHistory.class);
     private final ApartmentBookingHistoryRepository repository = mock(ApartmentBookingHistoryRepository.class);
@@ -39,7 +41,7 @@ public class ApartmentBookingHistoryEventListenerTest {
         eventListener.consume(givenApartmentBooked());
 
         then(repository).should().save(captor.capture());
-        thenApartmentBookingBookingShouldHaveApartmentBookings(captor.getValue(), 1);
+        thenApartmentBookingBookingShouldHaveApartmentBookings(captor.getValue(), FIRST_BOOKING);
     }
 
     @Test
@@ -48,7 +50,7 @@ public class ApartmentBookingHistoryEventListenerTest {
         eventListener.consume(givenApartmentBooked());
 
         then(repository).should().save(captor.capture());
-        thenApartmentBookingBookingShouldHaveApartmentBookings(captor.getValue(), 2);
+        thenApartmentBookingBookingShouldHaveApartmentBookings(captor.getValue(), NEXT_BOOKING);
     }
 
     private ApartmentBooked givenApartmentBooked() {
@@ -61,6 +63,11 @@ public class ApartmentBookingHistoryEventListenerTest {
 
     private void givenExistingApartmentBookingHistory() {
         given(repository.existFor(APARTMENT_ID)).willReturn(true);
+        ApartmentBookingHistory apartmentBookingHistory = getApartmentBookingHistory();
+        given(repository.findFor(APARTMENT_ID)).willReturn(apartmentBookingHistory);
+    }
+
+    private ApartmentBookingHistory getApartmentBookingHistory() {
         ApartmentBookingHistory apartmentBookingHistory = new ApartmentBookingHistory(APARTMENT_ID);
         apartmentBookingHistory.add(
                 ApartmentBooking.start(
@@ -70,7 +77,7 @@ public class ApartmentBookingHistoryEventListenerTest {
                         new BookingPeriod(LocalDate.now(), LocalDate.now().plusDays(1))
                 )
         );
-        given(repository.findFor(APARTMENT_ID)).willReturn(apartmentBookingHistory);
+        return apartmentBookingHistory;
     }
 
     private void thenApartmentBookingBookingShouldHaveApartmentBookings(ApartmentBookingHistory actual, int bookingsSize) {
