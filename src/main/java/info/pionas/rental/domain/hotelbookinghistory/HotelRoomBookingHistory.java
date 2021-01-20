@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
  * @author Adi
  */
 @RequiredArgsConstructor
-class HotelRoomBookingHistory {
+public class HotelRoomBookingHistory {
 
     @Id
     private final String hotelRoomId;
