@@ -1,16 +1,19 @@
 package info.pionas.rental.domain.apartment;
 
+import lombok.*;
+
 import javax.persistence.Embeddable;
-import lombok.RequiredArgsConstructor;
 
 /**
- *
  * @author Adi
  */
 @RequiredArgsConstructor
+@AllArgsConstructor
 @Embeddable
+@Getter(value = AccessLevel.PRIVATE)
+@Setter(value = AccessLevel.PRIVATE)
 class SquareMeter {
 
-    private final Double size;
+    private Double size;
 
 }

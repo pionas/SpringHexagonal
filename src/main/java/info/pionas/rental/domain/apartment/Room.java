@@ -1,17 +1,15 @@
 package info.pionas.rental.domain.apartment;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import lombok.RequiredArgsConstructor;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+
 /**
- *
  * @author Adi
  */
 @RequiredArgsConstructor
-//@Entity
-@Table(name = "APARTMENT_ROOM")
+@Embeddable
 class Room {
 
     private final String name;
