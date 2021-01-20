@@ -11,11 +11,12 @@ import org.assertj.core.api.Assertions;
  * @author Adi
  */
 @RequiredArgsConstructor
+public
 class BookingAssertion {
 
     private final Booking actual;
 
-    static BookingAssertion assertThat(Booking booking) {
+    public static BookingAssertion assertThat(Booking booking) {
         return new BookingAssertion(booking);
     }
 
@@ -24,7 +25,7 @@ class BookingAssertion {
         return this;
     }
 
-    BookingAssertion isHotelRoom() {
+    public BookingAssertion isHotelRoom() {
         Assertions.assertThat(actual).hasFieldOrPropertyWithValue("rentalType", RentalType.HOTEL_ROOM);
         return this;
     }
@@ -49,7 +50,7 @@ class BookingAssertion {
         return this;
     }
 
-    BookingAssertion hasTenantIdEqualTo(String expected) {
+    public BookingAssertion hasTenantIdEqualTo(String expected) {
         Assertions.assertThat(actual).hasFieldOrPropertyWithValue("tenantId", expected);
         return this;
     }
@@ -64,7 +65,7 @@ class BookingAssertion {
         return containsAllDays(asList(expected));
     }
 
-    BookingAssertion containsAllDays(List<LocalDate> expected) {
+    public BookingAssertion containsAllDays(List<LocalDate> expected) {
         Assertions.assertThat(actual).hasFieldOrPropertyWithValue("days", expected);
         return this;
     }
