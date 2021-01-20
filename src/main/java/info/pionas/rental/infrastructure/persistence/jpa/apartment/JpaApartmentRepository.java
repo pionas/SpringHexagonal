@@ -5,8 +5,9 @@ import info.pionas.rental.domain.apartment.ApartmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 /**
- *
  * @author Adi
  */
 @Repository
@@ -16,13 +17,13 @@ class JpaApartmentRepository implements ApartmentRepository {
     private final SpringJpaApartmentRepository springJpaApartmentRepository;
 
     @Override
-    public void save(Apartment apartment) {
-//        springJpaApartmentRepository.save(apartment);
+    public String save(Apartment apartment) {
+        return springJpaApartmentRepository.save(apartment).id();
     }
 
     @Override
     public Apartment findById(String id) {
-//        return springJpaApartmentRepository.findById(id).orElse(new ApartmentDoesNotExistException(id));
-        throw new ApartmentDoesNotExistException(id);
+        return springJpaApartmentRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new ApartmentDoesNotExistException(id));
     }
 }

@@ -11,25 +11,26 @@ import org.assertj.core.api.Assertions;
  * @author Adi
  */
 @RequiredArgsConstructor
+public
 class ApartmentAsseration {
 
     private final Apartment actual;
 
-    static ApartmentAsseration assertThat(Apartment apartment) {
+    public static ApartmentAsseration assertThat(Apartment apartment) {
         return new ApartmentAsseration(apartment);
     }
 
-    ApartmentAsseration hasOwnerIdEqualsTo(String ownerId) {
+    public ApartmentAsseration hasOwnerIdEqualsTo(String ownerId) {
         Assertions.assertThat(actual).hasFieldOrPropertyWithValue("ownerId", ownerId);
         return this;
     }
 
-    ApartmentAsseration hasDescriptionEqualsTo(String description) {
+    public ApartmentAsseration hasDescriptionEqualsTo(String description) {
         Assertions.assertThat(actual).hasFieldOrPropertyWithValue("description", description);
         return this;
     }
 
-    ApartmentAsseration hasAddressEqualsTo(String street, String postalCode, String houseNumber, String apartmentNumber, String city, String country) {
+    public ApartmentAsseration hasAddressEqualsTo(String street, String postalCode, String houseNumber, String apartmentNumber, String city, String country) {
         Assertions.assertThat(actual).extracting("address")
                 .hasFieldOrPropertyWithValue("street", street)
                 .hasFieldOrPropertyWithValue("postalCode", postalCode)
@@ -40,7 +41,7 @@ class ApartmentAsseration {
         return this;
     }
 
-    ApartmentAsseration hasRoomsEqualsTo(Map<String, Double> roomsDefinition) {
+    public ApartmentAsseration hasRoomsEqualsTo(Map<String, Double> roomsDefinition) {
         Assertions.assertThat(actual).extracting("rooms").satisfies(roomsActual -> {
             List<Room> rooms = (List<Room>) roomsActual;
             Assertions.assertThat(rooms).hasSize(roomsDefinition.size());

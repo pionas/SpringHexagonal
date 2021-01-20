@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ApartmentRepository {
 
-    void save(Apartment apartment);
+    String save(Apartment apartment);
 
     Apartment findById(String id);
 }
