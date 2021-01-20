@@ -15,8 +15,10 @@ import org.mockito.Mockito;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Arrays.asList;
+import static org.mockito.BDDMockito.then;
 
 class HotelRoomApplicationServiceTest {
     private static final String TENANT_ID = "4321";
@@ -39,6 +41,20 @@ class HotelRoomApplicationServiceTest {
         service.book(hotelRoomId, TENANT_ID, DAYS);
 
         thenBookingShouldBeCreated();
+    }
+
+    @Test
+    void shouldCreateHotelRoomWithAllInformation() {
+        ArgumentCaptor<HotelRoom> captor = ArgumentCaptor.forClass(HotelRoom.class);
+        String hotelId = "123";
+        int number = 20;
+        Map<String, Double> spacesDefinition = ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0);
+        String description = "Room with jacuzzi";
+
+        service.add(hotelId, number, spacesDefinition, description);
+
+        then(hotelRoomRepository).should().save(captor.capture());
+
     }
 
     private void thenBookingShouldBeCreated() {
