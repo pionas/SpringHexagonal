@@ -39,7 +39,7 @@ public class ApartmentBookingHistoryEventListenerTest {
         eventListener.consume(givenApartmentBooked());
 
         then(repository).should().save(captor.capture());
-        thenApartmentBookingBookingShouldHave(captor.getValue(), OWNER_ID, TENANT_ID, START, END, 1);
+        thenApartmentBookingBookingShouldHaveApartmentBookings(captor.getValue(), 1);
     }
 
     @Test
@@ -48,7 +48,7 @@ public class ApartmentBookingHistoryEventListenerTest {
         eventListener.consume(givenApartmentBooked());
 
         then(repository).should().save(captor.capture());
-        thenApartmentBookingBookingShouldHave(captor.getValue(), OWNER_ID, TENANT_ID, START, END, 2);
+        thenApartmentBookingBookingShouldHaveApartmentBookings(captor.getValue(), 2);
     }
 
     private ApartmentBooked givenApartmentBooked() {
@@ -73,16 +73,16 @@ public class ApartmentBookingHistoryEventListenerTest {
         given(repository.findFor(APARTMENT_ID)).willReturn(apartmentBookingHistory);
     }
 
-    private void thenApartmentBookingBookingShouldHave(ApartmentBookingHistory actual, String ownerId, String tenantId, LocalDate start, LocalDate end, int bookingsSize) {
+    private void thenApartmentBookingBookingShouldHaveApartmentBookings(ApartmentBookingHistory actual, int bookingsSize) {
         Assertions.assertThat(actual).extracting("bookings").satisfies(actualBookings -> {
             List<ApartmentBooking> bookings = (List<ApartmentBooking>) actualBookings;
             Assertions.assertThat(bookings)
                     .hasSize(bookingsSize)
                     .anySatisfy(actualBooking -> {
                                 ApartmentBookingAssertion.assertThat(actualBooking)
-                                        .hasOwnerIdEqualTo(ownerId)
-                                        .hasTenantIdEqualTo(tenantId)
-                                        .hasBookingPeriodThatHas(start, end);
+                                        .hasOwnerIdEqualTo(OWNER_ID)
+                                        .hasTenantIdEqualTo(TENANT_ID)
+                                        .hasBookingPeriodThatHas(START, END);
                             }
                     );
         });
