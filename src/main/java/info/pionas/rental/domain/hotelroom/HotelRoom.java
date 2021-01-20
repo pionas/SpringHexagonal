@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
@@ -16,7 +18,7 @@ import lombok.RequiredArgsConstructor;
  *
  * @author Adi
  */
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor
 //@Entity
 @Table(name = "HOTEL_ROOM")
