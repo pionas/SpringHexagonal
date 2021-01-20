@@ -20,7 +20,7 @@ class BookingAssertion {
         return new BookingAssertion(booking);
     }
 
-    BookingAssertion isApartment() {
+    public BookingAssertion isApartment() {
         Assertions.assertThat(actual).hasFieldOrPropertyWithValue("rentalType", RentalType.APARTMENT);
         return this;
     }
@@ -55,7 +55,7 @@ class BookingAssertion {
         return this;
     }
 
-    BookingAssertion hasBookingPeriodThatHas(LocalDate start, LocalDate end) {
+    public BookingAssertion hasBookingPeriodThatHas(LocalDate start, LocalDate end) {
         Period period = new Period(start, end);
         Assertions.assertThat(actual).hasFieldOrPropertyWithValue("days", period.asDays());
         return this;
