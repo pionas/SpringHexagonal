@@ -16,19 +16,17 @@ public class JpaHotelBookingHistoryRepository implements HotelBookingHistoryRepo
 
     @Override
     public HotelBookingHistory findFor(String apartmentId) {
-//        return springJpaHotelBookingHistoryRepository.findById(apartmentId).get();
-        return null;
+        return springJpaHotelBookingHistoryRepository.findById(apartmentId).get();
     }
 
     @Override
     public boolean existFor(String apartmentId) {
-//        return springJpaHotelBookingHistoryRepository.existsById(apartmentId);
-        return false;
+        return springJpaHotelBookingHistoryRepository.existsById(apartmentId);
     }
 
     @Override
     public void save(HotelBookingHistory hotelBookingHistory) {
-//        springJpaHotelBookingHistoryRepository.save(hotelBookingHistory);
+        springJpaHotelBookingHistoryRepository.save(hotelBookingHistory);
     }
 
 }
