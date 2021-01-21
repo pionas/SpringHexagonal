@@ -2,17 +2,17 @@ package info.pionas.rental.domain.apartment;
 
 import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.domain.eventchannel.EventChannel;
-import java.time.LocalDate;
-import java.util.Map;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 
+import java.time.LocalDate;
+import java.util.Map;
+import java.util.UUID;
+
 /**
- *
  * @author Adi
  */
 public class ApartmentTest {
@@ -68,6 +68,7 @@ public class ApartmentTest {
 
         BDDMockito.then(eventChannel).should().publish(captor.capture());
         ApartmentBooked actuval = captor.getValue();
+
         Assertions.assertThat(actuval.getOwnerId()).isEqualTo(OWNER_ID);
         Assertions.assertThat(actuval.getTenantId()).isEqualTo(TENANT_ID);
         Assertions.assertThat(actuval.getPeriodStart()).isEqualTo(START);
@@ -75,17 +76,9 @@ public class ApartmentTest {
     }
 
     private Apartment createApartment() {
-        return apartmentFactory.create(
-                OWNER_ID,
-                STREET,
-                POSTAL_CODE,
-                HOUSE_NUMBER,
-                APARTMENT_NUMBER,
-                CITY,
-                COUNTRY,
-                DESCRIPTION,
-                ROOMS_DEFINITION
-        );
+        Apartment apartment = new ApartmentFactory().create(OWNER_ID, STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY, DESCRIPTION, ROOMS_DEFINITION);
+        apartment.setId(UUID.randomUUID());
+        return apartment;
     }
 
 }

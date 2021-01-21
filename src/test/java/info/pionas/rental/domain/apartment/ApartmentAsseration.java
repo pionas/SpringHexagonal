@@ -1,18 +1,18 @@
 package info.pionas.rental.domain.apartment;
 
+import lombok.RequiredArgsConstructor;
+import org.assertj.core.api.Assertions;
+
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-
-import lombok.RequiredArgsConstructor;
-import org.assertj.core.api.Assertions;
+import java.util.regex.Pattern;
 
 /**
  * @author Adi
  */
 @RequiredArgsConstructor
-public
-class ApartmentAsseration {
+public class ApartmentAsseration {
 
     private final Apartment actual;
 
@@ -22,6 +22,10 @@ class ApartmentAsseration {
 
     public ApartmentAsseration hasOwnerIdEqualsTo(String ownerId) {
         Assertions.assertThat(actual).hasFieldOrPropertyWithValue("ownerId", ownerId);
+        return this;
+    }
+    public ApartmentAsseration hasIdMatches() {
+        Assertions.assertThat(actual.getId().toString()).matches(Pattern.compile("[0-9a-z\\-]{36}"));
         return this;
     }
 

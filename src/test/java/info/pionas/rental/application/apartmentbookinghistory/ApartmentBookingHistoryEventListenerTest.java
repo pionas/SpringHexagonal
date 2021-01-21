@@ -4,14 +4,13 @@ import info.pionas.rental.domain.apartment.ApartmentBooked;
 import info.pionas.rental.domain.apartment.ApartmentBookedTestFactory;
 import info.pionas.rental.domain.apartment.Period;
 import info.pionas.rental.domain.apartmentbookinghistory.*;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
