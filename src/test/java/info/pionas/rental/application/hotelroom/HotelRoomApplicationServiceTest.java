@@ -36,10 +36,10 @@ class HotelRoomApplicationServiceTest {
 
     @Test
     void shouldCreateBookingWHenHotelRoomBooked() {
-        String hotelRoomId = UUID.randomUUID().toString();
+        UUID hotelRoomId = UUID.randomUUID();
         givenHotelRoom(hotelRoomId);
 
-        service.book(hotelRoomId, TENANT_ID, DAYS);
+        service.book(hotelRoomId.toString(), TENANT_ID, DAYS);
 
         thenBookingShouldBeCreated();
     }
@@ -67,9 +67,10 @@ class HotelRoomApplicationServiceTest {
                 .containsAllDays(DAYS);
     }
 
-    private void givenHotelRoom(String hotelRoomId) {
+    private void givenHotelRoom(UUID hotelRoomId) {
         HotelRoom hotelRoom = createHotelRoom();
-        BDDMockito.given(hotelRoomRepository.findById(hotelRoomId)).willReturn(hotelRoom);
+        hotelRoom.setId(hotelRoomId);
+        BDDMockito.given(hotelRoomRepository.findById(hotelRoomId.toString())).willReturn(hotelRoom);
     }
 
     private HotelRoom createHotelRoom() {
