@@ -7,6 +7,7 @@ import info.pionas.rental.domain.hotelroom.HotelRoom;
 import info.pionas.rental.domain.hotelroom.HotelRoomFactory;
 import info.pionas.rental.domain.hotelroom.HotelRoomRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.Map;
 /**
  * @author Adi
  */
+@Service
 @RequiredArgsConstructor
 public class HotelRoomApplicationService {
 

@@ -4,10 +4,12 @@ import info.pionas.rental.domain.hotel.Hotel;
 import info.pionas.rental.domain.hotel.HotelFactory;
 import info.pionas.rental.domain.hotel.HotelRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 /**
  * @author Adi
  */
+@Service
 @RequiredArgsConstructor
 public class HotelApplicationService {
 

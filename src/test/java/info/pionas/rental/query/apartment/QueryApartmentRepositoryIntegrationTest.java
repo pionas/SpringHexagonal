@@ -9,7 +9,7 @@ import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingHistory
 import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingHistoryRepository;
 import info.pionas.rental.domain.apartmentbookinghistory.BookingPeriod;
 import info.pionas.rental.infrastructure.persistence.jpa.apartment.SpringJpaApartmentTestRepository;
-import info.pionas.rental.infrastructure.persistence.jpa.hotelbookinghistory.SpringJpaApartmentBookingHistoryTestRepository;
+import info.pionas.rental.infrastructure.persistence.jpa.apartmentbookinghistory.SpringJpaApartmentBookingHistoryRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,7 +60,7 @@ class QueryApartmentRepositoryIntegrationTest {
     @Autowired
     private ApartmentBookingHistoryRepository apartmentBookingHistoryRepository;
     @Autowired
-    private SpringJpaApartmentBookingHistoryTestRepository springJpaApartmentBookingHistoryTestRepository;
+    private SpringJpaApartmentBookingHistoryRepository springJpaApartmentBookingHistoryTestRepository;
 
     private final ApartmentFactory factory = new ApartmentFactory();
     private String apartmentId1;
