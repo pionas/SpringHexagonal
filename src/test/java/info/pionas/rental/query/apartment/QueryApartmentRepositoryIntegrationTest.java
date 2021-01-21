@@ -51,11 +51,16 @@ class QueryApartmentRepositoryIntegrationTest {
     private static final String DESCRIPTION_2 = "Lovely place";
     private static final Map<String, Double> ROOMS_DEFINITION_2 = ImmutableMap.of("Toilet", 15.0, "RoomOne", 20.0, "RoomTwo", 25.0);
 
-    @Autowired private QueryApartmentRepository queryApartmentRepository;
-    @Autowired private ApartmentRepository apartmentRepository;
-    @Autowired private SpringJpaApartmentTestRepository springJpaApartmentTestRepository;
-    @Autowired private ApartmentBookingHistoryRepository apartmentBookingHistoryRepository;
-    @Autowired private SpringJpaApartmentBookingHistoryTestRepository springJpaApartmentBookingHistoryTestRepository;
+    @Autowired
+    private QueryApartmentRepository queryApartmentRepository;
+    @Autowired
+    private ApartmentRepository apartmentRepository;
+    @Autowired
+    private SpringJpaApartmentTestRepository springJpaApartmentTestRepository;
+    @Autowired
+    private ApartmentBookingHistoryRepository apartmentBookingHistoryRepository;
+    @Autowired
+    private SpringJpaApartmentBookingHistoryTestRepository springJpaApartmentBookingHistoryTestRepository;
 
     private final ApartmentFactory factory = new ApartmentFactory();
     private String apartmentId1;

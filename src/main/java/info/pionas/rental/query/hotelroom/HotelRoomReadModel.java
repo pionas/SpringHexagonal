@@ -22,6 +22,7 @@ public class HotelRoomReadModel {
     private String hotelId;
     private int number;
     @ElementCollection
+    @CollectionTable(name = "HOTEL_ROOM_SPACE", joinColumns = @JoinColumn(name = "HOTEL_ROOM_ID"))
     private List<SpaceReadModel> spaces;
     private String description;
 }

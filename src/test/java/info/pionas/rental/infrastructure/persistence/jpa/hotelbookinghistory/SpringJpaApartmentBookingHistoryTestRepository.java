@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @Repository
 public class SpringJpaApartmentBookingHistoryTestRepository {
     private final SpringJpaApartmentBookingHistoryRepository repository;

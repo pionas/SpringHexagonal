@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
+import javax.persistence.Entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 

@@ -1,7 +1,9 @@
 package info.pionas.rental.query.apartment;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -10,7 +12,8 @@ import java.util.List;
 /**
  * @author Adi
  */
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Entity
 @Table(name = "APARTMENT_BOOKING_HISTORY")

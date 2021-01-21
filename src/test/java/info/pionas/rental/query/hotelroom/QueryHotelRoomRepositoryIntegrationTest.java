@@ -26,9 +26,12 @@ class QueryHotelRoomRepositoryIntegrationTest {
     private static final String DESCRIPTION_2 = "This is even better place";
     private final HotelRoomFactory hotelRoomFactory = new HotelRoomFactory();
 
-    @Autowired private HotelRoomRepository hotelRoomRepository;
-    @Autowired private QueryHotelRoomRepository queryHotelRoomRepository;
-    @Autowired private SpringJpaHotelRoomTestRepository springJpaHotelRoomTestRepository;
+    @Autowired
+    private HotelRoomRepository hotelRoomRepository;
+    @Autowired
+    private QueryHotelRoomRepository queryHotelRoomRepository;
+    @Autowired
+    private SpringJpaHotelRoomTestRepository springJpaHotelRoomTestRepository;
     private String hotelRoomId1;
     private String hotelRoomId2;
 
@@ -46,7 +49,6 @@ class QueryHotelRoomRepositoryIntegrationTest {
         hotelRoomId2 = hotelRoomRepository.save(hotelRoom2);
 
         Iterable<HotelRoomReadModel> actual = queryHotelRoomRepository.findAll(HOTEL_ID);
-
         assertThat(actual)
                 .hasSize(2)
                 .anySatisfy(hotelRoomReadModel -> {

@@ -28,6 +28,7 @@ public class HotelRoom {
     private String hotelId;
     private int number;
     @ElementCollection
+    @CollectionTable(name = "HOTEL_ROOM_SPACE", joinColumns = @JoinColumn(name = "HOTEL_ROOM_ID"))
     private List<Space> spaces;
     private String description;
 

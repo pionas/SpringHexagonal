@@ -14,7 +14,7 @@ class HotelReadModelAssertion {
     }
 
     HotelReadModelAssertion hasIdEqualsTo(String expected) {
-        Assertions.assertThat(actual.getId()).isEqualTo(expected);
+        Assertions.assertThat(actual.getId().toString()).isEqualTo(expected);
         return this;
     }
 
