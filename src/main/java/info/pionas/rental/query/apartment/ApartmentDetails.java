@@ -1,6 +1,5 @@
 package info.pionas.rental.query.apartment;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

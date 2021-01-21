@@ -31,8 +31,10 @@ class JpaApartmentRepositoryIntegrationTest {
     private static final String DESCRIPTION = "Nice place to stay";
     private static final Map<String, Double> ROOMS_DEFINITION = ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0);
 
-    @Autowired private ApartmentRepository apartmentRepository;
-    @Autowired private SpringJpaApartmentTestRepository springJpaApartmentTestRepository;
+    @Autowired
+    private ApartmentRepository apartmentRepository;
+    @Autowired
+    private SpringJpaApartmentTestRepository springJpaApartmentTestRepository;
 
     private final ApartmentFactory apartmentFactory = new ApartmentFactory();
     private final List<String> apartmentIds = new ArrayList<>();
