@@ -1,27 +1,32 @@
 package info.pionas.rental.domain.apartmentbookinghistory;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Adi
  */
-@RequiredArgsConstructor
-//@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
 @Table(name = "APARTMENT_BOOKING_HISTORY")
 public class ApartmentBookingHistory {
 
     @Id
-    @GeneratedValue
-    private final String apartmentId;
-    @OneToMany
-    private final List<ApartmentBooking> bookings = new ArrayList<>();
+    private String apartmentId;
+    @ElementCollection
+    @CollectionTable(name = "APARTMENT_BOOKING", joinColumns = @JoinColumn(name = "APARTMENT_ID"))
+    private List<ApartmentBooking> bookings = new ArrayList<>();
+
+    public ApartmentBookingHistory(String apartmentId) {
+        this.apartmentId = apartmentId;
+    }
 
     public void add(ApartmentBooking apartmentBooking) {
         bookings.add(apartmentBooking);

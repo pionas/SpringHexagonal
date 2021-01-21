@@ -1,4 +1,4 @@
-package info.pionas.rental.infrastructure.persistence.jpa.apartmentbookinghistoryrepository;
+package info.pionas.rental.infrastructure.persistence.jpa.apartmentbookinghistory;
 
 import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingHistory;
 import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingHistoryRepository;
