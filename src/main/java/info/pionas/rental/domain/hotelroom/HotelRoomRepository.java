@@ -1,11 +1,14 @@
 package info.pionas.rental.domain.hotelroom;
 
+import org.springframework.stereotype.Repository;
+
 /**
  * @author Adi
  */
+@Repository
 public interface HotelRoomRepository {
 
-    void save(HotelRoom hotelRoom);
+    String save(HotelRoom hotelRoom);
 
     HotelRoom findById(String id);
 }

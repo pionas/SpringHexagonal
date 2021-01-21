@@ -4,36 +4,47 @@ import info.pionas.rental.domain.apartment.Booking;
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Adi
  */
-@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-@AllArgsConstructor
-//@Entity
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Data
+@Entity
 @Table(name = "HOTEL_ROOM")
 public class HotelRoom {
 
     @Id
     @GeneratedValue
-    private String hotelRoomId;
-    private final String hotelId;
-    private final int number;
-    @OneToMany
-    private final List<Space> spaces;
-    private final String description;
+    private UUID id;
+    private String hotelId;
+    private int number;
+    @ElementCollection
+    private List<Space> spaces;
+    private String description;
+
+    public HotelRoom(String hotelId, int number, List<Space> spaces, String description) {
+        this.hotelId = hotelId;
+        this.number = number;
+        this.spaces = spaces;
+        this.description = description;
+    }
 
     public Booking book(String tenantId, List<LocalDate> days, EventChannel eventChannel) {
-        HotelRoomBooked hotelRoomBooked = HotelRoomBooked.create(hotelRoomId, hotelId, tenantId, days);
+        HotelRoomBooked hotelRoomBooked = HotelRoomBooked.create(id(), hotelId, tenantId, days);
         eventChannel.publish(hotelRoomBooked);
-        return Booking.hotelRoom(hotelRoomId, tenantId, days);
+        return Booking.hotelRoom(id(), tenantId, days);
+    }
+
+    public String id() {
+        return id.toString();
     }
 }

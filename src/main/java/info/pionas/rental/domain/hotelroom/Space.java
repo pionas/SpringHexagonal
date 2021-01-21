@@ -1,19 +1,21 @@
 package info.pionas.rental.domain.hotelroom;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
-import javax.persistence.Table;
 
 /**
  * @author Adi
  */
-@RequiredArgsConstructor
-//@Entity
-@Table(name = "HOTEL_ROOM_SPACE")
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Embeddable
 public class Space {
 
-    private final String name;
+    private String name;
     @Embedded
-    private final SquareMeter squareMeter;
+    private SquareMeter squareMeter;
 }

@@ -16,6 +16,7 @@ import org.mockito.Mockito;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static java.util.Arrays.asList;
 import static org.mockito.BDDMockito.then;
@@ -35,7 +36,7 @@ class HotelRoomApplicationServiceTest {
 
     @Test
     void shouldCreateBookingWHenHotelRoomBooked() {
-        String hotelRoomId = "1234";
+        String hotelRoomId = UUID.randomUUID().toString();
         givenHotelRoom(hotelRoomId);
 
         service.book(hotelRoomId, TENANT_ID, DAYS);
