@@ -29,7 +29,7 @@ class BookingCommandHandlerIntegrationTest {
         Booking actual = bookingRepository.findById(bookingId);
         BookingAssertion
                 .assertThat(actual)
-                .isAccept();
+                .isAccepted();
     }
 
     @Test
@@ -41,7 +41,7 @@ class BookingCommandHandlerIntegrationTest {
         Booking actual = bookingRepository.findById(bookingId);
         BookingAssertion
                 .assertThat(actual)
-                .isReject();
+                .isRejected();
     }
 
     private String givenBooking() {

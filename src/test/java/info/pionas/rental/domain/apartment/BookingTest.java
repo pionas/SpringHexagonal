@@ -77,7 +77,7 @@ public class BookingTest {
         BookingAssertion
                 .assertThat(actual)
                 .isApartment()
-                .isReject()
+                .isRejected()
                 .hasRentalPlaceIdEqualTo(RENTAL_PLACE_ID)
                 .hasTenantIdEqualTo(TENANT_ID);
     }
@@ -87,7 +87,7 @@ public class BookingTest {
         Booking booking = Booking.hotelRoom(RENTAL_PLACE_ID, TENANT_ID, DAYS);
         booking.accept(eventChannel);
 
-        BookingAssertion.assertThat(booking).isAccept();
+        BookingAssertion.assertThat(booking).isAccepted();
     }
 
     @Test

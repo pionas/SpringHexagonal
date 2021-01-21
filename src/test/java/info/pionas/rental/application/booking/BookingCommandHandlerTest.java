@@ -31,7 +31,7 @@ class BookingCommandHandlerTest {
         handler.reject(new BookingReject(BOOKING_ID));
 
         then(bookingRepository).should().save(captor.capture());
-        BookingAssertion.assertThat(captor.getValue()).isReject();
+        BookingAssertion.assertThat(captor.getValue()).isRejected();
     }
 
     @Test
@@ -41,7 +41,7 @@ class BookingCommandHandlerTest {
         handler.accept(new BookingAccept(BOOKING_ID));
 
         then(bookingRepository).should().save(captor.capture());
-        BookingAssertion.assertThat(captor.getValue()).isAccept();
+        BookingAssertion.assertThat(captor.getValue()).isAccepted();
     }
 
     private void givenExistingBooking() {
