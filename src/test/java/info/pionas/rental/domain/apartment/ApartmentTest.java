@@ -39,7 +39,7 @@ public class ApartmentTest {
     public void shouldCreateApartmentWillAllRequiredFields() {
         Apartment actual = createApartment();
 
-        ApartmentAsseration
+        ApartmentAssertion
                 .assertThat(actual)
                 .hasOwnerIdEqualsTo(OWNER_ID)
                 .hasDescriptionEqualsTo(DESCRIPTION)

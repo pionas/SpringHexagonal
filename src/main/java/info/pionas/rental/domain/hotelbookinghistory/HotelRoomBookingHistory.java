@@ -1,5 +1,6 @@
 package info.pionas.rental.domain.hotelbookinghistory;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -15,8 +16,8 @@ import java.util.List;
 /**
  * @author Adi
  */
-@AllArgsConstructor
-@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class HotelRoomBookingHistory {
 

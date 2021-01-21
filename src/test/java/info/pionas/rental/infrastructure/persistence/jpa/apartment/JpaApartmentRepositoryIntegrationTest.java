@@ -2,7 +2,7 @@ package info.pionas.rental.infrastructure.persistence.jpa.apartment;
 
 import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.domain.apartment.Apartment;
-import info.pionas.rental.domain.apartment.ApartmentAsseration;
+import info.pionas.rental.domain.apartment.ApartmentAssertion;
 import info.pionas.rental.domain.apartment.ApartmentFactory;
 import info.pionas.rental.domain.apartment.ApartmentRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -19,7 +19,6 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-
 @SpringBootTest
 class JpaApartmentRepositoryIntegrationTest {
     private static final String OWNER_ID = "1234";
@@ -28,18 +27,15 @@ class JpaApartmentRepositoryIntegrationTest {
     private static final String HOUSE_NUMBER = "1";
     private static final String APARTMENT_NUMBER = "13";
     private static final String CITY = "Cracow";
-    private static final String COUNTRY = "POLAND";
+    private static final String COUNTRY = "Poland";
     private static final String DESCRIPTION = "Nice place to stay";
     private static final Map<String, Double> ROOMS_DEFINITION = ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0);
 
+    @Autowired private ApartmentRepository apartmentRepository;
+    @Autowired private SpringJpaApartmentTestRepository springJpaApartmentTestRepository;
+
     private final ApartmentFactory apartmentFactory = new ApartmentFactory();
     private final List<String> apartmentIds = new ArrayList<>();
-
-    @Autowired
-    private ApartmentRepository apartmentRepository;
-    @Autowired
-    private SpringJpaApartmentTestRepository springJpaApartmentTestRepository;
-
 
     @AfterEach
     void deleteApartments() {
@@ -48,11 +44,13 @@ class JpaApartmentRepositoryIntegrationTest {
 
     @Test
     void shouldThrowExceptionWhenApartmentDoesNotExist() {
-        String nonExistingAPartmentId = UUID.randomUUID().toString();
+        String nonExistingApartmentId = UUID.randomUUID().toString();
+
         ApartmentDoesNotExistException actual = assertThrows(ApartmentDoesNotExistException.class, () -> {
-            apartmentRepository.findById(nonExistingAPartmentId);
+            apartmentRepository.findById(nonExistingApartmentId);
         });
-        assertThat(actual).hasMessage("Apartment with id " + nonExistingAPartmentId + " does not exist");
+
+        assertThat(actual).hasMessage("Apartment with id " + nonExistingApartmentId + " does not exist");
     }
 
     @Test
@@ -62,8 +60,7 @@ class JpaApartmentRepositoryIntegrationTest {
 
         Apartment actual = apartmentRepository.findById(existingId);
 
-        ApartmentAsseration
-                .assertThat(actual)
+        ApartmentAssertion.assertThat(actual)
                 .hasOwnerIdEqualsTo(OWNER_ID)
                 .hasDescriptionEqualsTo(DESCRIPTION)
                 .hasAddressEqualsTo(STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY)
@@ -80,35 +77,26 @@ class JpaApartmentRepositoryIntegrationTest {
         givenExistingApartment(apartment2);
         Apartment apartment3 = apartmentFactory.create("2083", "Florianska", "98-123", "11", "13", "Krakow", "Poland", "Not so bad apartment", ImmutableMap.of("Room13", 30.0));
         givenExistingApartment(apartment3);
+
         Apartment actual = apartmentRepository.findById(existingId);
 
-        ApartmentAsseration
-                .assertThat(actual)
+        ApartmentAssertion.assertThat(actual)
                 .hasOwnerIdEqualsTo(OWNER_ID)
                 .hasDescriptionEqualsTo(DESCRIPTION)
                 .hasAddressEqualsTo(STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY)
                 .hasRoomsEqualsTo(ROOMS_DEFINITION);
     }
 
-    private String givenExistingApartment(Apartment apartment) {
-        String apartmentId = apartmentRepository.save(apartment);
+    private String givenExistingApartment(Apartment apartment3) {
+        String apartmentId = apartmentRepository.save(apartment3);
         apartmentIds.add(apartmentId);
 
         return apartmentId;
     }
 
-
     private Apartment createApartment() {
         return apartmentFactory.create(
-                OWNER_ID,
-                STREET,
-                POSTAL_CODE,
-                HOUSE_NUMBER,
-                APARTMENT_NUMBER,
-                CITY,
-                COUNTRY,
-                DESCRIPTION,
-                ROOMS_DEFINITION
-        );
+                OWNER_ID, STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY,
+                DESCRIPTION, ROOMS_DEFINITION);
     }
 }

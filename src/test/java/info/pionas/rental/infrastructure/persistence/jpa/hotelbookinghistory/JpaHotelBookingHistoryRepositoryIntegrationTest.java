@@ -22,14 +22,14 @@ class JpaHotelBookingHistoryRepositoryIntegrationTest {
     private HotelBookingHistoryRepository hotelBookingHistoryRepository;
 
     @Test
-    void shouldRecognizeApartmentBookingHistoryDoesNotExist() {
+    void shouldRecognizeHotelBookingHistoryDoesNotExist() {
         String id = randomId();
 
         assertThat(hotelBookingHistoryRepository.existFor(id)).isFalse();
     }
 
     @Test
-    void shouldRecognizeApartmentBookingHistoryExist() {
+    void shouldRecognizeHotelBookingHistoryExist() {
         String id = randomId();
         hotelBookingHistoryRepository.save(new HotelBookingHistory(id));
         assertThat(hotelBookingHistoryRepository.existFor(id)).isTrue();
