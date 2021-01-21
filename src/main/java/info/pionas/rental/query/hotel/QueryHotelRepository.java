@@ -1,19 +1,18 @@
 package info.pionas.rental.query.hotel;
 
 import lombok.RequiredArgsConstructor;
-
-import static java.util.Collections.emptyList;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author Adi
  */
+@Repository
 @RequiredArgsConstructor
 public class QueryHotelRepository {
 
     private final SpringJpaQueryHotelRepository springJpaQueryHotelRepository;
 
     public Iterable<HotelReadModel> findAll() {
-//        return springJpaQueryHotelRepository.findAll();
-        return emptyList();
+        return springJpaQueryHotelRepository.findAll();
     }
 }
