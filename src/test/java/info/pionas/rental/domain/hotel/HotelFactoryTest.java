@@ -1,10 +1,10 @@
 package info.pionas.rental.domain.hotel;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.Test;
 
 /**
- *
  * @author Adi
  */
 public class HotelFactoryTest {
@@ -28,13 +28,10 @@ public class HotelFactoryTest {
                 country
         );
 
-        assertThat(actual).hasFieldOrPropertyWithValue("name", name);
-        assertThat(actual).extracting("address")
-                .hasFieldOrPropertyWithValue("street", street)
-                .hasFieldOrPropertyWithValue("postalCode", postalCode)
-                .hasFieldOrPropertyWithValue("buildingNumber", buildingNumber)
-                .hasFieldOrPropertyWithValue("city", city)
-                .hasFieldOrPropertyWithValue("country", country);
+        HotelAsseration
+                .assertThat(actual)
+                .hasNameEqualsTo(name)
+                .hasAddressEqualsTo(street, postalCode, buildingNumber, city, country);
 
     }
 

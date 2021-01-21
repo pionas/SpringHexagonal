@@ -1,28 +1,35 @@
 package info.pionas.rental.domain.hotel;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.util.UUID;
 
 /**
- *
  * @author Adi
  */
-@RequiredArgsConstructor
 @AllArgsConstructor
-//@Entity
+@NoArgsConstructor
+@Data
+@Entity
 @Table(name = "HOTEL")
 public class Hotel {
 
     @Id
     @GeneratedValue
-    private String id;
-    private final String name;
+    private UUID id;
+    private String name;
     @Embedded
-    private final Address address;
+    private Address address;
 
+    public Hotel(String name, Address address) {
+        this.name = name;
+        this.address = address;
+    }
+
+    public String id() {
+        return id.toString();
+    }
 }

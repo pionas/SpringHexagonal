@@ -1,10 +1,11 @@
 package info.pionas.rental.domain.hotel;
 
 /**
- *
  * @author Adi
  */
 public interface HotelRepository {
 
-    void save(Hotel hotel);
+    String save(Hotel hotel);
+
+    Hotel findById(String id);
 }

@@ -1,19 +1,23 @@
 package info.pionas.rental.domain.hotel;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Embeddable;
-import lombok.RequiredArgsConstructor;
 
 /**
- *
  * @author Adi
  */
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 @Embeddable
 public class Address {
 
-    private final String street;
-    private final String postalCode;
-    private final String buildingNumber;
-    private final String city;
-    private final String country;
+    private String street;
+    private String postalCode;
+    private String buildingNumber;
+    private String city;
+    private String country;
 }
