@@ -2,15 +2,14 @@ package info.pionas.rental.application.apartment;
 
 import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.domain.apartment.*;
-import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingHistory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
-import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.UUID;
 
 import static java.util.Arrays.asList;
 import static org.mockito.BDDMockito.given;
@@ -21,7 +20,7 @@ class ApartmentApplicationServiceTest {
     private static final BookingRepository bookingRepository = Mockito.mock(BookingRepository.class);
     private static final EventChannel eventChannel = Mockito.mock(EventChannel.class);
     private static final ApartmentApplicationService service = new ApartmentApplicationService(apartmentRepository, bookingRepository, eventChannel);
-    private static final String APARTMENT_ID = "123";
+    private static final String APARTMENT_ID = UUID.randomUUID().toString();
     private static final String OWNER_ID = "123";
     private static final String STREET = "Florianska";
     private static final String POSTAL_CODE = "12-345";
@@ -66,6 +65,8 @@ class ApartmentApplicationServiceTest {
     }
 
     private Apartment getApartment() {
-        return new ApartmentFactory().create(OWNER_ID, STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY, DESCRIPTION, ROOMS_DEFINITION);
+        Apartment apartment = new ApartmentFactory().create(OWNER_ID, STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY, DESCRIPTION, ROOMS_DEFINITION);
+        apartment.setId(UUID.fromString(APARTMENT_ID));
+        return apartment;
     }
 }
