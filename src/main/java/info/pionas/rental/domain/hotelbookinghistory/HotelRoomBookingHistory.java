@@ -1,7 +1,10 @@
 package info.pionas.rental.domain.hotelbookinghistory;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.time.LocalDate;
@@ -12,14 +15,20 @@ import java.util.List;
 /**
  * @author Adi
  */
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
 public class HotelRoomBookingHistory {
 
     @Id
-    private final String hotelRoomId;
+    private String hotelRoomId;
 
-    @OneToMany
-    private final List<HotelRoomBooking> bookings = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<HotelRoomBooking> bookings = new ArrayList<>();
+
+    public HotelRoomBookingHistory(String hotelRoomId) {
+        this.hotelRoomId = hotelRoomId;
+    }
 
     boolean hasIdEqualTo(String hotelRoomId) {
         return this.hotelRoomId.equals(hotelRoomId);
