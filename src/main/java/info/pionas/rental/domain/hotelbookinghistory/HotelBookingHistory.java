@@ -1,7 +1,10 @@
 package info.pionas.rental.domain.hotelbookinghistory;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.time.LocalDate;
@@ -13,15 +16,20 @@ import java.util.Optional;
 /**
  * @author Adi
  */
-@RequiredArgsConstructor
-//@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
 public class HotelBookingHistory {
 
     @Id
-    private final String hotelId;
+    private String hotelId;
 
-    @OneToMany
-    private final List<HotelRoomBookingHistory> hotelRoomBookingHistories = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<HotelRoomBookingHistory> hotelRoomBookingHistories = new ArrayList<>();
+
+    public HotelBookingHistory(String hotelId) {
+        this.hotelId = hotelId;
+    }
 
     public void add(String hotelRoomId, LocalDateTime bookingDateTime, String tenantId, List<LocalDate> days) {
         HotelRoomBookingHistory hotelRoomBookingHistory = findFor(hotelRoomId);
