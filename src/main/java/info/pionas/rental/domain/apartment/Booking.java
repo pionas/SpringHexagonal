@@ -2,29 +2,43 @@ package info.pionas.rental.domain.apartment;
 
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Adi
  */
-@RequiredArgsConstructor
 @AllArgsConstructor
-//@Entity
+@NoArgsConstructor
+@Data
+@Entity
+@Table(name = "BOOKING")
 public class Booking {
 
     @Id
     @GeneratedValue
-    private String id;
-    private final RentalType rentalType;
-    private final String rentalPlaceId;
-    private final String tenantId;
-    private final List<LocalDate> days;
+    private UUID id;
+    @Enumerated(EnumType.STRING)
+    private RentalType rentalType;
+    private String rentalPlaceId;
+    private String tenantId;
+    @ElementCollection
+    private List<LocalDate> days;
+    @Enumerated(EnumType.STRING)
     private BookingStatus bookingStatus = BookingStatus.OPEN;
+
+    Booking(RentalType rentalType, String rentalPlaceId, String tenantId, List<LocalDate> days) {
+        this.rentalType = rentalType;
+        this.rentalPlaceId = rentalPlaceId;
+        this.tenantId = tenantId;
+        this.days = days;
+    }
 
     public static Booking apartment(String rentalPlaceId, String tenantId, Period period) {
         List<LocalDate> days = period.asDays();
@@ -44,5 +58,9 @@ public class Booking {
         BookingAccepted bookingAccepted = BookingAccepted.create(rentalType, rentalPlaceId, tenantId, days);
 
         eventChannel.publish(bookingAccepted);
+    }
+
+    public String id() {
+        return id.toString();
     }
 }

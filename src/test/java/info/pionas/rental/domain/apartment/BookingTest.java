@@ -6,6 +6,7 @@ import org.mockito.ArgumentCaptor;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -65,7 +66,7 @@ public class BookingTest {
 
     @Test
     public void shouldRejectRoomHotelBooking() {
-        String id = "123";
+        UUID id = UUID.randomUUID();
         RentalType rentalType = RentalType.APARTMENT;
         List<LocalDate> days = null;
         BookingStatus bookingStatus = BookingStatus.OPEN;

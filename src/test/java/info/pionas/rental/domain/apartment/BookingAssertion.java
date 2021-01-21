@@ -62,12 +62,15 @@ class BookingAssertion {
         return this;
     }
 
-    BookingAssertion containsAllDays(LocalDate... expected) {
+    public BookingAssertion containsAllDays(LocalDate... expected) {
         return containsAllDays(asList(expected));
     }
 
     public BookingAssertion containsAllDays(List<LocalDate> expected) {
-        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("days", expected);
+        Assertions.assertThat(actual).extracting("days").satisfies(days -> {
+            List<LocalDate> actualDays = (List<LocalDate>) days;
+            Assertions.assertThat(actualDays).containsExactlyElementsOf(expected);
+        });
         return this;
     }
 }
