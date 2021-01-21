@@ -7,10 +7,12 @@ import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingHistory
 import info.pionas.rental.domain.apartmentbookinghistory.BookingPeriod;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Adi
  */
+@Component
 @RequiredArgsConstructor
 public class ApartmentBookingHistoryEventListener {
 

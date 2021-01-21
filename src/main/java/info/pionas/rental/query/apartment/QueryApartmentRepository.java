@@ -25,7 +25,6 @@ public class QueryApartmentRepository {
 
         if (found.isPresent()) {
             Optional<ApartmentBookingHistoryReadModel> foundHistory = springQueryApartmentBookingHistoryRepository.findById(id);
-
             if (foundHistory.isPresent()) {
                 return ApartmentDetails.withHistory(found.get(), foundHistory.get());
             } else {
