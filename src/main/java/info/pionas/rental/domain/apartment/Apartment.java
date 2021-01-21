@@ -29,6 +29,7 @@ public class Apartment {
     private Address address;
 
     @ElementCollection
+    @CollectionTable(name = "APARTMENT_ROOM", joinColumns = @JoinColumn(name = "APARTMENT_ID"))
     private List<Room> rooms;
 
     private String description;
