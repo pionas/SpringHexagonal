@@ -29,9 +29,9 @@ public class HotelRoomApplicationService {
         hotelRoomRepository.save(hotelRoom);
     }
 
-    public void book(String id, String tenentId, List<LocalDate> days) {
+    public String book(String id, String tenentId, List<LocalDate> days) {
         HotelRoom hotelRoom = hotelRoomRepository.findById(id);
         Booking booking = hotelRoom.book(tenentId, days, eventChannel);
-        bookingRepository.save(booking);
+        return bookingRepository.save(booking);
     }
 }

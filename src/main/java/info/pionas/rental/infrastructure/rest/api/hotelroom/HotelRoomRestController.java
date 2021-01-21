@@ -4,7 +4,10 @@ import info.pionas.rental.application.hotelroom.HotelRoomApplicationService;
 import info.pionas.rental.query.hotelroom.HotelRoomReadModel;
 import info.pionas.rental.query.hotelroom.QueryHotelRoomRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 /**
  * @author Adi
@@ -28,12 +31,14 @@ public class HotelRoomRestController {
     }
 
     @PutMapping("/book/{id}")
-    public void book(@PathVariable String id, @RequestBody HotelRoomBookingDto hotelRoomBookingDto) {
-        hotelRoomApplicationService.book(
+    public ResponseEntity<String> book(@PathVariable String id, @RequestBody HotelRoomBookingDto hotelRoomBookingDto) {
+        String bookingId = hotelRoomApplicationService.book(
                 id,
                 hotelRoomBookingDto.getTenentId(),
                 hotelRoomBookingDto.getDays()
         );
+
+        return ResponseEntity.created(URI.create("/booking/" + bookingId)).build();
     }
 
     @GetMapping("/hotel/{hotelId}")
