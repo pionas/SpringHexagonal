@@ -3,6 +3,7 @@ package info.pionas.rental.application.apartment;
 import info.pionas.rental.domain.apartment.*;
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Map;
@@ -10,6 +11,7 @@ import java.util.Map;
 /**
  * @author Adi
  */
+@Service
 @RequiredArgsConstructor
 public class ApartmentApplicationService {
 

@@ -5,10 +5,12 @@ import info.pionas.rental.domain.hotelbookinghistory.HotelBookingHistoryReposito
 import info.pionas.rental.domain.hotelroom.HotelRoomBooked;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Adi
  */
+@Component
 @RequiredArgsConstructor
 public class HotelBookingHistoryEventListener {
 
