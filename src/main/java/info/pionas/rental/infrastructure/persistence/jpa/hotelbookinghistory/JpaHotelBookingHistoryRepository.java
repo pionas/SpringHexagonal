@@ -1,12 +1,14 @@
-package info.pionas.rental.infrastructure.persistence.jpa.hotelbookinghistoryrepository;
+package info.pionas.rental.infrastructure.persistence.jpa.hotelbookinghistory;
 
 import info.pionas.rental.domain.hotelbookinghistory.HotelBookingHistory;
 import info.pionas.rental.domain.hotelbookinghistory.HotelBookingHistoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author Adi
  */
+@Repository
 @RequiredArgsConstructor
 public class JpaHotelBookingHistoryRepository implements HotelBookingHistoryRepository {
 

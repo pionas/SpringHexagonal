@@ -47,7 +47,7 @@ class JpaApartmentRepositoryIntegrationTest {
     }
 
     @Test
-    void shoudlThrowExceptionWhenApartmentDoesNotExist() {
+    void shouldThrowExceptionWhenApartmentDoesNotExist() {
         String nonExistingAPartmentId = UUID.randomUUID().toString();
         ApartmentDoesNotExistException actual = assertThrows(ApartmentDoesNotExistException.class, () -> {
             apartmentRepository.findById(nonExistingAPartmentId);
@@ -57,7 +57,7 @@ class JpaApartmentRepositoryIntegrationTest {
 
     @Test
     @Transactional
-    void shoudlReturnExistingApartment() {
+    void shouldReturnExistingApartment() {
         String existingId = givenExistingApartment(createApartment());
 
         Apartment actual = apartmentRepository.findById(existingId);
@@ -72,7 +72,7 @@ class JpaApartmentRepositoryIntegrationTest {
 
     @Test
     @Transactional
-    void shoudlReturnExistingApartmentWeWant() {
+    void shouldReturnExistingApartmentWeWant() {
         Apartment apartment1 = apartmentFactory.create("1234", "Florianska", "98-765", "12", "34", "Krakow", "Poland", "The greatest apartment", ImmutableMap.of("Room1", 50.0));
         givenExistingApartment(apartment1);
         String existingId = givenExistingApartment(createApartment());

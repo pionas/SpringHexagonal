@@ -3,6 +3,6 @@ package info.pionas.rental.domain.apartmentbookinghistory;
 /**
  * @author Adi
  */
-public enum BookingStep {
+enum BookingStep {
     START
 }

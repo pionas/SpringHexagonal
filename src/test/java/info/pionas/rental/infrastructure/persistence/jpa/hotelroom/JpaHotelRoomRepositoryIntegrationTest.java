@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
-import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,7 +22,8 @@ class JpaHotelRoomRepositoryIntegrationTest {
     private static final ImmutableMap<String, Double> SPACES_DEFINITION = ImmutableMap.of("Room1", 30.0);
     private static final String DESCRIPTION = "This is very nice place";
 
-    @Autowired private HotelRoomRepository hotelRoomRepository;
+    @Autowired
+    private HotelRoomRepository hotelRoomRepository;
 
     @Test
     void shouldThrowExceptionWhenNoHotelRoomFound() {
