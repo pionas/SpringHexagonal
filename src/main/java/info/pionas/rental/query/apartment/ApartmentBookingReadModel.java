@@ -1,25 +1,27 @@
 package info.pionas.rental.query.apartment;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.Table;
+import javax.persistence.Embeddable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
  * @author Adi
  */
-@RequiredArgsConstructor
-//@Entity
-@Table(name = "APARTMENT_BOOKING")
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
+@Embeddable
 public class ApartmentBookingReadModel {
 
-    private final String bookingStep;
-    private final LocalDateTime bookingDateTime;
-    private final String ownerId;
-    private final String tenantId;
-    private final LocalDate periodStart;
-    private final LocalDate periodEnd;
+    private String bookingStep;
+    private LocalDateTime bookingDateTime;
+    private String ownerId;
+    private String tenantId;
+    private LocalDate periodStart;
+    private LocalDate periodEnd;
 }

@@ -1,17 +1,18 @@
 package info.pionas.rental.query.apartment;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-import javax.persistence.Table;
+import javax.persistence.Embeddable;
 
 /**
  * @author Adi
  */
-@RequiredArgsConstructor
-//@Entity
-@Table(name = "APARTMENT_ROOM")
+@AllArgsConstructor
+@Getter
+@Embeddable
 class RoomReadModel {
 
-    private final String name;
-    private final Double size;
+    private String name;
+    private Double size;
 }

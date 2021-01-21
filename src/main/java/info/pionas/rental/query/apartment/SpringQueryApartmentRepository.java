@@ -1,10 +1,14 @@
 package info.pionas.rental.query.apartment;
 
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.UUID;
+
 /**
  * @author Adi
  */
-interface SpringQueryApartmentRepository
-//        extends CrudRepository<ApartmentReadModel, String> 
-{
+@Repository
+interface SpringQueryApartmentRepository extends CrudRepository<ApartmentReadModel, UUID> {
 
 }

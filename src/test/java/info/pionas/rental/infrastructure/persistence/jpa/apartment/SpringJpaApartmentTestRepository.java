@@ -1,17 +1,16 @@
 package info.pionas.rental.infrastructure.persistence.jpa.apartment;
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.UUID;
 
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @Repository
 public class SpringJpaApartmentTestRepository {
     private final SpringJpaApartmentRepository repository;
-
-    SpringJpaApartmentTestRepository(SpringJpaApartmentRepository repository) {
-        this.repository = repository;
-    }
 
     public void deleteById(String apartmentId) {
         repository.deleteById(UUID.fromString(apartmentId));

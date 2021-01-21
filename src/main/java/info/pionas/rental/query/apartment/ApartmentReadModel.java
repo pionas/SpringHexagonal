@@ -1,39 +1,40 @@
 package info.pionas.rental.query.apartment;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Adi
  */
-@RequiredArgsConstructor
-@AllArgsConstructor
-//@Entity
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
+@Entity
 @Table(name = "APARTMENT")
 public class ApartmentReadModel {
 
     @Id
-    private String id;
+    @GeneratedValue
+    private UUID id;
 
-    private final String ownerId;
+    private String ownerId;
+    private String street;
+    private String postalCode;
+    private String houseNumber;
+    private String apartmentNumber;
+    private String city;
+    private String country;
+    private String description;
 
-    private final String street;
-    private final String postalCode;
-    private final String houseNumber;
-    private final String apartmentNumber;
-    private final String city;
-    private final String country;
+    @ElementCollection
+    @CollectionTable(name = "APARTMENT_ROOM", joinColumns = @JoinColumn(name = "APARTMENT_ID"))
+    private List<RoomReadModel> rooms;
 
-    @OneToMany
-    private final List<RoomReadModel> rooms;
-
-    private final String description;
 
 }
