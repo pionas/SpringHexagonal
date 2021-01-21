@@ -1,15 +1,15 @@
 package info.pionas.rental.domain.hotelbookinghistory;
 
+import lombok.RequiredArgsConstructor;
+
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import lombok.RequiredArgsConstructor;
 
 /**
- *
  * @author Adi
  */
 @RequiredArgsConstructor

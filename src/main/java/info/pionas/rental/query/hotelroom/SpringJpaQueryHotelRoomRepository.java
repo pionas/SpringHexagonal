@@ -1,12 +1,9 @@
 package info.pionas.rental.query.hotelroom;
 
-import org.springframework.data.repository.CrudRepository;
-
 /**
- *
  * @author Adi
  */
-interface SpringJpaQueryHotelRoomRepository 
+interface SpringJpaQueryHotelRoomRepository
 //        extends CrudRepository<HotelRoomReadModel, String> 
 {
 

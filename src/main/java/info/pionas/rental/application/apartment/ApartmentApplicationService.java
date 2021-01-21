@@ -1,18 +1,13 @@
 package info.pionas.rental.application.apartment;
 
-import info.pionas.rental.domain.apartment.Apartment;
-import info.pionas.rental.domain.apartment.ApartmentFactory;
-import info.pionas.rental.domain.apartment.ApartmentRepository;
-import info.pionas.rental.domain.apartment.Booking;
-import info.pionas.rental.domain.apartment.BookingRepository;
-import info.pionas.rental.domain.apartment.Period;
+import info.pionas.rental.domain.apartment.*;
 import info.pionas.rental.domain.eventchannel.EventChannel;
-import java.time.LocalDate;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
+import java.util.Map;
+
 /**
- *
  * @author Adi
  */
 @RequiredArgsConstructor

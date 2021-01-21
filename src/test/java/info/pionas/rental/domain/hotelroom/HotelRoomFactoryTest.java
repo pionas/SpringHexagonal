@@ -1,14 +1,15 @@
 package info.pionas.rental.domain.hotelroom;
 
 import com.google.common.collect.ImmutableMap;
+import org.junit.jupiter.api.Test;
+
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.jupiter.api.Test;
 
 /**
- *
  * @author Adi
  */
 public class HotelRoomFactoryTest {

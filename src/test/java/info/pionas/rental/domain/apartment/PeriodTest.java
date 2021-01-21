@@ -1,17 +1,18 @@
 package info.pionas.rental.domain.apartment;
 
-import java.time.LocalDate;
-import static java.util.Arrays.asList;
-import java.util.List;
-import java.util.stream.Stream;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Stream;
+
+import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
- *
  * @author Adi
  */
 public class PeriodTest {

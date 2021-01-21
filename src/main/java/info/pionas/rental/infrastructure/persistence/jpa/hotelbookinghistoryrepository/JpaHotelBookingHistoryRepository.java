@@ -1,11 +1,10 @@
 package info.pionas.rental.infrastructure.persistence.jpa.hotelbookinghistoryrepository;
 
 import info.pionas.rental.domain.hotelbookinghistory.HotelBookingHistory;
-import lombok.RequiredArgsConstructor;
 import info.pionas.rental.domain.hotelbookinghistory.HotelBookingHistoryRepository;
+import lombok.RequiredArgsConstructor;
 
 /**
- *
  * @author Adi
  */
 @RequiredArgsConstructor

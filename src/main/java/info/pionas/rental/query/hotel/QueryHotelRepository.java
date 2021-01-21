@@ -1,10 +1,10 @@
 package info.pionas.rental.query.hotel;
 
-import static java.util.Collections.emptyList;
 import lombok.RequiredArgsConstructor;
 
+import static java.util.Collections.emptyList;
+
 /**
- *
  * @author Adi
  */
 @RequiredArgsConstructor

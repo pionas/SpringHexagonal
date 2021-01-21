@@ -5,7 +5,6 @@ import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingHistory
 import lombok.RequiredArgsConstructor;
 
 /**
- *
  * @author Adi
  */
 @RequiredArgsConstructor

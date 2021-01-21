@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- *
  * @author Adi
  */
 public class HotelRoomFactory {

@@ -6,7 +6,6 @@ import info.pionas.rental.domain.hotel.HotelRepository;
 import lombok.RequiredArgsConstructor;
 
 /**
- *
  * @author Adi
  */
 @RequiredArgsConstructor

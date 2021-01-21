@@ -3,7 +3,6 @@ package info.pionas.rental.query.hotelroom;
 import lombok.RequiredArgsConstructor;
 
 /**
- *
  * @author Adi
  */
 @RequiredArgsConstructor

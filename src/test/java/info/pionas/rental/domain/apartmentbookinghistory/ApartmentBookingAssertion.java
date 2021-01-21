@@ -1,12 +1,12 @@
 package info.pionas.rental.domain.apartmentbookinghistory;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 /**
- *
  * @author Adi
  */
 @RequiredArgsConstructor

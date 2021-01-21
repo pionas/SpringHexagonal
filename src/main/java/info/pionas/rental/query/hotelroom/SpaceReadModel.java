@@ -1,12 +1,11 @@
 package info.pionas.rental.query.hotelroom;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import javax.persistence.Table;
+
 /**
- *
  * @author Adi
  */
 @RequiredArgsConstructor

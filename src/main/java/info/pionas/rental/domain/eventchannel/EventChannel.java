@@ -5,7 +5,6 @@ import info.pionas.rental.domain.apartment.BookingAccepted;
 import info.pionas.rental.domain.hotelroom.HotelRoomBooked;
 
 /**
- *
  * @author Adi
  */
 public interface EventChannel {

@@ -1,7 +1,6 @@
 package info.pionas.rental.domain.apartmentbookinghistory;
 
 /**
- *
  * @author Adi
  */
 public interface ApartmentBookingHistoryRepository {

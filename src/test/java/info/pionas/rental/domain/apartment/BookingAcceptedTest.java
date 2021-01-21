@@ -1,15 +1,16 @@
 package info.pionas.rental.domain.apartment;
 
 import com.google.common.collect.ImmutableList;
+import org.junit.jupiter.api.Test;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.regex.Pattern;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.jupiter.api.Test;
 
 /**
- *
  * @author Adi
  */
 public class BookingAcceptedTest {

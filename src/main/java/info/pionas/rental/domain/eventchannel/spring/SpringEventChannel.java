@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 
 /**
- *
  * @author Adi
  */
 @RequiredArgsConstructor

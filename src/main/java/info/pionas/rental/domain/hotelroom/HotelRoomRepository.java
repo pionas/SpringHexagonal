@@ -1,7 +1,6 @@
 package info.pionas.rental.domain.hotelroom;
 
 /**
- *
  * @author Adi
  */
 public interface HotelRoomRepository {

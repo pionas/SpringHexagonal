@@ -1,7 +1,6 @@
 package info.pionas.rental.domain.hotel;
 
 /**
- *
  * @author Adi
  */
 public class HotelFactory {

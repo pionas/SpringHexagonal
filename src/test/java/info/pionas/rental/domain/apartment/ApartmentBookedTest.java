@@ -1,13 +1,13 @@
 package info.pionas.rental.domain.apartment;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.regex.Pattern;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.regex.Pattern;
+
 /**
- *
  * @author Adi
  */
 public class ApartmentBookedTest {

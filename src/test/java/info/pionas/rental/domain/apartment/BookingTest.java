@@ -1,17 +1,16 @@
 package info.pionas.rental.domain.apartment;
 
+import info.pionas.rental.domain.eventchannel.EventChannel;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+
 import java.time.LocalDate;
+import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
-
-import java.util.List;
-
-import info.pionas.rental.domain.eventchannel.EventChannel;
-import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 
 /**
  * @author Adi
@@ -90,6 +89,7 @@ public class BookingTest {
 
         BookingAssertion.assertThat(booking).isAccept();
     }
+
     @Test
     public void shouldPublishBookingAcceptedOnceAccepted() {
         ArgumentCaptor<BookingAccepted> captor = ArgumentCaptor.forClass(BookingAccepted.class);

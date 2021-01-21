@@ -1,11 +1,11 @@
 package info.pionas.rental.domain.apartmentbookinghistory;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 /**
- *
  * @author Adi
  */
 public class ApartmentBookingTest {

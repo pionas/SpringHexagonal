@@ -1,11 +1,11 @@
 package info.pionas.rental.infrastructure.rest.api.apartment;
 
-import java.util.Map;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Map;
+
 /**
- *
  * @author Adi
  */
 @RequiredArgsConstructor

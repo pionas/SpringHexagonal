@@ -4,7 +4,6 @@ import info.pionas.rental.application.booking.BookingAccept;
 import info.pionas.rental.application.booking.BookingReject;
 
 /**
- *
  * @author Adi
  */
 public interface CommandRegisty {

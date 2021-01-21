@@ -1,12 +1,10 @@
 package info.pionas.rental.query.apartment;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
+import javax.persistence.Table;
+
 /**
- *
  * @author Adi
  */
 @RequiredArgsConstructor

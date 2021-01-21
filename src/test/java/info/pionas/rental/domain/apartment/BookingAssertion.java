@@ -1,13 +1,14 @@
 package info.pionas.rental.domain.apartment;
 
-import java.time.LocalDate;
-import static java.util.Arrays.asList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
 
+import java.time.LocalDate;
+import java.util.List;
+
+import static java.util.Arrays.asList;
+
 /**
- *
  * @author Adi
  */
 @RequiredArgsConstructor

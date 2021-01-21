@@ -1,14 +1,13 @@
 package info.pionas.rental.query.apartment;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import javax.persistence.Table;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 /**
- *
  * @author Adi
  */
 @RequiredArgsConstructor

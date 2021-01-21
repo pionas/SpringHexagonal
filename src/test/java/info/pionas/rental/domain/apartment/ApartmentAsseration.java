@@ -24,6 +24,7 @@ public class ApartmentAsseration {
         Assertions.assertThat(actual).hasFieldOrPropertyWithValue("ownerId", ownerId);
         return this;
     }
+
     public ApartmentAsseration hasIdMatches() {
         Assertions.assertThat(actual.getId().toString()).matches(Pattern.compile("[0-9a-z\\-]{36}"));
         return this;

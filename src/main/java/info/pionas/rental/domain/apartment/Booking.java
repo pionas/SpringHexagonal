@@ -1,16 +1,15 @@
 package info.pionas.rental.domain.apartment;
 
 import info.pionas.rental.domain.eventchannel.EventChannel;
-import java.time.LocalDate;
-import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import java.time.LocalDate;
+import java.util.List;
+
 /**
- *
  * @author Adi
  */
 @RequiredArgsConstructor

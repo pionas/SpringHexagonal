@@ -6,13 +6,13 @@ import info.pionas.rental.domain.eventchannel.EventChannel;
 import info.pionas.rental.domain.hotelroom.HotelRoom;
 import info.pionas.rental.domain.hotelroom.HotelRoomFactory;
 import info.pionas.rental.domain.hotelroom.HotelRoomRepository;
+import lombok.RequiredArgsConstructor;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import lombok.RequiredArgsConstructor;
 
 /**
- *
  * @author Adi
  */
 @RequiredArgsConstructor

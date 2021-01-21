@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 
 /**
- *
  * @author Adi
  */
 @RequiredArgsConstructor

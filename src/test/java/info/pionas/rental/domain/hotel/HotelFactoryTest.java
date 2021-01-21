@@ -1,7 +1,5 @@
 package info.pionas.rental.domain.hotel;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.junit.jupiter.api.Test;
 
 /**

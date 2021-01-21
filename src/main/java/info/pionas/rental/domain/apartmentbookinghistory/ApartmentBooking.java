@@ -1,13 +1,12 @@
 package info.pionas.rental.domain.apartmentbookinghistory;
 
-import java.time.LocalDateTime;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import lombok.RequiredArgsConstructor;
 
+import javax.persistence.Embedded;
+import javax.persistence.Table;
+import java.time.LocalDateTime;
+
 /**
- *
  * @author Adi
  */
 @RequiredArgsConstructor

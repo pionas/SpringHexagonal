@@ -1,11 +1,11 @@
 package info.pionas.rental.infrastructure.rest.api.apartment;
 
-import java.time.LocalDate;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
+
 /**
- *
  * @author Adi
  */
 @RequiredArgsConstructor
