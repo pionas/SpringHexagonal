@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
  * @author Adi
  */
 @RequiredArgsConstructor
-//@RestController
+@RestController
 @RequestMapping("/apartment")
 public class ApartmentRestController {
 
