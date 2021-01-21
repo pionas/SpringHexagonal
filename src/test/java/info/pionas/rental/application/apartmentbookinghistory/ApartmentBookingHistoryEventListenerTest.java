@@ -41,7 +41,7 @@ public class ApartmentBookingHistoryEventListenerTest {
         eventListener.consume(givenApartmentBooked());
 
         then(repository).should().save(captor.capture());
-        thenApartmentBookingBookingShouldHaveApartmentBookings(captor.getValue(), FIRST_BOOKING);
+        thenApartmentBookingShouldHaveApartmentBookings(captor.getValue(), FIRST_BOOKING);
     }
 
     @Test
@@ -50,7 +50,7 @@ public class ApartmentBookingHistoryEventListenerTest {
         eventListener.consume(givenApartmentBooked());
 
         then(repository).should().save(captor.capture());
-        thenApartmentBookingBookingShouldHaveApartmentBookings(captor.getValue(), NEXT_BOOKING);
+        thenApartmentBookingShouldHaveApartmentBookings(captor.getValue(), NEXT_BOOKING);
     }
 
     private ApartmentBooked givenApartmentBooked() {
@@ -80,7 +80,7 @@ public class ApartmentBookingHistoryEventListenerTest {
         return apartmentBookingHistory;
     }
 
-    private void thenApartmentBookingBookingShouldHaveApartmentBookings(ApartmentBookingHistory actual, int bookingsSize) {
+    private void thenApartmentBookingShouldHaveApartmentBookings(ApartmentBookingHistory actual, int bookingsSize) {
         Assertions.assertThat(actual).extracting("bookings").satisfies(actualBookings -> {
             List<ApartmentBooking> bookings = (List<ApartmentBooking>) actualBookings;
             Assertions.assertThat(bookings)
