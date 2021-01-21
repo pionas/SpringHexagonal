@@ -5,10 +5,12 @@ import info.pionas.rental.application.booking.BookingReject;
 import info.pionas.rental.application.commandregisty.CommandRegisty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Adi
  */
+@Component
 @RequiredArgsConstructor
 class SpringCommandRegisty implements CommandRegisty {
 

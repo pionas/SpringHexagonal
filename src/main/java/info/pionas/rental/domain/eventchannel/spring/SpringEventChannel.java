@@ -6,10 +6,12 @@ import info.pionas.rental.domain.eventchannel.EventChannel;
 import info.pionas.rental.domain.hotelroom.HotelRoomBooked;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Adi
  */
+@Component
 @RequiredArgsConstructor
 public class SpringEventChannel implements EventChannel {
 
