@@ -10,7 +10,7 @@ import java.util.Map;
  */
 @RequiredArgsConstructor
 @Getter
-class ApartmentDto {
+public class ApartmentDto {
 
     private final String ownerId;
     private final String street;

@@ -5,7 +5,10 @@ import info.pionas.rental.query.apartment.ApartmentDetails;
 import info.pionas.rental.query.apartment.ApartmentReadModel;
 import info.pionas.rental.query.apartment.QueryApartmentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 /**
  * @author Adi
@@ -19,8 +22,8 @@ public class ApartmentRestController {
     private final QueryApartmentRepository queryApartmentRepository;
 
     @PostMapping
-    public void add(@RequestBody ApartmentDto apartmentDto) {
-        apartmentApplicationService.add(
+    public ResponseEntity<String> add(@RequestBody ApartmentDto apartmentDto) {
+        String apartmentId = apartmentApplicationService.add(
                 apartmentDto.getOwnerId(),
                 apartmentDto.getStreet(),
                 apartmentDto.getPostalCode(),
@@ -31,6 +34,7 @@ public class ApartmentRestController {
                 apartmentDto.getDescription(),
                 apartmentDto.getRoomsDefinition()
         );
+        return ResponseEntity.created(URI.create("/apartment/" + apartmentId)).build();
     }
 
     @PutMapping("/book/{id}")

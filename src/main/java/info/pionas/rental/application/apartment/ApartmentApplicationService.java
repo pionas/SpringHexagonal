@@ -19,7 +19,7 @@ public class ApartmentApplicationService {
     private final BookingRepository bookingRepository;
     private final EventChannel eventChannel;
 
-    public void add(
+    public String add(
             String ownerId, String street, String postalCode, String houseNumber, String apartmentNumber,
             String city, String country, String description, Map<String, Double> roomsDefinition) {
 
@@ -35,7 +35,7 @@ public class ApartmentApplicationService {
                 roomsDefinition
         );
 
-        apartmentRepository.save(apartment);
+        return apartmentRepository.save(apartment);
     }
 
     public void book(String id, String tenentId, LocalDate start, LocalDate end) {
