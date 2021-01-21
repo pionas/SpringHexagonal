@@ -11,7 +11,7 @@ import java.util.List;
  */
 @RequiredArgsConstructor
 @Getter
-class HotelRoomBookingDto {
+public class HotelRoomBookingDto {
 
     private final String tenentId;
     private final List<LocalDate> days;

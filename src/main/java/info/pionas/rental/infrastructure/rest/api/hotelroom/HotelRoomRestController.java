@@ -13,7 +13,7 @@ import java.net.URI;
  * @author Adi
  */
 @RequiredArgsConstructor
-//@RestController
+@RestController
 @RequestMapping("/hotelroom")
 public class HotelRoomRestController {
 
@@ -21,13 +21,14 @@ public class HotelRoomRestController {
     private final QueryHotelRoomRepository queryHotelRoomRepository;
 
     @PostMapping
-    public void add(@RequestBody HotelRoomDto hotelRoomDto) {
-        hotelRoomApplicationService.add(
+    public ResponseEntity<String> add(@RequestBody HotelRoomDto hotelRoomDto) {
+        String id = hotelRoomApplicationService.add(
                 hotelRoomDto.getHotelId(),
                 hotelRoomDto.getNumber(),
                 hotelRoomDto.getSpacesDefinition(),
                 hotelRoomDto.getDescription()
         );
+        return ResponseEntity.created(URI.create("/hotelroom/" + id)).build();
     }
 
     @PutMapping("/book/{id}")

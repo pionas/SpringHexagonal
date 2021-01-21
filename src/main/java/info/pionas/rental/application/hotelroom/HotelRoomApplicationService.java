@@ -24,9 +24,9 @@ public class HotelRoomApplicationService {
     private final BookingRepository bookingRepository;
     private final EventChannel eventChannel;
 
-    public void add(String hotelId, int number, Map<String, Double> spacesDefinition, String description) {
+    public String add(String hotelId, int number, Map<String, Double> spacesDefinition, String description) {
         HotelRoom hotelRoom = new HotelRoomFactory().create(hotelId, number, spacesDefinition, description);
-        hotelRoomRepository.save(hotelRoom);
+        return hotelRoomRepository.save(hotelRoom);
     }
 
     public String book(String id, String tenentId, List<LocalDate> days) {
