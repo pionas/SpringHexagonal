@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Getter
 public class ApartmentBookingReadModel {
 
-    private final String bookintStep;
+    private final String bookingStep;
     private final LocalDateTime bookingDateTime;
     private final String ownerId;
     private final String tenantId;

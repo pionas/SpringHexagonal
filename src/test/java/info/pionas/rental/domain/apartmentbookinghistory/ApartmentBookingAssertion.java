@@ -19,7 +19,7 @@ public class ApartmentBookingAssertion {
     }
 
     ApartmentBookingAssertion isStart() {
-        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("bookintStep", BookingStep.START);
+        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("bookingStep", BookingStep.START);
         return this;
     }
 
