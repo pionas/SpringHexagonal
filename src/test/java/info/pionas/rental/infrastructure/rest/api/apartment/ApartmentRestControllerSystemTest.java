@@ -1,9 +1,7 @@
 package info.pionas.rental.infrastructure.rest.api.apartment;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
-import info.pionas.rental.domain.apartment.Period;
+import info.pionas.rental.infrastructure.json.JsonFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,13 +10,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.time.LocalDate;
 import java.util.Map;
 import java.util.UUID;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -34,12 +31,8 @@ class ApartmentRestControllerSystemTest {
     private static final String COUNTRY = "POLAND";
     private static final String DESCRIPTION = "Nice place to stay";
     private static final Map<String, Double> ROOMS_DEFINITION = ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0);
-    private static final String TENANT_ID = "137";
-    private static final LocalDate START = LocalDate.of(2020, 3, 4);
-    private static final LocalDate MIDDLE = LocalDate.of(2020, 3, 5);
-    private static final LocalDate END = LocalDate.of(2020, 3, 6);
-    private static final Period PERIOD = new Period(START, END);
 
+    private JsonFactory jsonFactory = new JsonFactory();
     @Autowired
     private MockMvc mockMvc;
 
@@ -62,7 +55,7 @@ class ApartmentRestControllerSystemTest {
         MvcResult mvcResult = mockMvc.perform(
                 post("/apartment")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJson(apartmentDto))
+                        .content(jsonFactory.create(apartmentDto))
         )
                 .andExpect(status().isCreated())
                 .andReturn();
@@ -82,11 +75,4 @@ class ApartmentRestControllerSystemTest {
         ;
     }
 
-    private String asJson(ApartmentDto apartmentDto) {
-        try {
-            return new ObjectMapper().writeValueAsString(apartmentDto);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }
