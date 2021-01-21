@@ -1,27 +1,27 @@
 package info.pionas.rental.query.hotelroom;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Adi
  */
-@RequiredArgsConstructor
-//@Entity
-@Table(name = "HOTEL_ROOM")
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
+@Entity
+@Table(name = "HOTEL_ROOM")
 public class HotelRoomReadModel {
 
     @Id
-    private String hotelRoomId;
-    private final String hotelId;
-    private final int number;
-    @OneToMany
-    private final List<SpaceReadModel> spaces;
-    private final String description;
+    @GeneratedValue
+    private UUID id;
+    private String hotelId;
+    private int number;
+    @ElementCollection
+    private List<SpaceReadModel> spaces;
+    private String description;
 }

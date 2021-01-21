@@ -5,6 +5,7 @@ import info.pionas.rental.domain.hotelroom.HotelRoom;
 import info.pionas.rental.domain.hotelroom.HotelRoomAssertion;
 import info.pionas.rental.domain.hotelroom.HotelRoomFactory;
 import info.pionas.rental.domain.hotelroom.HotelRoomRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +25,16 @@ class JpaHotelRoomRepositoryIntegrationTest {
 
     @Autowired
     private HotelRoomRepository hotelRoomRepository;
+    @Autowired
+    private SpringJpaHotelRoomTestRepository springJpaHotelRoomTestRepository;
+    private String hotelRoomId;
+
+    @AfterEach
+    void deleteHotelRoom() {
+        if (hotelRoomId != null) {
+            springJpaHotelRoomTestRepository.deleteById(hotelRoomId);
+        }
+    }
 
     @Test
     void shouldThrowExceptionWhenNoHotelRoomFound() {
@@ -38,7 +49,7 @@ class JpaHotelRoomRepositoryIntegrationTest {
     @Transactional
     void shouldFindExistingHotelRoom() {
         HotelRoom hotelRoom = createHotelRoom();
-        String hotelRoomId = hotelRoomRepository.save(hotelRoom);
+        hotelRoomId = hotelRoomRepository.save(hotelRoom);
 
         HotelRoom actual = hotelRoomRepository.findById(hotelRoomId);
 
