@@ -42,7 +42,7 @@ class ApartmentApplicationServiceTest {
 
     @Test
     void shouldBookingApartment() {
-        String tenantId = "456";
+        String tenantId = UUID.randomUUID().toString();
         LocalDate start = LocalDate.of(2020, 2, 1);
         LocalDate middle = start.plusDays(1);
         LocalDate end = start.plusDays(2);

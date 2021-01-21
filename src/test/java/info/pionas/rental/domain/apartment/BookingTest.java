@@ -79,8 +79,7 @@ public class BookingTest {
                 .isApartment()
                 .isReject()
                 .hasRentalPlaceIdEqualTo(RENTAL_PLACE_ID)
-                .hasTenantIdEqualTo(TENANT_ID)
-                .containsAllDays(days);
+                .hasTenantIdEqualTo(TENANT_ID);
     }
 
     @Test
