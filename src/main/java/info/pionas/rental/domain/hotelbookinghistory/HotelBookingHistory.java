@@ -14,6 +14,7 @@ import java.util.Optional;
 
 @NoArgsConstructor
 @Entity(name = "HOTEL_BOOKING_HISTORY")
+@SuppressWarnings("PMD.UnusedPrivateField")
 public class HotelBookingHistory {
 
     @Id

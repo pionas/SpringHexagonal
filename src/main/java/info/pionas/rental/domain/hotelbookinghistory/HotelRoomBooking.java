@@ -13,6 +13,7 @@ import java.util.UUID;
 
 @NoArgsConstructor
 @Entity
+@SuppressWarnings("PMD.UnusedPrivateField")
 class HotelRoomBooking {
     @Id
     @GeneratedValue

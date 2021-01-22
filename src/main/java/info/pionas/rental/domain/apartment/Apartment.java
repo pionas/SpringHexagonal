@@ -12,6 +12,7 @@ import java.util.UUID;
 @Getter
 @Entity
 @Table(name = "APARTMENT")
+@SuppressWarnings("PMD.UnusedPrivateField")
 public class Apartment {
 
     @Id

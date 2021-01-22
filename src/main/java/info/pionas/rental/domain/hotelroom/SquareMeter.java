@@ -9,6 +9,7 @@ import javax.persistence.Embeddable;
 @Getter
 @Setter
 @Embeddable
+@SuppressWarnings("PMD.UnusedPrivateMethod")
 class SquareMeter {
 
     private Double value;

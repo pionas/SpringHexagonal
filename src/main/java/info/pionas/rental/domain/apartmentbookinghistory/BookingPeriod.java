@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Embeddable
+@SuppressWarnings("PMD.UnusedPrivateMethod")
 public class BookingPeriod {
 
     private LocalDate periodStart;

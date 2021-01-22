@@ -13,6 +13,7 @@ import java.util.UUID;
 @Getter
 @Entity
 @Table(name = "BOOKING")
+@SuppressWarnings("PMD.UnusedPrivateField")
 public class Booking {
 
     @Id

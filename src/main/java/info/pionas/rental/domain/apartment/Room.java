@@ -11,6 +11,7 @@ import javax.persistence.Embedded;
 @NoArgsConstructor
 @Getter
 @Embeddable
+@SuppressWarnings("PMD.UnusedPrivateField")
 class Room {
 
     private String name;

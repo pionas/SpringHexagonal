@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Embeddable
+@SuppressWarnings("PMD.UnusedPrivateField")
 public class ApartmentBooking {
     @Enumerated(EnumType.STRING)
     private BookingStep bookingStep;

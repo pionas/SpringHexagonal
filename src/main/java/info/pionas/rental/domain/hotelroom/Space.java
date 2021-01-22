@@ -10,6 +10,7 @@ import javax.persistence.Embedded;
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Embeddable
+@SuppressWarnings("PMD.UnusedPrivateField")
 public class Space {
 
     private String name;

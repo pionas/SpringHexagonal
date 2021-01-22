@@ -10,6 +10,7 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor
 @Getter
 @Embeddable
+@SuppressWarnings("PMD.UnusedPrivateField")
 public class Address {
 
     private String street;
