@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.persistence.Embeddable;
 
-
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter

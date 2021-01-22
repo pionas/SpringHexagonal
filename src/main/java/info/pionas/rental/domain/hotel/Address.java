@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
 
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
