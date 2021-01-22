@@ -3,7 +3,9 @@ package info.pionas.rental.architecture;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
+import org.junit.jupiter.api.Tag;
 
+@Tag("ArchitectureTest")
 public class RentalApplicationClasses {
     public static JavaClasses get() {
         return new ClassFileImporter()

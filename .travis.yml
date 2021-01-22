@@ -11,4 +11,5 @@ matrix:
 
 script:
   - mvn -Pstatic-analysis clean compile
+  - mvn -Parchitecture-tests test
   - mvn -Pruntime-analysis verify
