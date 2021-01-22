@@ -9,6 +9,6 @@ import java.util.UUID;
 @Repository
 interface SpringJpaQueryHotelRoomRepository extends CrudRepository<HotelRoomReadModel, UUID> {
 
-    public Iterable<HotelRoomReadModel> findAllByHotelId(String hotelId);
+    Iterable<HotelRoomReadModel> findAllByHotelId(String hotelId);
 
 }

@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
-public class ApartmentBooked {
+public final class ApartmentBooked {
 
     private final String eventId;
     private final LocalDateTime eventCreationDateTime;

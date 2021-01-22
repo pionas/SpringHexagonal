@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
-
 @Repository
 @RequiredArgsConstructor
 class JpaHotelRoomRepository implements HotelRoomRepository {

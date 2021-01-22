@@ -1,6 +1,11 @@
 package info.pionas.rental.application.apartment;
 
-import info.pionas.rental.domain.apartment.*;
+import info.pionas.rental.domain.apartment.ApartmentRepository;
+import info.pionas.rental.domain.apartment.BookingRepository;
+import info.pionas.rental.domain.apartment.ApartmentFactory;
+import info.pionas.rental.domain.apartment.Apartment;
+import info.pionas.rental.domain.apartment.Period;
+import info.pionas.rental.domain.apartment.Booking;
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
