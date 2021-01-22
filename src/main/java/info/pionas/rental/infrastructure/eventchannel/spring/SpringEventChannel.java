@@ -1,4 +1,4 @@
-package info.pionas.rental.domain.eventchannel.spring;
+package info.pionas.rental.infrastructure.eventchannel.spring;
 
 import info.pionas.rental.domain.apartment.ApartmentBooked;
 import info.pionas.rental.domain.apartment.BookingAccepted;
