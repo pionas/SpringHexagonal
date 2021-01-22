@@ -173,6 +173,7 @@
                         <configuration>
                             <targetJdk>11</targetJdk>
                             <linkXRef>false</linkXRef>
+                            <rulesets>config/static-analysis/pmd.xml</rulesets>
                         </configuration>
                     </plugin>
                 </plugins>
