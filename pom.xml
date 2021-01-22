@@ -172,6 +172,7 @@
 
                         <configuration>
                             <targetJdk>11</targetJdk>
+                            <linkXRef>false</linkXRef>
                         </configuration>
                     </plugin>
                 </plugins>
