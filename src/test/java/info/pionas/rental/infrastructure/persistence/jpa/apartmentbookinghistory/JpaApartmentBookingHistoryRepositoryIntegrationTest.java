@@ -15,7 +15,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@Tag("IntegrationTest")
+@Tag("DomainRepositoryIntegrationTest")
 class JpaApartmentBookingHistoryRepositoryIntegrationTest {
     @Autowired private ApartmentBookingHistoryRepository repository;
     @Autowired private SpringJpaApartmentBookingHistoryRepository jpaRepository;

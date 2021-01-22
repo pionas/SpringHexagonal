@@ -18,7 +18,7 @@ import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
-@Tag("IntegrationTest")
+@Tag("DomainRepositoryIntegrationTest")
 class JpaBookingRepositoryIntegrationTest {
     @Autowired
     private JpaBookingRepository repository;

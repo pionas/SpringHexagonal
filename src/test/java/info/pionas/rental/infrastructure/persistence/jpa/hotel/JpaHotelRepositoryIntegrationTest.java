@@ -19,7 +19,7 @@ import static info.pionas.rental.domain.hotel.HotelAssertion.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
-@Tag("IntegrationTest")
+@Tag("DomainRepositoryIntegrationTest")
 class JpaHotelRepositoryIntegrationTest {
     private static final String NAME = "Great hotel";
     private static final String STREET = "Unknown";

@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
-@Tag("IntegrationTest")
+@Tag("DomainRepositoryIntegrationTest")
 class JpaApartmentRepositoryIntegrationTest {
     private static final String OWNER_ID = "1234";
     private static final String STREET = "Florianska";
