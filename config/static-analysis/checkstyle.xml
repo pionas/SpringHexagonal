@@ -1,4 +1,5 @@
 <?xml version="1.0" ?>
+
 <!DOCTYPE module PUBLIC
         "-//Puppy Crawl//DTD Check Configuration 1.2//EN"
         "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
@@ -23,13 +24,15 @@
         <module name="ArrayTypeStyle"/>
         <module name="AvoidInlineConditionals"/>
         <module name="AvoidNestedBlocks"/>
-        <module name="AvoidStarImport"/>
+        <module name="AvoidStarImport">
+            <property name="excludes" value="javax.persistence,org.springframework.web.bind.annotation,lombok"/>
+        </module>
         <module name="BooleanExpressionComplexity"/>
         <module name="ClassDataAbstractionCoupling">
             <property name="max" value="5"/>
         </module>
         <module name="ClassFanOutComplexity">
-            <property name="max" value="10"/>
+            <property name="max" value="20"/>
         </module>
         <module name="ClassTypeParameterName"/>
         <module name="ConstantName"/>
@@ -46,7 +49,6 @@
         <module name="EqualsAvoidNull"/>
         <module name="EqualsHashCode"/>
         <module name="ExplicitInitialization"/>
-        <module name="FinalClass"/>
         <module name="GenericWhitespace"/>
         <module name="HideUtilityClassConstructor"/>
         <module name="IllegalCatch"/>
@@ -99,7 +101,7 @@
         <module name="UpperEll"/>
         <module name="WhitespaceAfter"/>
         <module name="WhitespaceAround">
-            <property name="allowEmptyConstructors" value="true" />
+            <property name="allowEmptyConstructors" value="true"/>
         </module>
         <module name="LocalFinalVariableName"/>
         <module name="LocalVariableName"/>
@@ -117,7 +119,7 @@
     <module name="SuppressWarningsFilter"/>
 
     <module name="LineLength">
-        <property name="max" value="150"/>
+        <property name="max" value="180"/>
     </module>
 
     <module name="FileLength">
@@ -128,6 +130,6 @@
     <module name="NewlineAtEndOfFile"/>
 
     <module name="UniqueProperties">
-        <property name="fileExtensions" value="properties" />
+        <property name="fileExtensions" value="properties"/>
     </module>
 </module>
