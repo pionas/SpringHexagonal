@@ -242,12 +242,6 @@
                                     <goal>check</goal>
                                 </goals>
                                 <configuration>
-                                    <excludes>
-                                        <exclude>info/pionas/rental/RentalApplication.class</exclude>
-                                        <exclude>info/pionas/rental/infrastructure/**/*</exclude>
-                                        <exclude>info/pionas/rental/query/**/*</exclude>
-                                    </excludes>
-
                                     <includes>
                                         <include>info/pionas/rental/domain/**/*</include>
                                         <include>info/pionas/rental/application/**/*</include>
@@ -360,9 +354,9 @@
                 </plugins>
             </build>
         </profile>
-        <profile>
-            <id>runtime-analysis</id>
 
+        <profile>
+            <id>system-tests</id>
             <build>
                 <plugins>
                     <plugin>
@@ -371,7 +365,7 @@
                         <version>${maven-surefire-plugin.version}</version>
 
                         <configuration>
-                            <excludedGroups>ArchitectureTest</excludedGroups>
+                            <groups>SystemTest</groups>
                         </configuration>
                     </plugin>
 
@@ -405,9 +399,9 @@
                                     <goal>check</goal>
                                 </goals>
                                 <configuration>
-                                    <excludes>
-                                        <exclude>info/pionas/rental/RentalApplication.class</exclude>
-                                    </excludes>
+                                    <includes>
+                                        <include>info/pionas/rental/infrastructure/rest/api/**/*</include>
+                                    </includes>
                                     <rules>
                                         <rule>
                                             <element>BUNDLE</element>

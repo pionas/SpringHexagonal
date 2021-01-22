@@ -14,4 +14,4 @@ script:
   - mvn -Parchitecture-tests test
   - mvn -Pdomain-tests verify
   - mvn -Pintegration-tests verify
-  - mvn -Pruntime-analysis verify
+  - mvn -Psystem-tests verify
