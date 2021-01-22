@@ -3,6 +3,7 @@ package info.pionas.rental.infrastructure.persistence.jpa.hotelbookinghistory;
 import info.pionas.rental.domain.hotelbookinghistory.HotelBookingHistory;
 import info.pionas.rental.domain.hotelbookinghistory.HotelBookingHistoryAssertion;
 import info.pionas.rental.domain.hotelbookinghistory.HotelBookingHistoryRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,35 +20,46 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 class JpaHotelBookingHistoryRepositoryIntegrationTest {
     @Autowired
-    private HotelBookingHistoryRepository hotelBookingHistoryRepository;
+    private HotelBookingHistoryRepository repository;
+    @Autowired
+    private SpringJpaHotelBookingHistoryRepository jpaRepository;
+    private String hotelId;
+
+    @AfterEach
+    void deleteHotelBookingHistory() {
+        if (hotelId != null) {
+            jpaRepository.deleteById(hotelId);
+        }
+    }
 
     @Test
     void shouldRecognizeHotelBookingHistoryDoesNotExist() {
         String id = randomId();
 
-        assertThat(hotelBookingHistoryRepository.existFor(id)).isFalse();
+        assertThat(repository.existsFor(id)).isFalse();
     }
 
     @Test
-    void shouldRecognizeHotelBookingHistoryExist() {
+    void shouldRecognizeHotelBookingHistoryExists() {
         String id = randomId();
-        hotelBookingHistoryRepository.save(new HotelBookingHistory(id));
-        assertThat(hotelBookingHistoryRepository.existFor(id)).isTrue();
+        repository.save(new HotelBookingHistory(id));
+
+        assertThat(repository.existsFor(id)).isTrue();
     }
 
     @Test
     @Transactional
     void shouldFindExistingHotelBookingHistory() {
-        String hotelId = randomId();
+        hotelId = randomId();
         String hotelRoomId = randomId();
         LocalDateTime bookingDateTime = LocalDateTime.now();
-        String tenantId = "123";
-        List<LocalDate> days = asList(LocalDate.now(), LocalDate.now().plusDays(1));
+        String tenantId = randomId();
+        List<LocalDate> days = asList(LocalDate.now());
         HotelBookingHistory hotelBookingHistory = new HotelBookingHistory(hotelId);
-
         hotelBookingHistory.add(hotelRoomId, bookingDateTime, tenantId, days);
-        hotelBookingHistoryRepository.save(hotelBookingHistory);
-        HotelBookingHistory actual = hotelBookingHistoryRepository.findFor(hotelId);
+        repository.save(hotelBookingHistory);
+
+        HotelBookingHistory actual = repository.findFor(hotelId);
 
         HotelBookingHistoryAssertion
                 .assertThat(actual).hasHotelRoomBookingHistoryFor(hotelRoomId, bookingDateTime, tenantId, days);
@@ -56,6 +68,4 @@ class JpaHotelBookingHistoryRepositoryIntegrationTest {
     private String randomId() {
         return UUID.randomUUID().toString();
     }
-
-
 }

@@ -5,23 +5,21 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * @author Adi
- */
-public class ApartmentBookingTest {
+import static info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingAssertion.assertThat;
+
+class ApartmentBookingTest {
 
     @Test
-    public void shouldCreateApartmentBookingWithALlRequiredInformation() {
-        LocalDateTime bookingDateTime = LocalDateTime.of(2020, 1, 1, 12, 0);
+    void shouldCreateStartApartmentBookingWithAllRequiredInformation() {
+        LocalDateTime bookingDateTime = LocalDateTime.of(2020, 1, 2, 3, 4);
         String ownerId = "123";
-        String tenantId = "456";
+        String tenantId = "234";
         LocalDate start = LocalDate.of(2020, 2, 1);
         LocalDate end = LocalDate.of(2020, 2, 8);
 
         ApartmentBooking actual = ApartmentBooking.start(bookingDateTime, ownerId, tenantId, new BookingPeriod(start, end));
 
-        ApartmentBookingAssertion
-                .assertThat(actual)
+        assertThat(actual)
                 .isStart()
                 .hasBookingDateTimeEqualTo(bookingDateTime)
                 .hasOwnerIdEqualTo(ownerId)

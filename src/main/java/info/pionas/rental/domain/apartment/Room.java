@@ -1,18 +1,16 @@
 package info.pionas.rental.domain.apartment;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 
-/**
- * @author Adi
- */
+
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
 @Embeddable
 class Room {
 

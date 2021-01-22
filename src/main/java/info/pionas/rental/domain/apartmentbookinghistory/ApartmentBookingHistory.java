@@ -1,16 +1,11 @@
 package info.pionas.rental.domain.apartmentbookinghistory;
 
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Adi
- */
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "APARTMENT_BOOKING_HISTORY")

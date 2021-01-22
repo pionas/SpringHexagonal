@@ -1,16 +1,15 @@
 package info.pionas.rental.query.hotelroom;
 
 import com.google.common.collect.ImmutableMap;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
 
 import java.util.function.Consumer;
 
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 class HotelRoomReadModelAssertion {
     private final HotelRoomReadModel actual;
-
-    private HotelRoomReadModelAssertion(HotelRoomReadModel actual) {
-        this.actual = actual;
-    }
 
     static HotelRoomReadModelAssertion assertThat(HotelRoomReadModel actual) {
         return new HotelRoomReadModelAssertion(actual);

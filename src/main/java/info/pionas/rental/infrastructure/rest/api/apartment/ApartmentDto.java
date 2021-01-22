@@ -5,9 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 
-/**
- * @author Adi
- */
+
 @RequiredArgsConstructor
 @Getter
 public class ApartmentDto {

@@ -1,6 +1,5 @@
 package info.pionas.rental.domain.hotelbookinghistory;
 
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
@@ -13,10 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * @author Adi
- */
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "HOTEL_BOOKING_HISTORY")
 public class HotelBookingHistory {

@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * @author Adi
- */
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/booking")

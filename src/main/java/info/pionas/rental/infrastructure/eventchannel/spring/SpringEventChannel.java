@@ -8,9 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
-/**
- * @author Adi
- */
+
 @Component
 @RequiredArgsConstructor
 public class SpringEventChannel implements EventChannel {

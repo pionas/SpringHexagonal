@@ -1,26 +1,18 @@
 package info.pionas.rental.domain.apartmentbookinghistory;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * @author Adi
- */
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class ApartmentBookingAssertion {
-
     private final ApartmentBooking actual;
 
-    public static ApartmentBookingAssertion assertThat(ApartmentBooking apartmentBooking) {
-        return new ApartmentBookingAssertion(apartmentBooking);
-    }
-
-    ApartmentBookingAssertion isStart() {
-        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("bookingStep", BookingStep.START);
-        return this;
+    public static ApartmentBookingAssertion assertThat(ApartmentBooking actual) {
+        return new ApartmentBookingAssertion(actual);
     }
 
     ApartmentBookingAssertion hasBookingDateTimeEqualTo(LocalDateTime expected) {
@@ -38,11 +30,15 @@ public class ApartmentBookingAssertion {
         return this;
     }
 
-    public ApartmentBookingAssertion hasBookingPeriodThatHas(LocalDate start, LocalDate end) {
+    public ApartmentBookingAssertion hasBookingPeriodThatHas(LocalDate expectedStart, LocalDate expectedEnd) {
         Assertions.assertThat(actual)
-                .hasFieldOrPropertyWithValue("bookingPeriod.periodStart", start)
-                .hasFieldOrPropertyWithValue("bookingPeriod.periodEnd", end);
+                .hasFieldOrPropertyWithValue("bookingPeriod.periodStart", expectedStart)
+                .hasFieldOrPropertyWithValue("bookingPeriod.periodEnd", expectedEnd);
         return this;
     }
 
+    public ApartmentBookingAssertion isStart() {
+        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("bookingStep", BookingStep.START);
+        return this;
+    }
 }

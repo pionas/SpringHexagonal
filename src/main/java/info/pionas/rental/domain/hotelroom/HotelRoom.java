@@ -3,8 +3,7 @@ package info.pionas.rental.domain.hotelroom;
 import info.pionas.rental.domain.apartment.Booking;
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -12,12 +11,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * @author Adi
- */
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@Data
+@Getter
 @Entity
 @Table(name = "HOTEL_ROOM")
 public class HotelRoom {
@@ -46,6 +41,9 @@ public class HotelRoom {
     }
 
     public String id() {
+        if (id == null) {
+            return null;
+        }
         return id.toString();
     }
 }

@@ -1,16 +1,11 @@
 package info.pionas.rental.domain.apartment;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-/**
- * @author Adi
- */
-@RequiredArgsConstructor
 @Getter
 public class ApartmentBooked {
 

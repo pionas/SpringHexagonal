@@ -9,16 +9,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * @author Adi
- */
+
 @RequiredArgsConstructor
-@Getter(value = AccessLevel.PACKAGE)
+@Getter
 public class BookingAccepted {
 
     private final String eventId;
     private final LocalDateTime eventCreationDateTime;
-    private final String name;
+    private final String rentalType;
     private final String rentalPlaceId;
     private final String tenantId;
     private final List<LocalDate> days;

@@ -1,16 +1,15 @@
 package info.pionas.rental.query.apartment;
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
 
 import java.util.Map;
 import java.util.function.Consumer;
 
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 class ApartmentReadModelAssertion {
     private final ApartmentReadModel actual;
-
-    private ApartmentReadModelAssertion(ApartmentReadModel actual) {
-        this.actual = actual;
-    }
 
     static ApartmentReadModelAssertion assertThat(ApartmentReadModel actual) {
         return new ApartmentReadModelAssertion(actual);

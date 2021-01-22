@@ -1,107 +1,83 @@
 package info.pionas.rental.domain.apartment;
 
 import info.pionas.rental.domain.eventchannel.EventChannel;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.BDDMockito;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
+import static info.pionas.rental.domain.apartment.BookingAssertion.assertThat;
 import static java.util.Arrays.asList;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
 
-/**
- * @author Adi
- */
-public class BookingTest {
+class BookingTest {
+    private static final List<LocalDate> DAYS = asList(LocalDate.now(), LocalDate.now().plusDays(1));
+    private static final String TENANT_ID = "1234";
+    private static final String RENTAL_PLACE_ID = "5748";
 
-    private static final LocalDate NOW = LocalDate.now();
-    private static final List<LocalDate> DAYS = asList(NOW, NOW.plusDays(2));
-    private static final String TENANT_ID = "789";
-    private static final String RENTAL_PLACE_ID = "456";
     private final EventChannel eventChannel = mock(EventChannel.class);
 
     @Test
-    public void shouldCreateApartmentBookingWithALlRequiredInformation() {
-        String rentalPlaceId = "123";
-        String tenantId = "456";
-        LocalDate start = LocalDate.of(2020, 3, 4);
-        LocalDate end = LocalDate.of(2020, 3, 6);
-        Booking actual = Booking.apartment(rentalPlaceId, tenantId, new Period(start, end));
+    void shouldCreateBookingForApartment() {
+        Period period = new Period(LocalDate.of(2020, 3, 4), LocalDate.of(2020, 3, 6));
 
-        BookingAssertion
-                .assertThat(actual)
-                .isApartment()
+        Booking actual = Booking.apartment(RENTAL_PLACE_ID, TENANT_ID, period);
+
+        assertThat(actual)
                 .isOpen()
-                .hasRentalPlaceIdEqualTo(rentalPlaceId)
-                .hasTenantIdEqualTo(tenantId)
-                .containsAllDays(
-                        LocalDate.of(2020, 3, 4),
-                        LocalDate.of(2020, 3, 5),
-                        LocalDate.of(2020, 3, 6)
-                );
+                .isApartment()
+                .hasRentalPlaceIdEqualTo(RENTAL_PLACE_ID)
+                .hasTenantIdEqualTo(TENANT_ID)
+                .containsAllDays(LocalDate.of(2020, 3, 4), LocalDate.of(2020, 3, 5), LocalDate.of(2020, 3, 6));
     }
 
     @Test
-    public void shouldCreateRoomHotelBookingWithALlRequiredInformation() {
-        String rentalPlaceId = "123";
-        List<LocalDate> days = asList(
-                LocalDate.of(2020, 5, 5),
-                LocalDate.of(2020, 5, 6),
-                LocalDate.of(2020, 5, 7)
-        );
-        Booking actual = Booking.hotelRoom(rentalPlaceId, TENANT_ID, days);
+    void shouldCreateBookingForHotelRoom() {
+        List<LocalDate> days = asList(LocalDate.of(2020, 6, 1), LocalDate.of(2020, 6, 2), LocalDate.of(2020, 6, 4));
 
-        BookingAssertion
-                .assertThat(actual)
-                .isHotelRoom()
+        Booking actual = Booking.hotelRoom(RENTAL_PLACE_ID, TENANT_ID, days);
+
+        assertThat(actual)
                 .isOpen()
-                .hasRentalPlaceIdEqualTo(rentalPlaceId)
+                .isHotelRoom()
+                .hasRentalPlaceIdEqualTo(RENTAL_PLACE_ID)
                 .hasTenantIdEqualTo(TENANT_ID)
                 .containsAllDays(days);
     }
 
     @Test
-    public void shouldRejectRoomHotelBooking() {
-        UUID id = UUID.randomUUID();
-        RentalType rentalType = RentalType.APARTMENT;
-        List<LocalDate> days = null;
-        BookingStatus bookingStatus = BookingStatus.OPEN;
-
-        Booking actual = new Booking(id, rentalType, RENTAL_PLACE_ID, TENANT_ID, days, bookingStatus);
-        actual.reject();
-
-        BookingAssertion
-                .assertThat(actual)
-                .isApartment()
-                .isRejected()
-                .hasRentalPlaceIdEqualTo(RENTAL_PLACE_ID)
-                .hasTenantIdEqualTo(TENANT_ID);
-    }
-
-    @Test
-    public void shouldChangeStatusOfBookingOnceAccepted() {
+    void shouldChangeStatusOfBookingOnceAccepted() {
         Booking booking = Booking.hotelRoom(RENTAL_PLACE_ID, TENANT_ID, DAYS);
+
         booking.accept(eventChannel);
 
-        BookingAssertion.assertThat(booking).isAccepted();
+        assertThat(booking).isAccepted();
     }
 
     @Test
-    public void shouldPublishBookingAcceptedOnceAccepted() {
+    void shouldPublishBookingAcceptedOnceAccepted() {
         ArgumentCaptor<BookingAccepted> captor = ArgumentCaptor.forClass(BookingAccepted.class);
         Booking booking = Booking.hotelRoom(RENTAL_PLACE_ID, TENANT_ID, DAYS);
+
         booking.accept(eventChannel);
 
-        then(eventChannel).should().publish(captor.capture());
+        BDDMockito.then(eventChannel).should().publish(captor.capture());
         BookingAccepted actual = captor.getValue();
-        assertThat(actual.getName()).isEqualTo("HOTEL_ROOM");
-        assertThat(actual.getRentalPlaceId()).isEqualTo(RENTAL_PLACE_ID);
-        assertThat(actual.getTenantId()).isEqualTo(TENANT_ID);
-        assertThat(actual.getDays()).containsExactlyElementsOf(DAYS);
+        Assertions.assertThat(actual.getRentalType()).isEqualTo("HOTEL_ROOM");
+        Assertions.assertThat(actual.getRentalPlaceId()).isEqualTo(RENTAL_PLACE_ID);
+        Assertions.assertThat(actual.getTenantId()).isEqualTo(TENANT_ID);
+        Assertions.assertThat(actual.getDays()).containsExactlyElementsOf(DAYS);
     }
 
+    @Test
+    void shouldChangeStatusOfBookingOnceRejected() {
+        Booking booking = Booking.hotelRoom(RENTAL_PLACE_ID, TENANT_ID, DAYS);
+
+        booking.reject();
+
+        assertThat(booking).isRejected();
+    }
 }

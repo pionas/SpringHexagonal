@@ -1,6 +1,8 @@
 package info.pionas.rental.domain.hotelbookinghistory;
 
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.AbstractObjectAssert;
 import org.assertj.core.api.Assertions;
 
@@ -9,12 +11,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Consumer;
 
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class HotelBookingHistoryAssertion {
     private final HotelBookingHistory actual;
 
-    private HotelBookingHistoryAssertion(HotelBookingHistory actual) {
-        this.actual = actual;
-    }
 
     public static HotelBookingHistoryAssertion assertThat(HotelBookingHistory actual) {
         return new HotelBookingHistoryAssertion(actual);

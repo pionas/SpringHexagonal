@@ -6,27 +6,18 @@ import org.assertj.core.api.Assertions;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.regex.Pattern;
 
-/**
- * @author Adi
- */
+
 @RequiredArgsConstructor
 public class ApartmentAssertion {
-
     private final Apartment actual;
 
-    public static ApartmentAssertion assertThat(Apartment apartment) {
-        return new ApartmentAssertion(apartment);
+    public static ApartmentAssertion assertThat(Apartment actual) {
+        return new ApartmentAssertion(actual);
     }
 
     public ApartmentAssertion hasOwnerIdEqualsTo(String ownerId) {
         Assertions.assertThat(actual).hasFieldOrPropertyWithValue("ownerId", ownerId);
-        return this;
-    }
-
-    public ApartmentAssertion hasIdMatches() {
-        Assertions.assertThat(actual.getId().toString()).matches(Pattern.compile("[0-9a-z\\-]{36}"));
         return this;
     }
 
@@ -35,7 +26,8 @@ public class ApartmentAssertion {
         return this;
     }
 
-    public ApartmentAssertion hasAddressEqualsTo(String street, String postalCode, String houseNumber, String apartmentNumber, String city, String country) {
+    public ApartmentAssertion hasAddressEqualsTo(
+            String street, String postalCode, String houseNumber, String apartmentNumber, String city, String country) {
         Assertions.assertThat(actual).extracting("address")
                 .hasFieldOrPropertyWithValue("street", street)
                 .hasFieldOrPropertyWithValue("postalCode", postalCode)
@@ -43,6 +35,7 @@ public class ApartmentAssertion {
                 .hasFieldOrPropertyWithValue("apartmentNumber", apartmentNumber)
                 .hasFieldOrPropertyWithValue("city", city)
                 .hasFieldOrPropertyWithValue("country", country);
+
         return this;
     }
 
@@ -50,10 +43,12 @@ public class ApartmentAssertion {
         Assertions.assertThat(actual).extracting("rooms").satisfies(roomsActual -> {
             List<Room> rooms = (List<Room>) roomsActual;
             Assertions.assertThat(rooms).hasSize(roomsDefinition.size());
+
             roomsDefinition.forEach((name, squareMeter) -> {
                 Assertions.assertThat(rooms).anySatisfy(hasRoomThat(name, squareMeter));
             });
         });
+
         return this;
     }
 
@@ -62,5 +57,4 @@ public class ApartmentAssertion {
                 .hasFieldOrPropertyWithValue("name", name)
                 .hasFieldOrPropertyWithValue("squareMeter.size", squareMeter);
     }
-
 }

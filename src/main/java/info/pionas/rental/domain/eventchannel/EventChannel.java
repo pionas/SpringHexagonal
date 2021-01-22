@@ -4,9 +4,7 @@ import info.pionas.rental.domain.apartment.ApartmentBooked;
 import info.pionas.rental.domain.apartment.BookingAccepted;
 import info.pionas.rental.domain.hotelroom.HotelRoomBooked;
 
-/**
- * @author Adi
- */
+
 public interface EventChannel {
 
     void publish(ApartmentBooked apartmentBooked);

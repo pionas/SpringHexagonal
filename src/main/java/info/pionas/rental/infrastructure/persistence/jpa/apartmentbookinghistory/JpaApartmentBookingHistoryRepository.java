@@ -5,9 +5,7 @@ import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingHistory
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-/**
- * @author Adi
- */
+
 @Repository
 @RequiredArgsConstructor
 public class JpaApartmentBookingHistoryRepository implements ApartmentBookingHistoryRepository {
@@ -20,7 +18,7 @@ public class JpaApartmentBookingHistoryRepository implements ApartmentBookingHis
     }
 
     @Override
-    public boolean existFor(String apartmentId) {
+    public boolean existsFor(String apartmentId) {
         return springJpaApartmentBookingHistoryRepository.existsById(apartmentId);
     }
 

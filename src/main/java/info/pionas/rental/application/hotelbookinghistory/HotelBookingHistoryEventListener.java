@@ -7,9 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-/**
- * @author Adi
- */
 @Component
 @RequiredArgsConstructor
 public class HotelBookingHistoryEventListener {
@@ -29,7 +26,7 @@ public class HotelBookingHistoryEventListener {
     }
 
     private HotelBookingHistory getHotelRoomBookingHistoryFor(String hotelId) {
-        if (hotelRoomBookingHistoryRepository.existFor(hotelId)) {
+        if (hotelRoomBookingHistoryRepository.existsFor(hotelId)) {
             return hotelRoomBookingHistoryRepository.findFor(hotelId);
         }
         return new HotelBookingHistory(hotelId);

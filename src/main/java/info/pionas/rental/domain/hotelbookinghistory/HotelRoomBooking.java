@@ -1,6 +1,5 @@
 package info.pionas.rental.domain.hotelbookinghistory;
 
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.ElementCollection;
@@ -12,10 +11,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * @author Adi
- */
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 class HotelRoomBooking {

@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author Adi
- */
+
 public class ApartmentFactory {
 
     public Apartment create(

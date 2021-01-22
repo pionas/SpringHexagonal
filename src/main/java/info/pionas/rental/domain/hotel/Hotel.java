@@ -1,18 +1,14 @@
 package info.pionas.rental.domain.hotel;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.UUID;
 
-/**
- * @author Adi
- */
-@AllArgsConstructor
+
 @NoArgsConstructor
-@Data
+@Getter
 @Entity
 @Table(name = "HOTEL")
 public class Hotel {

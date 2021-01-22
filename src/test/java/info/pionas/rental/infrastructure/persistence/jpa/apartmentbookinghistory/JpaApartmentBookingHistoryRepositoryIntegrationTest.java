@@ -15,10 +15,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class JpaApartmentBookingHistoryRepositoryIntegrationTest {
-    @Autowired
-    private ApartmentBookingHistoryRepository repository;
-    @Autowired
-    private SpringJpaApartmentBookingHistoryRepository jpaRepository;
+    @Autowired private ApartmentBookingHistoryRepository repository;
+    @Autowired private SpringJpaApartmentBookingHistoryRepository jpaRepository;
     private String apartmentId;
 
     @AfterEach
@@ -32,7 +30,7 @@ class JpaApartmentBookingHistoryRepositoryIntegrationTest {
     void shouldRecognizeApartmentBookingHistoryDoesNotExist() {
         String id = randomId();
 
-        assertThat(repository.existFor(id)).isFalse();
+        assertThat(repository.existsFor(id)).isFalse();
     }
 
     @Test
@@ -40,7 +38,7 @@ class JpaApartmentBookingHistoryRepositoryIntegrationTest {
         String id = randomId();
         repository.save(new ApartmentBookingHistory(id));
 
-        assertThat(repository.existFor(id)).isTrue();
+        assertThat(repository.existsFor(id)).isTrue();
     }
 
     @Test

@@ -7,9 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
-/**
- * @author Adi
- */
+
 @Repository
 @RequiredArgsConstructor
 class JpaApartmentRepository implements ApartmentRepository {

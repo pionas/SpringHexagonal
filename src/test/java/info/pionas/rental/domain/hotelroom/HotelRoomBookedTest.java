@@ -1,6 +1,5 @@
 package info.pionas.rental.domain.hotelroom;
 
-import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -8,24 +7,18 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * @author Adi
- */
-public class HotelRoomBookedTest {
 
+class HotelRoomBookedTest {
     @Test
-    public void shouldCreateHotelRoomBookedWithAllInformation() {
-        String hotelRoomId = "123";
-        String hotelId = "456";
-        String tenantId = "789";
-        List<LocalDate> days = ImmutableList.of(
-                LocalDate.of(2020, 5, 5),
-                LocalDate.of(2020, 5, 6),
-                LocalDate.of(2020, 5, 7)
-        );
+    void shouldCreateEventWithAllInformation() {
+        String hotelRoomId = "1234";
+        String hotelId = "5678";
+        String tenantId = "3456";
         LocalDateTime beforeNow = LocalDateTime.now().minusNanos(1);
+        List<LocalDate> days = asList(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 1, 2), LocalDate.of(2020, 1, 3));
 
         HotelRoomBooked actual = HotelRoomBooked.create(hotelRoomId, hotelId, tenantId, days);
 

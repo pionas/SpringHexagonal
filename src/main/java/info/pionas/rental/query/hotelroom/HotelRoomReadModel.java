@@ -1,7 +1,6 @@
 package info.pionas.rental.query.hotelroom;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,10 +8,6 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * @author Adi
- */
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Entity

@@ -4,9 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-/**
- * @author Adi
- */
+
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class ApartmentDetails {

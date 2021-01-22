@@ -9,22 +9,22 @@ import java.util.List;
 
 class HotelRoomBookingHistoryTest {
 
+    public static final String HOTEL_ID = "123";
+    public static final HotelRoomBookingHistory HOTEL_ROOM_BOOKING_HISTORY = new HotelRoomBookingHistory(HOTEL_ID);
+    public static final LocalDateTime BOOKING_DATE_TIME = LocalDateTime.now();
+    public static final String TENANT_ID = "789";
+    public static final List<LocalDate> DAYS = ImmutableList.of(
+            LocalDate.of(2020, 5, 5),
+            LocalDate.of(2020, 5, 6),
+            LocalDate.of(2020, 5, 7)
+    );
 
     @Test
     public void shouldCreateHotelRoomBookingHistoryWithAllInformation() {
-        String hotelId = "123";
-        HotelRoomBookingHistory hotelRoomBookingHistory = new HotelRoomBookingHistory(hotelId);
-        LocalDateTime bookingDateTime = LocalDateTime.now();
-        String tenantId = "789";
-        List<LocalDate> days = ImmutableList.of(
-                LocalDate.of(2020, 5, 5),
-                LocalDate.of(2020, 5, 6),
-                LocalDate.of(2020, 5, 7)
-        );
-        hotelRoomBookingHistory.add(bookingDateTime, tenantId, days);
+        HOTEL_ROOM_BOOKING_HISTORY.add(BOOKING_DATE_TIME, TENANT_ID, DAYS);
 
         HotelRoomBookingHistoryAssertion
-                .assertThat(hotelRoomBookingHistory)
+                .assertThat(HOTEL_ROOM_BOOKING_HISTORY)
 
         ;
 

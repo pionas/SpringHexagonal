@@ -12,9 +12,6 @@ import java.util.stream.Stream;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * @author Adi
- */
 public class PeriodTest {
 
     @ParameterizedTest

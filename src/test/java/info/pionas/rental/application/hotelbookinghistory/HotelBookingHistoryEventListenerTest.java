@@ -28,7 +28,7 @@ class HotelBookingHistoryEventListenerTest {
 
     @Test
     void shouldAddNewHotelBookingHistory() {
-        given(repository.existFor(HOTEL_ID)).willReturn(false);
+        given(repository.existsFor(HOTEL_ID)).willReturn(false);
 
         eventListener.consume(HotelRoomBookedTestFactory.create(HOTEL_ROOM_ID, HOTEL_ID, TENANT_ID, DAYS));
 
@@ -60,7 +60,7 @@ class HotelBookingHistoryEventListenerTest {
     private void givenExistingHotelBookingHistory() {
         HotelBookingHistory hotelBookingHistory = new HotelBookingHistory(HOTEL_ID);
         hotelBookingHistory.add(HOTEL_ROOM_ID, LocalDateTime.now(), TENANT_ID, DAYS);
-        given(repository.existFor(HOTEL_ID)).willReturn(true);
+        given(repository.existsFor(HOTEL_ID)).willReturn(true);
         given(repository.findFor(HOTEL_ID)).willReturn(hotelBookingHistory);
     }
 }

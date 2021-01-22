@@ -4,9 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * @author Adi
- */
+
 public class HotelRoomFactory {
 
     public HotelRoom create(String hotelId, int number, Map<String, Double> spacesDefinition, String description) {

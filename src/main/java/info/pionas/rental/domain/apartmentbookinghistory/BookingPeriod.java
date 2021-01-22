@@ -1,18 +1,15 @@
 package info.pionas.rental.domain.apartmentbookinghistory;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Embeddable;
 import java.time.LocalDate;
 
-/**
- * @author Adi
- */
+
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Embeddable
 public class BookingPeriod {
 

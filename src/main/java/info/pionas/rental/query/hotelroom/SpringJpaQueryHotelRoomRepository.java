@@ -5,9 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
-/**
- * @author Adi
- */
+
 @Repository
 interface SpringJpaQueryHotelRoomRepository extends CrudRepository<HotelRoomReadModel, UUID> {
 

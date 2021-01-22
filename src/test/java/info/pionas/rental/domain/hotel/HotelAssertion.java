@@ -1,24 +1,24 @@
 package info.pionas.rental.domain.hotel;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
 
-@RequiredArgsConstructor
-public class HotelAsseration {
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+public class HotelAssertion {
 
     private final Hotel actual;
 
-    public static HotelAsseration assertThat(Hotel hotel) {
-        return new HotelAsseration(hotel);
+    public static HotelAssertion assertThat(Hotel hotel) {
+        return new HotelAssertion(hotel);
     }
 
-    public HotelAsseration hasNameEqualsTo(String name) {
+    public HotelAssertion hasNameEqualsTo(String name) {
         Assertions.assertThat(actual).hasFieldOrPropertyWithValue("name", name);
         return this;
     }
 
-
-    public HotelAsseration hasAddressEqualsTo(String street, String postalCode, String buildingNumber, String city, String country) {
+    public HotelAssertion hasAddressEqualsTo(String street, String postalCode, String buildingNumber, String city, String country) {
         Assertions.assertThat(actual).extracting("address")
                 .hasFieldOrPropertyWithValue("street", street)
                 .hasFieldOrPropertyWithValue("postalCode", postalCode)
@@ -27,5 +27,4 @@ public class HotelAsseration {
                 .hasFieldOrPropertyWithValue("country", country);
         return this;
     }
-
 }

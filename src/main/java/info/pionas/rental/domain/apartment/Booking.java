@@ -1,8 +1,7 @@
 package info.pionas.rental.domain.apartment;
 
 import info.pionas.rental.domain.eventchannel.EventChannel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -10,12 +9,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * @author Adi
- */
-@AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
 @Entity
 @Table(name = "BOOKING")
 public class Booking {

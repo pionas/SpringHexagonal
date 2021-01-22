@@ -6,9 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
-/**
- * @author Adi
- */
+
 @Repository
 interface SpringJpaBookingRepository extends CrudRepository<Booking, UUID> {
 

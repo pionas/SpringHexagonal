@@ -6,9 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * @author Adi
- */
+
 @Repository
 @RequiredArgsConstructor
 public class QueryApartmentRepository {

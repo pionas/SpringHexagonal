@@ -1,17 +1,16 @@
 package info.pionas.rental.domain.apartmentbookinghistory;
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.AbstractObjectAssert;
 import org.assertj.core.api.Assertions;
 
 import java.util.List;
 import java.util.function.Consumer;
 
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class ApartmentBookingHistoryAssertion {
     private final ApartmentBookingHistory actual;
-
-    private ApartmentBookingHistoryAssertion(ApartmentBookingHistory actual) {
-        this.actual = actual;
-    }
 
     public static ApartmentBookingHistoryAssertion assertThat(ApartmentBookingHistory actual) {
         return new ApartmentBookingHistoryAssertion(actual);
@@ -35,9 +34,9 @@ public class ApartmentBookingHistoryAssertion {
     }
 
     public ApartmentBookingHistoryAssertion hasApartmentBookingThatSatisfies(Consumer<ApartmentBooking> requirements) {
-        hasApartmentBookings().satisfies((actualBookings -> {
+        hasApartmentBookings().satisfies(actualBookings -> {
             Assertions.assertThat(asApartmentBookings(actualBookings)).anySatisfy(requirements);
-        }));
+        });
 
         return this;
     }

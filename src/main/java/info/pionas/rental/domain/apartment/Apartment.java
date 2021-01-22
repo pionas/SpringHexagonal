@@ -1,20 +1,16 @@
 package info.pionas.rental.domain.apartment;
 
 import info.pionas.rental.domain.eventchannel.EventChannel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * @author Adi
- */
-@AllArgsConstructor
+
 @NoArgsConstructor
-@Data
+@Getter
 @Entity
 @Table(name = "APARTMENT")
 public class Apartment {
@@ -48,6 +44,9 @@ public class Apartment {
     }
 
     public String id() {
+        if (id == null) {
+            return null;
+        }
         return id.toString();
     }
 }

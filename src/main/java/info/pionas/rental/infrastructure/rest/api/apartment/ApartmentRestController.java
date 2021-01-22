@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
-/**
- * @author Adi
- */
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/apartment")

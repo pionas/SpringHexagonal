@@ -7,9 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
-/**
- * @author Adi
- */
 @Component
 @RequiredArgsConstructor
 class SpringCommandRegisty implements CommandRegisty {

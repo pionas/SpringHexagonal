@@ -1,13 +1,12 @@
 package info.pionas.rental.query.hotel;
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
 
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 class HotelReadModelAssertion {
     private final HotelReadModel actual;
-
-    private HotelReadModelAssertion(HotelReadModel actual) {
-        this.actual = actual;
-    }
 
     static HotelReadModelAssertion assertThat(HotelReadModel actual) {
         return new HotelReadModelAssertion(actual);

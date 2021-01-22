@@ -3,9 +3,7 @@ package info.pionas.rental.infrastructure.rest.api.hotel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-/**
- * @author Adi
- */
+
 @RequiredArgsConstructor
 @Getter
 public class HotelDto {

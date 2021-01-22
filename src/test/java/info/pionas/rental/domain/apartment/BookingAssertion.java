@@ -8,41 +8,42 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
-/**
- * @author Adi
- */
-@RequiredArgsConstructor
-public
-class BookingAssertion {
 
+@RequiredArgsConstructor
+public class BookingAssertion {
     private final Booking actual;
 
-    public static BookingAssertion assertThat(Booking booking) {
-        return new BookingAssertion(booking);
+    public static BookingAssertion assertThat(Booking actual) {
+        return new BookingAssertion(actual);
     }
 
-    public BookingAssertion isApartment() {
-        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("rentalType", RentalType.APARTMENT);
-        return this;
-    }
-
-    public BookingAssertion isHotelRoom() {
-        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("rentalType", RentalType.HOTEL_ROOM);
-        return this;
-    }
-
-    BookingAssertion isOpen() {
-        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("bookingStatus", BookingStatus.OPEN);
-        return this;
+    public BookingAssertion isOpen() {
+        return hasBookingStatusEqualTo(BookingStatus.OPEN);
     }
 
     public BookingAssertion isAccepted() {
-        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("bookingStatus", BookingStatus.ACCEPTED);
-        return this;
+        return hasBookingStatusEqualTo(BookingStatus.ACCEPTED);
     }
 
     public BookingAssertion isRejected() {
-        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("bookingStatus", BookingStatus.REJECTED);
+        return hasBookingStatusEqualTo(BookingStatus.REJECTED);
+    }
+
+    private BookingAssertion hasBookingStatusEqualTo(BookingStatus expected) {
+        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("bookingStatus", expected);
+        return this;
+    }
+
+    public BookingAssertion isApartment() {
+        return hasRentalTypeEqualTo(RentalType.APARTMENT);
+    }
+
+    public BookingAssertion isHotelRoom() {
+        return hasRentalTypeEqualTo(RentalType.HOTEL_ROOM);
+    }
+
+    private BookingAssertion hasRentalTypeEqualTo(RentalType rentalType) {
+        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("rentalType", rentalType);
         return this;
     }
 
@@ -53,12 +54,6 @@ class BookingAssertion {
 
     public BookingAssertion hasTenantIdEqualTo(String expected) {
         Assertions.assertThat(actual).hasFieldOrPropertyWithValue("tenantId", expected);
-        return this;
-    }
-
-    public BookingAssertion hasBookingPeriodThatHas(LocalDate start, LocalDate end) {
-        Period period = new Period(start, end);
-        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("days", period.asDays());
         return this;
     }
 

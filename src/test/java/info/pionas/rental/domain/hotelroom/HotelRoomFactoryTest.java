@@ -9,14 +9,11 @@ import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * @author Adi
- */
+
 public class HotelRoomFactoryTest {
 
     @Test
     public void shouldCreateHotelRoomWillAllRequiredFields() {
-
         String hotelId = "123";
         int number = 20;
         Map<String, Double> spacesDefinition = ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0);

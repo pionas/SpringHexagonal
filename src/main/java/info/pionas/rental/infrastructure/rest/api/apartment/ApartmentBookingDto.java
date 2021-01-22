@@ -5,13 +5,10 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 
-/**
- * @author Adi
- */
+
 @RequiredArgsConstructor
 @Getter
-public
-class ApartmentBookingDto {
+public class ApartmentBookingDto {
 
     private final String tenantId;
     private final LocalDate start;
