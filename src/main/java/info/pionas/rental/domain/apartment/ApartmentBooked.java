@@ -22,7 +22,7 @@ public class ApartmentBooked {
     private final LocalDate periodStart;
     private final LocalDate periodEnd;
 
-    public ApartmentBooked(String eventId, LocalDateTime eventCreationDateTime, String apartmentId, String ownerId, String tenantId, Period period) {
+    private ApartmentBooked(String eventId, LocalDateTime eventCreationDateTime, String apartmentId, String ownerId, String tenantId, Period period) {
         this.eventId = eventId;
         this.eventCreationDateTime = eventCreationDateTime;
         this.apartmentId = apartmentId;
