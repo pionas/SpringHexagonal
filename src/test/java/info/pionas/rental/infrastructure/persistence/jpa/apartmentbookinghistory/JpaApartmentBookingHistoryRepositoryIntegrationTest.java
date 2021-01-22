@@ -17,8 +17,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @Tag("DomainRepositoryIntegrationTest")
 class JpaApartmentBookingHistoryRepositoryIntegrationTest {
-    @Autowired private ApartmentBookingHistoryRepository repository;
-    @Autowired private SpringJpaApartmentBookingHistoryRepository jpaRepository;
+    @Autowired
+    private ApartmentBookingHistoryRepository repository;
+    @Autowired
+    private SpringJpaApartmentBookingHistoryRepository jpaRepository;
     private String apartmentId;
 
     @AfterEach

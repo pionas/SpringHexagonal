@@ -1,13 +1,6 @@
 package info.pionas.rental.domain.hotel;
 
-import com.google.common.collect.ImmutableMap;
-import info.pionas.rental.domain.apartment.Period;
-import info.pionas.rental.domain.eventchannel.EventChannel;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
-import java.time.LocalDate;
-import java.util.Map;
 
 class HotelTest {
     private static final String NAME = "Great hotel";
