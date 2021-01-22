@@ -2,6 +2,7 @@ package info.pionas.rental.infrastructure.persistence.jpa.apartmentbookinghistor
 
 import info.pionas.rental.domain.apartmentbookinghistory.*;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,6 +15,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Tag("IntegrationTest")
 class JpaApartmentBookingHistoryRepositoryIntegrationTest {
     @Autowired private ApartmentBookingHistoryRepository repository;
     @Autowired private SpringJpaApartmentBookingHistoryRepository jpaRepository;

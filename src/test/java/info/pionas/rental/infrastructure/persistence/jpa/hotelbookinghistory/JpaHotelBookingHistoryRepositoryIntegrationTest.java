@@ -4,6 +4,7 @@ import info.pionas.rental.domain.hotelbookinghistory.HotelBookingHistory;
 import info.pionas.rental.domain.hotelbookinghistory.HotelBookingHistoryAssertion;
 import info.pionas.rental.domain.hotelbookinghistory.HotelBookingHistoryRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +19,7 @@ import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Tag("IntegrationTest")
 class JpaHotelBookingHistoryRepositoryIntegrationTest {
     @Autowired
     private HotelBookingHistoryRepository repository;

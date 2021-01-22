@@ -3,6 +3,7 @@ package info.pionas.rental.infrastructure.persistence.jpa.booking;
 import info.pionas.rental.domain.apartment.Booking;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +18,7 @@ import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
+@Tag("IntegrationTest")
 class JpaBookingRepositoryIntegrationTest {
     @Autowired
     private JpaBookingRepository repository;

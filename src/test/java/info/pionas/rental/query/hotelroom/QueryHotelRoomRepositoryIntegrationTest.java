@@ -6,6 +6,7 @@ import info.pionas.rental.domain.hotelroom.HotelRoomFactory;
 import info.pionas.rental.domain.hotelroom.HotelRoomRepository;
 import info.pionas.rental.infrastructure.persistence.jpa.hotelroom.SpringJpaHotelRoomTestRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +17,7 @@ import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Tag("IntegrationTest")
 class QueryHotelRoomRepositoryIntegrationTest {
     private static final String HOTEL_ID = "5678";
     private static final int ROOM_NUMBER_1 = 42;

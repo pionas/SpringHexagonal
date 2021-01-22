@@ -11,6 +11,7 @@ import info.pionas.rental.domain.hotelroom.HotelRoomRepository;
 import info.pionas.rental.infrastructure.persistence.jpa.hotelbookinghistory.SpringJpaHotelBookingHistoryTestRepository;
 import info.pionas.rental.infrastructure.persistence.jpa.hotelroom.SpringJpaHotelRoomTestRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +25,7 @@ import java.util.UUID;
 import static java.util.Arrays.asList;
 
 @SpringBootTest
+@Tag("IntegrationTest")
 class HotelBookingHistoryEventListenerIntegrationTest {
     private static final String HOTEL_ID = UUID.randomUUID().toString();
     private static final int HOTEL_NUMBER = 13;

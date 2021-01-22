@@ -13,6 +13,7 @@ import info.pionas.rental.infrastructure.persistence.jpa.apartmentbookinghistory
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,6 +28,7 @@ import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Tag("IntegrationTest")
 class QueryApartmentRepositoryIntegrationTest {
     private static final String OWNER_ID_1 = "1234";
     private static final String STREET_1 = "Florianska";

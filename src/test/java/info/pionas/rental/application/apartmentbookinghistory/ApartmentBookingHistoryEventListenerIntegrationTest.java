@@ -12,6 +12,7 @@ import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingHistory
 import info.pionas.rental.infrastructure.persistence.jpa.apartment.SpringJpaApartmentTestRepository;
 import info.pionas.rental.infrastructure.persistence.jpa.apartmentbookinghistory.SpringJpaApartmentBookingHistoryTestRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,6 +22,7 @@ import java.time.LocalDate;
 import java.util.Map;
 
 @SpringBootTest
+@Tag("IntegrationTest")
 class ApartmentBookingHistoryEventListenerIntegrationTest {
     private static final String OWNER_ID = "1234";
     private static final String STREET = "Florianska";

@@ -5,6 +5,7 @@ import info.pionas.rental.domain.hotel.HotelFactory;
 import info.pionas.rental.domain.hotel.HotelRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +19,7 @@ import static info.pionas.rental.domain.hotel.HotelAssertion.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
+@Tag("IntegrationTest")
 class JpaHotelRepositoryIntegrationTest {
     private static final String NAME = "Great hotel";
     private static final String STREET = "Unknown";
