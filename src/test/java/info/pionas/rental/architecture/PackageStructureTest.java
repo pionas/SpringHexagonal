@@ -1,18 +1,51 @@
 package info.pionas.rental.architecture;
 
 import com.tngtech.archunit.core.domain.JavaClasses;
-import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 import org.junit.jupiter.api.Test;
 
-class PackageStructureTest {
-    @Test
-    void domainSHouldTalkOnlyWithDomain() {
-        JavaClasses javaClasses = RentalApplicationClasses.get();
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
-        ArchRuleDefinition.classes()
-                .that().resideInAPackage("..domain..")
-                .should().onlyAccessClassesThat().resideInAnyPackage("..domain..", "java..")
-                .check(javaClasses);
+class PackageStructureTest {
+
+    private static final String DOMAIN = "..domain..";
+    private static final String APPLICATION = "..application..";
+    private static final String QUERY = "..query..";
+    private static final String INFRASTRUCTURE = "..infrastructure..";
+    private static final String JAVA = "java..";
+    private final JavaClasses classes = RentalApplicationClasses.get();
+
+    @Test
+    void domainShouldTalkOnlyWithDomain() {
+
+        classes()
+                .that().resideInAPackage(DOMAIN)
+                .should().onlyAccessClassesThat().resideInAnyPackage(DOMAIN, JAVA)
+                .check(classes);
         ;
+    }
+
+    @Test
+    void applicationShouldTalkOnlyWithApplicationAndDomain() {
+        classes()
+                .that().resideInAPackage(APPLICATION)
+                .should().onlyAccessClassesThat().resideInAnyPackage(APPLICATION, DOMAIN, JAVA)
+                .check(classes);
+    }
+
+    @Test
+    void queryShouldTalkOnlyWithQuery() {
+        classes()
+                .that().resideInAPackage(QUERY)
+                .should().onlyAccessClassesThat().resideInAnyPackage(QUERY, JAVA)
+                .check(classes);
+    }
+
+    @Test
+    void infrastructureShouldTalkOnlyWithDomain() {
+        classes()
+                .that().resideInAPackage(INFRASTRUCTURE)
+                .should().onlyAccessClassesThat().resideOutsideOfPackage(DOMAIN)
+                .orShould().haveSimpleNameContaining("Repository")
+                .check(classes);
     }
 }
