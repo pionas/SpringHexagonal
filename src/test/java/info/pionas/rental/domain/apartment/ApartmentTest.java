@@ -11,6 +11,8 @@ import org.mockito.Mockito;
 import java.time.LocalDate;
 import java.util.Map;
 
+import static info.pionas.rental.domain.apartment.Apartment.Builder.apartment;
+
 class ApartmentTest {
     private static final String OWNER_ID = "1234";
     private static final String STREET = "Florianska";
@@ -27,7 +29,6 @@ class ApartmentTest {
     private static final LocalDate END = LocalDate.of(2020, 3, 6);
     private static final Period PERIOD = new Period(START, END);
 
-    private final ApartmentFactory apartmentFactory = new ApartmentFactory();
     private final EventChannel eventChannel = Mockito.mock(EventChannel.class);
 
     @Test
@@ -69,8 +70,16 @@ class ApartmentTest {
     }
 
     private Apartment createApartment() {
-        return apartmentFactory.create(
-                OWNER_ID, STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY,
-                DESCRIPTION, ROOMS_DEFINITION);
+        return apartment()
+                .withOwnerId(OWNER_ID)
+                .withStreet(STREET)
+                .withPostalCode(POSTAL_CODE)
+                .withHouseNumber(HOUSE_NUMBER)
+                .withApartmentNumber(APARTMENT_NUMBER)
+                .withCity(CITY)
+                .withCountry(COUNTRY)
+                .withDescription(DESCRIPTION)
+                .withRoomsDefinition(ROOMS_DEFINITION)
+                .build();
     }
 }

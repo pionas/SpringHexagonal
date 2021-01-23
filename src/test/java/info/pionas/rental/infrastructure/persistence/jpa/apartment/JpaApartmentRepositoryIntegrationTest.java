@@ -3,7 +3,6 @@ package info.pionas.rental.infrastructure.persistence.jpa.apartment;
 import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.domain.apartment.Apartment;
 import info.pionas.rental.domain.apartment.ApartmentAssertion;
-import info.pionas.rental.domain.apartment.ApartmentFactory;
 import info.pionas.rental.domain.apartment.ApartmentRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Tag;
@@ -17,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static info.pionas.rental.domain.apartment.Apartment.Builder.apartment;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -38,7 +38,6 @@ class JpaApartmentRepositoryIntegrationTest {
     @Autowired
     private SpringJpaApartmentTestRepository springJpaApartmentTestRepository;
 
-    private final ApartmentFactory apartmentFactory = new ApartmentFactory();
     private final List<String> apartmentIds = new ArrayList<>();
 
     @AfterEach
@@ -74,12 +73,42 @@ class JpaApartmentRepositoryIntegrationTest {
     @Test
     @Transactional
     void shouldReturnExistingApartmentWeWant() {
-        Apartment apartment1 = apartmentFactory.create("1234", "Florianska", "98-765", "12", "34", "Krakow", "Poland", "The greatest apartment", ImmutableMap.of("Room1", 50.0));
+        Apartment apartment1 = apartment()
+                .withOwnerId("1234")
+                .withStreet("Florianska")
+                .withPostalCode("98-765")
+                .withHouseNumber("12")
+                .withApartmentNumber("34")
+                .withCity("Krakow")
+                .withCountry("Poland")
+                .withDescription("The greatest apartment")
+                .withRoomsDefinition(ImmutableMap.of("Room1", 50.0))
+                .build();
         givenExistingApartment(apartment1);
         String existingId = givenExistingApartment(createApartment());
-        Apartment apartment2 = apartmentFactory.create("5692", "Florianska", "98-999", "10", "42", "Krakow", "Poland", "Great apartment", ImmutableMap.of("Room42", 100.0));
+        Apartment apartment2 = apartment()
+                .withOwnerId("5692")
+                .withStreet("Florianska")
+                .withPostalCode("98-999")
+                .withHouseNumber("10")
+                .withApartmentNumber("42")
+                .withCity("Krakow")
+                .withCountry("Poland")
+                .withDescription("Great apartment")
+                .withRoomsDefinition(ImmutableMap.of("Room42", 100.0))
+                .build();
         givenExistingApartment(apartment2);
-        Apartment apartment3 = apartmentFactory.create("2083", "Florianska", "98-123", "11", "13", "Krakow", "Poland", "Not so bad apartment", ImmutableMap.of("Room13", 30.0));
+        Apartment apartment3 = apartment()
+                .withOwnerId("2083")
+                .withStreet("Florianska")
+                .withPostalCode("98-123")
+                .withHouseNumber("11")
+                .withApartmentNumber("13")
+                .withCity("Krakow")
+                .withCountry("Poland")
+                .withDescription("Not so bad apartment")
+                .withRoomsDefinition(ImmutableMap.of("Room13", 30.0))
+                .build();
         givenExistingApartment(apartment3);
 
         Apartment actual = apartmentRepository.findById(existingId);
@@ -99,8 +128,16 @@ class JpaApartmentRepositoryIntegrationTest {
     }
 
     private Apartment createApartment() {
-        return apartmentFactory.create(
-                OWNER_ID, STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY,
-                DESCRIPTION, ROOMS_DEFINITION);
+        return apartment()
+                .withOwnerId(OWNER_ID)
+                .withStreet(STREET)
+                .withPostalCode(POSTAL_CODE)
+                .withHouseNumber(HOUSE_NUMBER)
+                .withApartmentNumber(APARTMENT_NUMBER)
+                .withCity(CITY)
+                .withCountry(COUNTRY)
+                .withDescription(DESCRIPTION)
+                .withRoomsDefinition(ROOMS_DEFINITION)
+                .build();
     }
 }

@@ -10,6 +10,7 @@ import org.mockito.ArgumentCaptor;
 import java.time.LocalDate;
 import java.util.Map;
 
+import static info.pionas.rental.domain.apartment.Apartment.Builder.apartment;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -36,7 +37,6 @@ class ApartmentApplicationServiceTest {
     private final EventChannel eventChannel = mock(EventChannel.class);
     private final BookingRepository bookingRepository = mock(BookingRepository.class);
     private final ApartmentApplicationService service = new ApartmentApplicationService(apartmentRepository, bookingRepository, eventChannel);
-    private final ApartmentFactory apartmentFactory = new ApartmentFactory();
 
     @Test
     void shouldAddNewApartment() {
@@ -88,7 +88,17 @@ class ApartmentApplicationServiceTest {
     }
 
     private void givenApartment() {
-        Apartment apartment = apartmentFactory.create(OWNER_ID, STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY, DESCRIPTION, ROOMS_DEFINITION);
+        Apartment apartment = apartment()
+                .withOwnerId(OWNER_ID)
+                .withStreet(STREET)
+                .withPostalCode(POSTAL_CODE)
+                .withHouseNumber(HOUSE_NUMBER)
+                .withApartmentNumber(APARTMENT_NUMBER)
+                .withCity(CITY)
+                .withCountry(COUNTRY)
+                .withDescription(DESCRIPTION)
+                .withRoomsDefinition(ROOMS_DEFINITION)
+                .build();
         given(apartmentRepository.findById(APARTMENT_ID)).willReturn(apartment);
     }
 
