@@ -1,6 +1,7 @@
 package info.pionas.rental.infrastructure.rest.api.hotel;
 
 import info.pionas.rental.application.hotel.HotelApplicationService;
+import info.pionas.rental.application.hotel.HotelDto;
 import info.pionas.rental.query.hotel.HotelReadModel;
 import info.pionas.rental.query.hotel.QueryHotelRepository;
 import lombok.RequiredArgsConstructor;

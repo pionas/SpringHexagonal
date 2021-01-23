@@ -1,5 +1,6 @@
 package info.pionas.rental.infrastructure.rest.api.hotel;
 
+import info.pionas.rental.application.hotel.HotelDto;
 import info.pionas.rental.infrastructure.json.JsonFactory;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
