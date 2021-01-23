@@ -32,7 +32,7 @@ public class Apartment {
 
     private String description;
 
-    public Apartment(String ownerId, Address address, List<Room> rooms, String description) {
+    private Apartment(String ownerId, Address address, List<Room> rooms, String description) {
         this.ownerId = ownerId;
         this.address = address;
         this.rooms = rooms;
