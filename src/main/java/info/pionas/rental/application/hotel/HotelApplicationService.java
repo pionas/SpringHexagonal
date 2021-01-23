@@ -5,6 +5,8 @@ import info.pionas.rental.domain.hotel.HotelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import static info.pionas.rental.domain.hotel.Hotel.Builder.hotel;
+
 @Service
 @RequiredArgsConstructor
 public class HotelApplicationService {
@@ -12,7 +14,7 @@ public class HotelApplicationService {
     private final HotelRepository hotelRepository;
 
     public String add(HotelDto hotelDto) {
-        Hotel hotel = Hotel.Builder.hotel()
+        Hotel hotel = hotel()
                 .withName(hotelDto.getName())
                 .withStreet(hotelDto.getStreet())
                 .withPostalCode(hotelDto.getPostalCode())
