@@ -6,6 +6,7 @@ jdk:
 matrix:
   - jdk: oraclejdk11
     before_install:
+      - chmod +x mvnw
       - rm "${JAVA_HOME}/lib/security/cacerts"
       - ln -s /etc/ssl/certs/java/cacerts "${JAVA_HOME}/lib/security/cacerts"
 
