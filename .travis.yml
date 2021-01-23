@@ -10,9 +10,15 @@ matrix:
       - rm "${JAVA_HOME}/lib/security/cacerts"
       - ln -s /etc/ssl/certs/java/cacerts "${JAVA_HOME}/lib/security/cacerts"
 
+addons:
+  sonarcloud:
+    organization: "pionas"
+    token: $SONAR_TOKEN
+
 script:
   - mvn -Pstatic-analysis clean compile
   - mvn -Parchitecture-tests test
   - mvn -Pdomain-tests verify
   - mvn -Pintegration-tests verify
   - mvn -Psystem-tests verify
+  - sonar-scanner
