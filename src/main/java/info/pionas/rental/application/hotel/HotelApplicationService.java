@@ -12,8 +12,15 @@ public class HotelApplicationService {
 
     private final HotelRepository hotelRepository;
 
-    public String add(String name, String street, String postalCode, String buildingNumber, String city, String country) {
-        Hotel hotel = new HotelFactory().create(name, street, postalCode, buildingNumber, city, country);
+    public String add(HotelDto hotelDto) {
+        Hotel hotel = new HotelFactory().create(
+                hotelDto.getName(),
+                hotelDto.getStreet(),
+                hotelDto.getPostalCode(),
+                hotelDto.getBuildingNumber(),
+                hotelDto.getCity(),
+                hotelDto.getCountry()
+        );
         return hotelRepository.save(hotel);
     }
 }

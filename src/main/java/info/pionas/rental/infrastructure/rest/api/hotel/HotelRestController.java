@@ -21,14 +21,7 @@ public class HotelRestController {
 
     @PostMapping
     public ResponseEntity<String> add(@RequestBody HotelDto hotelDto) {
-        String hotelId = hotelApplicationService.add(
-                hotelDto.getName(),
-                hotelDto.getStreet(),
-                hotelDto.getPostalCode(),
-                hotelDto.getBuildingNumber(),
-                hotelDto.getCity(),
-                hotelDto.getCountry()
-        );
+        String hotelId = hotelApplicationService.add(hotelDto);
         return ResponseEntity.created(URI.create("/hotel/" + hotelId)).build();
     }
 
