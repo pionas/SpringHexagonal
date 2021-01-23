@@ -1,6 +1,7 @@
 package info.pionas.rental.infrastructure.rest.api.apartment;
 
 import com.google.common.collect.ImmutableMap;
+import info.pionas.rental.application.apartment.ApartmentDto;
 import info.pionas.rental.infrastructure.json.JsonFactory;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;

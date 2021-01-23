@@ -1,6 +1,7 @@
 package info.pionas.rental.infrastructure.rest.api.apartment;
 
 import info.pionas.rental.application.apartment.ApartmentApplicationService;
+import info.pionas.rental.application.apartment.ApartmentDto;
 import info.pionas.rental.query.apartment.ApartmentDetails;
 import info.pionas.rental.query.apartment.ApartmentReadModel;
 import info.pionas.rental.query.apartment.QueryApartmentRepository;

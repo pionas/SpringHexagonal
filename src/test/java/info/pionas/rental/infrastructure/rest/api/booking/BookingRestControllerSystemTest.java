@@ -3,7 +3,7 @@ package info.pionas.rental.infrastructure.rest.api.booking;
 import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.infrastructure.json.JsonFactory;
 import info.pionas.rental.infrastructure.rest.api.apartment.ApartmentBookingDto;
-import info.pionas.rental.infrastructure.rest.api.apartment.ApartmentDto;
+import info.pionas.rental.application.apartment.ApartmentDto;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
