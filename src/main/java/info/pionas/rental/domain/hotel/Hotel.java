@@ -20,7 +20,7 @@ public class Hotel {
     @Embedded
     private Address address;
 
-    public Hotel(String name, Address address) {
+    private Hotel(String name, Address address) {
         this.name = name;
         this.address = address;
     }
