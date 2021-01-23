@@ -6,7 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Map;
+
+import static info.pionas.rental.domain.apartment.Apartment.Builder.apartment;
 
 @Service
 @RequiredArgsConstructor
@@ -17,17 +18,17 @@ public class ApartmentApplicationService {
     private final EventChannel eventChannel;
 
     public String add(ApartmentDto apartmentDto) {
-        Apartment apartment = new ApartmentFactory().create(
-                apartmentDto.getOwnerId(),
-                apartmentDto.getStreet(),
-                apartmentDto.getPostalCode(),
-                apartmentDto.getHouseNumber(),
-                apartmentDto.getApartmentNumber(),
-                apartmentDto.getCity(),
-                apartmentDto.getCountry(),
-                apartmentDto.getDescription(),
-                apartmentDto.getRoomsDefinition()
-        );
+        Apartment apartment = apartment()
+                .withOwnerId(apartmentDto.getOwnerId())
+                .withStreet(apartmentDto.getStreet())
+                .withPostalCode(apartmentDto.getPostalCode())
+                .withHouseNumber(apartmentDto.getHouseNumber())
+                .withApartmentNumber(apartmentDto.getApartmentNumber())
+                .withCity(apartmentDto.getCity())
+                .withCountry(apartmentDto.getCountry())
+                .withDescription(apartmentDto.getDescription())
+                .withRoomsDefinition(apartmentDto.getRoomsDefinition())
+                .build();
 
         return apartmentRepository.save(apartment);
     }
