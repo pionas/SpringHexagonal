@@ -1,11 +1,6 @@
 package info.pionas.rental.application.apartment;
 
-import info.pionas.rental.domain.apartment.Apartment;
-import info.pionas.rental.domain.apartment.ApartmentFactory;
-import info.pionas.rental.domain.apartment.ApartmentRepository;
-import info.pionas.rental.domain.apartment.Booking;
-import info.pionas.rental.domain.apartment.BookingRepository;
-import info.pionas.rental.domain.apartment.Period;
+import info.pionas.rental.domain.apartment.*;
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +16,6 @@ public class ApartmentApplicationService {
     private final BookingRepository bookingRepository;
     private final EventChannel eventChannel;
 
-    @SuppressWarnings("checkstyle:ParameterNumber")
     public String add(
             String ownerId, String street, String postalCode, String houseNumber, String apartmentNumber,
             String city, String country, String description, Map<String, Double> roomsDefinition) {
