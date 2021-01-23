@@ -16,20 +16,17 @@ public class ApartmentApplicationService {
     private final BookingRepository bookingRepository;
     private final EventChannel eventChannel;
 
-    public String add(
-            String ownerId, String street, String postalCode, String houseNumber, String apartmentNumber,
-            String city, String country, String description, Map<String, Double> roomsDefinition) {
-
+    public String add(ApartmentDto apartmentDto) {
         Apartment apartment = new ApartmentFactory().create(
-                ownerId,
-                street,
-                postalCode,
-                houseNumber,
-                apartmentNumber,
-                city,
-                country,
-                description,
-                roomsDefinition
+                apartmentDto.getOwnerId(),
+                apartmentDto.getStreet(),
+                apartmentDto.getPostalCode(),
+                apartmentDto.getHouseNumber(),
+                apartmentDto.getApartmentNumber(),
+                apartmentDto.getCity(),
+                apartmentDto.getCountry(),
+                apartmentDto.getDescription(),
+                apartmentDto.getRoomsDefinition()
         );
 
         return apartmentRepository.save(apartment);

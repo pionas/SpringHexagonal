@@ -22,17 +22,7 @@ public class ApartmentRestController {
 
     @PostMapping
     public ResponseEntity<String> add(@RequestBody ApartmentDto apartmentDto) {
-        String apartmentId = apartmentApplicationService.add(
-                apartmentDto.getOwnerId(),
-                apartmentDto.getStreet(),
-                apartmentDto.getPostalCode(),
-                apartmentDto.getHouseNumber(),
-                apartmentDto.getApartmentNumber(),
-                apartmentDto.getCity(),
-                apartmentDto.getCountry(),
-                apartmentDto.getDescription(),
-                apartmentDto.getRoomsDefinition()
-        );
+        String apartmentId = apartmentApplicationService.add(apartmentDto);
         return ResponseEntity.created(URI.create("/apartment/" + apartmentId)).build();
     }
 
