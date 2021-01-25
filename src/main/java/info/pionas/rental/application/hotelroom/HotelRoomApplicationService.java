@@ -11,14 +11,11 @@ import info.pionas.rental.domain.hotelroom.HotelRoomEventsPublisher;
 import info.pionas.rental.domain.hotelroom.HotelRoomFactory;
 import info.pionas.rental.domain.hotelroom.HotelRoomRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-
-@Service
 @RequiredArgsConstructor
 public class HotelRoomApplicationService {
 
@@ -27,7 +24,7 @@ public class HotelRoomApplicationService {
     private final BookingRepository bookingRepository;
     private final HotelRoomEventsPublisher hotelRoomEventsPublisher;
 
-    public HotelRoomApplicationService(HotelRepository hotelRepository, HotelRoomRepository hotelRoomRepository, BookingRepository bookingRepository, EventChannel eventChannel) {
+    HotelRoomApplicationService(HotelRepository hotelRepository, HotelRoomRepository hotelRoomRepository, BookingRepository bookingRepository, EventChannel eventChannel) {
         this.hotelRepository = hotelRepository;
         this.hotelRoomRepository = hotelRoomRepository;
         this.bookingRepository = bookingRepository;
