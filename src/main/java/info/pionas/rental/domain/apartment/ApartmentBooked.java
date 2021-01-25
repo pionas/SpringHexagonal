@@ -29,8 +29,12 @@ public final class ApartmentBooked {
 
     static ApartmentBooked create(String apartmentId, String ownerId, String tenantId, Period period) {
         String eventId = new EventIdFactory().create();
+        return create(eventId, apartmentId, ownerId, tenantId, period);
+    }
+
+    @SuppressWarnings("checkstyle:ParameterNumber")
+    static ApartmentBooked create(String eventId, String apartmentId, String ownerId, String tenantId, Period period) {
         LocalDateTime eventCreationDateTime = LocalDateTime.now();
         return new ApartmentBooked(eventId, eventCreationDateTime, apartmentId, ownerId, tenantId, period);
     }
-
 }
