@@ -39,12 +39,6 @@ public class Apartment {
         this.description = description;
     }
 
-    public Booking book(String tenantId, Period period, EventChannel eventChannel) {
-        ApartmentBooked apartmentBooked = ApartmentBooked.create(id(), ownerId, tenantId, period);
-        eventChannel.publish(apartmentBooked);
-        return Booking.apartment(id(), tenantId, period);
-    }
-
     public Booking book(String tenantId, Period period, ApartmentEventsPublisher publisher) {
         publisher.publishApartmentBooked(id(), ownerId, tenantId, period);
         return Booking.apartment(id(), tenantId, period);

@@ -1,8 +1,6 @@
 package info.pionas.rental.domain.apartment;
 
 import com.google.common.collect.ImmutableMap;
-import info.pionas.rental.domain.eventchannel.EventChannel;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.BDDMockito;
@@ -12,6 +10,8 @@ import java.time.LocalDate;
 import java.util.Map;
 
 import static info.pionas.rental.domain.apartment.Apartment.Builder.apartment;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 
 class ApartmentTest {
     private static final String OWNER_ID = "1234";
@@ -29,7 +29,7 @@ class ApartmentTest {
     private static final LocalDate END = LocalDate.of(2020, 3, 6);
     private static final Period PERIOD = new Period(START, END);
 
-    private final EventChannel eventChannel = Mockito.mock(EventChannel.class);
+    private final ApartmentEventsPublisher apartmentEventsPublisher = Mockito.mock(ApartmentEventsPublisher.class);
 
     @Test
     void shouldCreateApartmentWithAllRequiredFields() {
@@ -46,7 +46,7 @@ class ApartmentTest {
     void shouldCreateBookingOnceBooked() {
         Apartment apartment = createApartment();
 
-        Booking actual = apartment.book(TENANT_ID, PERIOD, eventChannel);
+        Booking actual = apartment.book(TENANT_ID, PERIOD, apartmentEventsPublisher);
 
         BookingAssertion.assertThat(actual)
                 .isApartment()
@@ -56,17 +56,11 @@ class ApartmentTest {
 
     @Test
     void shouldPublishApartmentBooked() {
-        ArgumentCaptor<ApartmentBooked> captor = ArgumentCaptor.forClass(ApartmentBooked.class);
         Apartment apartment = createApartment();
 
-        apartment.book(TENANT_ID, PERIOD, eventChannel);
+        apartment.book(TENANT_ID, PERIOD, apartmentEventsPublisher);
 
-        BDDMockito.then(eventChannel).should().publish(captor.capture());
-        ApartmentBooked actual = captor.getValue();
-        Assertions.assertThat(actual.getTenantId()).isEqualTo(TENANT_ID);
-        Assertions.assertThat(actual.getOwnerId()).isEqualTo(OWNER_ID);
-        Assertions.assertThat(actual.getPeriodStart()).isEqualTo(START);
-        Assertions.assertThat(actual.getPeriodEnd()).isEqualTo(END);
+        BDDMockito.then(apartmentEventsPublisher).should().publishApartmentBooked(any(), eq(OWNER_ID), eq(TENANT_ID), eq(new Period(START, END)));
     }
 
     private Apartment createApartment() {
