@@ -1,4 +1,4 @@
-package info.pionas.rental.domain.apartment;
+package info.pionas.rental.domain.booking;
 
 
 public enum RentalType {

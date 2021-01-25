@@ -1,7 +1,13 @@
 package info.pionas.rental.application.apartment;
 
 import com.google.common.collect.ImmutableMap;
-import info.pionas.rental.domain.apartment.*;
+import info.pionas.rental.domain.apartment.Apartment;
+import info.pionas.rental.domain.apartment.ApartmentAssertion;
+import info.pionas.rental.domain.apartment.ApartmentBooked;
+import info.pionas.rental.domain.apartment.ApartmentRepository;
+import info.pionas.rental.domain.booking.Booking;
+import info.pionas.rental.domain.booking.BookingAssertion;
+import info.pionas.rental.domain.booking.BookingRepository;
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

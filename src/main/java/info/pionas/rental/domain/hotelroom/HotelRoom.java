@@ -1,6 +1,6 @@
 package info.pionas.rental.domain.hotelroom;
 
-import info.pionas.rental.domain.apartment.Booking;
+import info.pionas.rental.domain.booking.Booking;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

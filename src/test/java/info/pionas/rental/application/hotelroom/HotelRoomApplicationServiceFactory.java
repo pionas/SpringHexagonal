@@ -1,6 +1,6 @@
 package info.pionas.rental.application.hotelroom;
 
-import info.pionas.rental.domain.apartment.BookingRepository;
+import info.pionas.rental.domain.booking.BookingRepository;
 import info.pionas.rental.domain.clock.Clock;
 import info.pionas.rental.domain.event.EventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;

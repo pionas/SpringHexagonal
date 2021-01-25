@@ -1,5 +1,6 @@
-package info.pionas.rental.domain.apartment;
+package info.pionas.rental.domain.booking;
 
+import info.pionas.rental.domain.apartment.Period;
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -9,7 +10,7 @@ import org.mockito.BDDMockito;
 import java.time.LocalDate;
 import java.util.List;
 
-import static info.pionas.rental.domain.apartment.BookingAssertion.assertThat;
+import static info.pionas.rental.domain.booking.BookingAssertion.assertThat;
 import static java.util.Arrays.asList;
 import static org.mockito.Mockito.mock;
 

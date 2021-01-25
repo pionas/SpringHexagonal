@@ -1,8 +1,8 @@
 package info.pionas.rental.application.booking;
 
-import info.pionas.rental.domain.apartment.Booking;
-import info.pionas.rental.domain.apartment.BookingAssertion;
-import info.pionas.rental.domain.apartment.BookingRepository;
+import info.pionas.rental.domain.booking.Booking;
+import info.pionas.rental.domain.booking.BookingAssertion;
+import info.pionas.rental.domain.booking.BookingRepository;
 import info.pionas.rental.infrastructure.persistence.jpa.booking.SpringJpaBookingTestRepository;
 import info.pionas.rental.infrastructure.rest.api.booking.BookingRestController;
 import org.junit.jupiter.api.AfterEach;

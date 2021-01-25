@@ -1,4 +1,4 @@
-package info.pionas.rental.domain.apartment;
+package info.pionas.rental.domain.booking;
 
 import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.Test;
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static info.pionas.rental.domain.apartment.RentalType.APARTMENT;
+import static info.pionas.rental.domain.booking.RentalType.APARTMENT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class BookingAcceptedTest {

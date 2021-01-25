@@ -1,9 +1,9 @@
 package info.pionas.rental.application.booking;
 
-import info.pionas.rental.domain.apartment.Booking;
-import info.pionas.rental.domain.apartment.BookingAccepted;
-import info.pionas.rental.domain.apartment.BookingAssertion;
-import info.pionas.rental.domain.apartment.BookingRepository;
+import info.pionas.rental.domain.booking.Booking;
+import info.pionas.rental.domain.booking.BookingAccepted;
+import info.pionas.rental.domain.booking.BookingAssertion;
+import info.pionas.rental.domain.booking.BookingRepository;
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

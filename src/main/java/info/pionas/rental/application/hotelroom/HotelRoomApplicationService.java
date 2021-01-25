@@ -1,7 +1,7 @@
 package info.pionas.rental.application.hotelroom;
 
-import info.pionas.rental.domain.apartment.Booking;
-import info.pionas.rental.domain.apartment.BookingRepository;
+import info.pionas.rental.domain.booking.Booking;
+import info.pionas.rental.domain.booking.BookingRepository;
 import info.pionas.rental.domain.hotel.HotelRepository;
 import info.pionas.rental.domain.hotelroom.HotelRoom;
 import info.pionas.rental.domain.hotelroom.HotelRoomEventsPublisher;

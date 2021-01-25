@@ -1,5 +1,6 @@
-package info.pionas.rental.domain.apartment;
+package info.pionas.rental.domain.booking;
 
+import info.pionas.rental.domain.apartment.Period;
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,6 @@
 package info.pionas.rental.infrastructure.persistence.jpa.booking;
 
-import info.pionas.rental.domain.apartment.Booking;
+import info.pionas.rental.domain.booking.Booking;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Tag;
@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-import static info.pionas.rental.domain.apartment.BookingAssertion.assertThat;
+import static info.pionas.rental.domain.booking.BookingAssertion.assertThat;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

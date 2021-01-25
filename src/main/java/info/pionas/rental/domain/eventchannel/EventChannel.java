@@ -1,7 +1,7 @@
 package info.pionas.rental.domain.eventchannel;
 
 import info.pionas.rental.domain.apartment.ApartmentBooked;
-import info.pionas.rental.domain.apartment.BookingAccepted;
+import info.pionas.rental.domain.booking.BookingAccepted;
 import info.pionas.rental.domain.hotelroom.HotelRoomBooked;
 
 

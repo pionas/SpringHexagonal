@@ -1,7 +1,7 @@
 package info.pionas.rental.application.booking;
 
-import info.pionas.rental.domain.apartment.Booking;
-import info.pionas.rental.domain.apartment.BookingRepository;
+import info.pionas.rental.domain.booking.Booking;
+import info.pionas.rental.domain.booking.BookingRepository;
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;

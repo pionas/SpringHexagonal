@@ -1,8 +1,9 @@
 package info.pionas.rental.domain.apartment;
 
 import com.google.common.collect.ImmutableMap;
+import info.pionas.rental.domain.booking.Booking;
+import info.pionas.rental.domain.booking.BookingAssertion;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 

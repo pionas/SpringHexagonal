@@ -1,6 +1,11 @@
 package info.pionas.rental.application.apartment;
 
-import info.pionas.rental.domain.apartment.*;
+import info.pionas.rental.domain.apartment.Apartment;
+import info.pionas.rental.domain.apartment.ApartmentEventsPublisher;
+import info.pionas.rental.domain.apartment.ApartmentRepository;
+import info.pionas.rental.domain.apartment.Period;
+import info.pionas.rental.domain.booking.Booking;
+import info.pionas.rental.domain.booking.BookingRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
