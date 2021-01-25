@@ -1,6 +1,5 @@
 package info.pionas.rental.domain.apartment;
 
-import info.pionas.rental.domain.event.EventIdFactory;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -25,11 +24,6 @@ public final class ApartmentBooked {
         this.tenantId = tenantId;
         this.periodStart = period.getStart();
         this.periodEnd = period.getEnd();
-    }
-
-    static ApartmentBooked create(String apartmentId, String ownerId, String tenantId, Period period) {
-        String eventId = new EventIdFactory().create();
-        return create(eventId, apartmentId, ownerId, tenantId, period);
     }
 
     @SuppressWarnings("checkstyle:ParameterNumber")
