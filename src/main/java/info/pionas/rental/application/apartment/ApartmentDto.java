@@ -1,4 +1,4 @@
-package info.pionas.rental.infrastructure.rest.api.apartment;
+package info.pionas.rental.application.apartment;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

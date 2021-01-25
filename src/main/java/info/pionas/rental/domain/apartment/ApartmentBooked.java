@@ -4,7 +4,6 @@ import lombok.Getter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Getter
 public final class ApartmentBooked {
@@ -27,10 +26,9 @@ public final class ApartmentBooked {
         this.periodEnd = period.getEnd();
     }
 
-    static ApartmentBooked create(String apartmentId, String ownerId, String tenantId, Period period) {
-        String eventId = UUID.randomUUID().toString();
+    @SuppressWarnings("checkstyle:ParameterNumber")
+    static ApartmentBooked create(String eventId, String apartmentId, String ownerId, String tenantId, Period period) {
         LocalDateTime eventCreationDateTime = LocalDateTime.now();
         return new ApartmentBooked(eventId, eventCreationDateTime, apartmentId, ownerId, tenantId, period);
     }
-
 }

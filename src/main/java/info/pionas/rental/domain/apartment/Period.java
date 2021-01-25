@@ -1,9 +1,9 @@
 package info.pionas.rental.domain.apartment;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import javax.persistence.Embeddable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Getter
-@Embeddable
+@EqualsAndHashCode
 public class Period {
 
     private final LocalDate start;

@@ -1,8 +1,8 @@
 package info.pionas.rental.infrastructure.rest.api.hotelroom;
 
 import com.google.common.collect.ImmutableMap;
+import info.pionas.rental.application.hotel.HotelDto;
 import info.pionas.rental.infrastructure.json.JsonFactory;
-import info.pionas.rental.infrastructure.rest.api.hotel.HotelDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;

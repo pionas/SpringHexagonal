@@ -3,10 +3,8 @@ package info.pionas.rental.domain.hotelroom;
 import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.domain.apartment.Booking;
 import info.pionas.rental.domain.apartment.BookingAssertion;
-import info.pionas.rental.domain.eventchannel.EventChannel;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 
 import java.time.LocalDate;
@@ -15,6 +13,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static java.util.Arrays.asList;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 
 class HotelRoomTest {
@@ -25,7 +24,7 @@ class HotelRoomTest {
     private static final String TENANT_ID = "325426";
     private static final List<LocalDate> DAYS = asList(LocalDate.now(), LocalDate.now().plusDays(1));
     private final HotelRoomFactory factory = new HotelRoomFactory();
-    private final EventChannel eventChannel = mock(EventChannel.class);
+    private final HotelRoomEventsPublisher hotelRoomEventsPublisher = mock(HotelRoomEventsPublisher.class);
 
     @Test
     void shouldCreateHotelRoomWithAllRequiredInformation() {
@@ -42,7 +41,7 @@ class HotelRoomTest {
     void shouldCreateBookingOnceBooked() {
         HotelRoom hotelRoom = createHotelRoom();
 
-        Booking actual = hotelRoom.book(TENANT_ID, DAYS, eventChannel);
+        Booking actual = hotelRoom.book(TENANT_ID, DAYS, hotelRoomEventsPublisher);
 
         BookingAssertion.assertThat(actual)
                 .isHotelRoom()
@@ -52,16 +51,11 @@ class HotelRoomTest {
 
     @Test
     void shouldPublishHotelRoomBooked() {
-        ArgumentCaptor<HotelRoomBooked> captor = ArgumentCaptor.forClass(HotelRoomBooked.class);
         HotelRoom hotelRoom = createHotelRoom();
 
-        hotelRoom.book(TENANT_ID, DAYS, eventChannel);
+        hotelRoom.book(TENANT_ID, DAYS, hotelRoomEventsPublisher);
 
-        BDDMockito.then(eventChannel).should().publish(captor.capture());
-        HotelRoomBooked actual = captor.getValue();
-        Assertions.assertThat(actual.getTenantId()).isEqualTo(TENANT_ID);
-        Assertions.assertThat(actual.getHotelId()).isEqualTo(HOTEL_ID);
-        Assertions.assertThat(actual.getDays()).isEqualTo(DAYS);
+        BDDMockito.then(hotelRoomEventsPublisher).should().publishHotelRoomBooked(ArgumentMatchers.any(), eq(HOTEL_ID), eq(TENANT_ID), eq(DAYS));
     }
 
     private HotelRoom createHotelRoom() {

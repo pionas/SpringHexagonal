@@ -8,8 +8,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.regex.Pattern;
 
+import static info.pionas.rental.domain.apartment.Apartment.Builder.apartment;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -35,14 +39,14 @@ class ApartmentApplicationServiceTest {
     private final ApartmentRepository apartmentRepository = mock(ApartmentRepository.class);
     private final EventChannel eventChannel = mock(EventChannel.class);
     private final BookingRepository bookingRepository = mock(BookingRepository.class);
-    private final ApartmentApplicationService service = new ApartmentApplicationService(apartmentRepository, bookingRepository, eventChannel);
-    private final ApartmentFactory apartmentFactory = new ApartmentFactory();
+    private final ApartmentApplicationService service = new ApartmentApplicationServiceFactory().apartmentApplicationService(apartmentRepository, bookingRepository, eventChannel);
 
     @Test
     void shouldAddNewApartment() {
         ArgumentCaptor<Apartment> captor = ArgumentCaptor.forClass(Apartment.class);
 
-        service.add(OWNER_ID, STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY, DESCRIPTION, ROOMS_DEFINITION);
+        ApartmentDto apartmentDto = givenApartmentDto();
+        service.add(apartmentDto);
 
         then(apartmentRepository).should().save(captor.capture());
         ApartmentAssertion.assertThat(captor.getValue())
@@ -56,7 +60,8 @@ class ApartmentApplicationServiceTest {
     void shouldReturnIdOfNewApartment() {
         given(apartmentRepository.save(any())).willReturn(APARTMENT_ID);
 
-        String actual = service.add(OWNER_ID, STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY, DESCRIPTION, ROOMS_DEFINITION);
+        ApartmentDto apartmentDto = givenApartmentDto();
+        String actual = service.add(apartmentDto);
 
         Assertions.assertThat(actual).isEqualTo(APARTMENT_ID);
     }
@@ -78,6 +83,26 @@ class ApartmentApplicationServiceTest {
     @Test
     void shouldReturnIdOfBooking() {
         givenApartment();
+        LocalDateTime beforeNow = LocalDateTime.now().minusNanos(1);
+        ArgumentCaptor<ApartmentBooked> captor = ArgumentCaptor.forClass(ApartmentBooked.class);
+
+        service.book(APARTMENT_ID, TENANT_ID, START, END);
+
+        then(eventChannel).should().publish(captor.capture());
+        ApartmentBooked actual = captor.getValue();
+        assertThat(actual.getEventId()).matches(Pattern.compile("[0-9a-z\\-]{36}"));
+        assertThat(actual.getEventCreationDateTime())
+                .isAfter(beforeNow)
+                .isBefore(LocalDateTime.now().plusNanos(1));
+        assertThat(actual.getOwnerId()).isEqualTo(OWNER_ID);
+        assertThat(actual.getTenantId()).isEqualTo(TENANT_ID);
+        assertThat(actual.getPeriodStart()).isEqualTo(START);
+        assertThat(actual.getPeriodEnd()).isEqualTo(END);
+    }
+
+    @Test
+    void shouldPublishAPartmentBookedEvent() {
+        givenApartment();
         given(bookingRepository.save(any())).willReturn(BOOKING_ID);
 
         String actual = service.book(APARTMENT_ID, TENANT_ID, START, END);
@@ -86,7 +111,22 @@ class ApartmentApplicationServiceTest {
     }
 
     private void givenApartment() {
-        Apartment apartment = apartmentFactory.create(OWNER_ID, STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY, DESCRIPTION, ROOMS_DEFINITION);
+        Apartment apartment = apartment()
+                .withOwnerId(OWNER_ID)
+                .withStreet(STREET)
+                .withPostalCode(POSTAL_CODE)
+                .withHouseNumber(HOUSE_NUMBER)
+                .withApartmentNumber(APARTMENT_NUMBER)
+                .withCity(CITY)
+                .withCountry(COUNTRY)
+                .withDescription(DESCRIPTION)
+                .withRoomsDefinition(ROOMS_DEFINITION)
+                .build();
         given(apartmentRepository.findById(APARTMENT_ID)).willReturn(apartment);
     }
+
+    private ApartmentDto givenApartmentDto() {
+        return new ApartmentDto(OWNER_ID, STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY, DESCRIPTION, ROOMS_DEFINITION);
+    }
+
 }

@@ -1,7 +1,6 @@
 package info.pionas.rental.domain.hotelroom;
 
 import info.pionas.rental.domain.apartment.Booking;
-import info.pionas.rental.domain.eventchannel.EventChannel;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,9 +34,8 @@ public class HotelRoom {
         this.description = description;
     }
 
-    public Booking book(String tenantId, List<LocalDate> days, EventChannel eventChannel) {
-        HotelRoomBooked hotelRoomBooked = HotelRoomBooked.create(id(), hotelId, tenantId, days);
-        eventChannel.publish(hotelRoomBooked);
+    public Booking book(String tenantId, List<LocalDate> days, HotelRoomEventsPublisher hotelRoomEventsPublisher) {
+        hotelRoomEventsPublisher.publishHotelRoomBooked(id(), hotelId, tenantId, days);
         return Booking.hotelRoom(id(), tenantId, days);
     }
 

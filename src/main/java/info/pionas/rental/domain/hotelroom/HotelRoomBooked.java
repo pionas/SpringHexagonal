@@ -1,15 +1,15 @@
 package info.pionas.rental.domain.hotelroom;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @Getter
 public class HotelRoomBooked {
 
@@ -20,9 +20,4 @@ public class HotelRoomBooked {
     private final String tenantId;
     private final List<LocalDate> days;
 
-    static HotelRoomBooked create(String hotelRoomId, String hotelId, String tenantId, List<LocalDate> days) {
-        String eventId = UUID.randomUUID().toString();
-        LocalDateTime eventCreationDateTime = LocalDateTime.now();
-        return new HotelRoomBooked(eventId, eventCreationDateTime, hotelRoomId, hotelId, tenantId, days);
-    }
 }

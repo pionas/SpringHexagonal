@@ -1,6 +1,7 @@
 package info.pionas.rental.infrastructure.rest.api.apartment;
 
 import info.pionas.rental.application.apartment.ApartmentApplicationService;
+import info.pionas.rental.application.apartment.ApartmentDto;
 import info.pionas.rental.query.apartment.ApartmentDetails;
 import info.pionas.rental.query.apartment.ApartmentReadModel;
 import info.pionas.rental.query.apartment.QueryApartmentRepository;
@@ -21,17 +22,7 @@ public class ApartmentRestController {
 
     @PostMapping
     public ResponseEntity<String> add(@RequestBody ApartmentDto apartmentDto) {
-        String apartmentId = apartmentApplicationService.add(
-                apartmentDto.getOwnerId(),
-                apartmentDto.getStreet(),
-                apartmentDto.getPostalCode(),
-                apartmentDto.getHouseNumber(),
-                apartmentDto.getApartmentNumber(),
-                apartmentDto.getCity(),
-                apartmentDto.getCountry(),
-                apartmentDto.getDescription(),
-                apartmentDto.getRoomsDefinition()
-        );
+        String apartmentId = apartmentApplicationService.add(apartmentDto);
         return ResponseEntity.created(URI.create("/apartment/" + apartmentId)).build();
     }
 
