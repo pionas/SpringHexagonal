@@ -1,6 +1,7 @@
 package info.pionas.rental.application.apartment;
 
 import info.pionas.rental.domain.apartment.*;
+import info.pionas.rental.domain.event.EventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,8 @@ public class ApartmentApplicationService {
     public String book(String apartmentId, String tenantId, LocalDate start, LocalDate end) {
         Apartment apartment = apartmentRepository.findById(apartmentId);
         Period period = new Period(start, end);
-        Booking booking = apartment.book(tenantId, period, eventChannel);
+        ApartmentEventsPublisher publisher = new ApartmentEventsPublisher(new EventIdFactory(), eventChannel);
+        Booking booking = apartment.book(tenantId, period, publisher);
         return bookingRepository.save(booking);
     }
 }
