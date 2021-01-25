@@ -2,9 +2,6 @@ package info.pionas.rental.application.hotelroom;
 
 import info.pionas.rental.domain.apartment.Booking;
 import info.pionas.rental.domain.apartment.BookingRepository;
-import info.pionas.rental.domain.clock.Clock;
-import info.pionas.rental.domain.event.EventIdFactory;
-import info.pionas.rental.domain.eventchannel.EventChannel;
 import info.pionas.rental.domain.hotel.HotelRepository;
 import info.pionas.rental.domain.hotelroom.HotelRoom;
 import info.pionas.rental.domain.hotelroom.HotelRoomEventsPublisher;
@@ -23,13 +20,6 @@ public class HotelRoomApplicationService {
     private final HotelRoomRepository hotelRoomRepository;
     private final BookingRepository bookingRepository;
     private final HotelRoomEventsPublisher hotelRoomEventsPublisher;
-
-    HotelRoomApplicationService(HotelRepository hotelRepository, HotelRoomRepository hotelRoomRepository, BookingRepository bookingRepository, EventChannel eventChannel) {
-        this.hotelRepository = hotelRepository;
-        this.hotelRoomRepository = hotelRoomRepository;
-        this.bookingRepository = bookingRepository;
-        this.hotelRoomEventsPublisher = new HotelRoomEventsPublisher(new EventIdFactory(), new Clock(), eventChannel);
-    }
 
     public String add(String hotelId, int number, Map<String, Double> spacesDefinition, String description) {
         hotelRepository.findById(hotelId);
