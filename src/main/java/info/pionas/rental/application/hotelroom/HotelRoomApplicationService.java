@@ -2,9 +2,12 @@ package info.pionas.rental.application.hotelroom;
 
 import info.pionas.rental.domain.apartment.Booking;
 import info.pionas.rental.domain.apartment.BookingRepository;
+import info.pionas.rental.domain.clock.Clock;
+import info.pionas.rental.domain.event.EventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import info.pionas.rental.domain.hotel.HotelRepository;
 import info.pionas.rental.domain.hotelroom.HotelRoom;
+import info.pionas.rental.domain.hotelroom.HotelRoomEventsPublisher;
 import info.pionas.rental.domain.hotelroom.HotelRoomFactory;
 import info.pionas.rental.domain.hotelroom.HotelRoomRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +25,14 @@ public class HotelRoomApplicationService {
     private final HotelRepository hotelRepository;
     private final HotelRoomRepository hotelRoomRepository;
     private final BookingRepository bookingRepository;
-    private final EventChannel eventChannel;
+    private final HotelRoomEventsPublisher hotelRoomEventsPublisher;
+
+    public HotelRoomApplicationService(HotelRepository hotelRepository, HotelRoomRepository hotelRoomRepository, BookingRepository bookingRepository, EventChannel eventChannel) {
+        this.hotelRepository = hotelRepository;
+        this.hotelRoomRepository = hotelRoomRepository;
+        this.bookingRepository = bookingRepository;
+        this.hotelRoomEventsPublisher = new HotelRoomEventsPublisher(new EventIdFactory(), new Clock(), eventChannel);
+    }
 
     public String add(String hotelId, int number, Map<String, Double> spacesDefinition, String description) {
         hotelRepository.findById(hotelId);
@@ -32,7 +42,7 @@ public class HotelRoomApplicationService {
 
     public String book(String id, String tenantId, List<LocalDate> days) {
         HotelRoom hotelRoom = hotelRoomRepository.findById(id);
-        Booking booking = hotelRoom.book(tenantId, days, eventChannel);
+        Booking booking = hotelRoom.book(tenantId, days, hotelRoomEventsPublisher);
         return bookingRepository.save(booking);
     }
 }
