@@ -1,10 +1,10 @@
 package info.pionas.rental.domain.apartment;
 
+import info.pionas.rental.domain.event.EventIdFactory;
 import lombok.Getter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Getter
 public final class ApartmentBooked {
@@ -28,7 +28,7 @@ public final class ApartmentBooked {
     }
 
     static ApartmentBooked create(String apartmentId, String ownerId, String tenantId, Period period) {
-        String eventId = UUID.randomUUID().toString();
+        String eventId = new EventIdFactory().create();
         LocalDateTime eventCreationDateTime = LocalDateTime.now();
         return new ApartmentBooked(eventId, eventCreationDateTime, apartmentId, ownerId, tenantId, period);
     }
