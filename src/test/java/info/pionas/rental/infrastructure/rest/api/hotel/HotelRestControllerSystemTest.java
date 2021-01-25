@@ -25,13 +25,6 @@ class HotelRestControllerSystemTest {
     private MockMvc mockMvc;
 
     @Test
-    void shouldReturnNothingWhenThereWasNoHotelCreated() throws Exception {
-        mockMvc.perform(get("/hotel"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.[*]", hasSize(0)));
-    }
-
-    @Test
     void shouldReturnExistingHotels() throws Exception {
         HotelDto hotel1 = new HotelDto("Big Hotel", "Florianska", "12-345", "13", "Cracow", "Poland");
         HotelDto hotel2 = new HotelDto("Bigger Hotel", "Florianska", "12-345", "42", "Cracow", "Poland");
@@ -41,7 +34,8 @@ class HotelRestControllerSystemTest {
         mockMvc.perform(get("/hotel"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isNotEmpty())
-                .andExpect(jsonPath("$").isArray());
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.[*]", hasSize(2)));
     }
 
     private void addHotel(HotelDto hotelDto) throws Exception {
