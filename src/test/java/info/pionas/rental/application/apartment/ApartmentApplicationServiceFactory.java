@@ -9,9 +9,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ApartmentApplicationServiceFactory {
+class ApartmentApplicationServiceFactory {
     @Bean
-    public ApartmentApplicationService create(ApartmentRepository apartmentRepository, BookingRepository bookingRepository, EventChannel eventChannel) {
+    ApartmentApplicationService apartmentApplicationService(ApartmentRepository apartmentRepository, BookingRepository bookingRepository, EventChannel eventChannel) {
         ApartmentEventsPublisher publisher = new ApartmentEventsPublisher(new EventIdFactory(), eventChannel);
 
         return new ApartmentApplicationService(apartmentRepository, bookingRepository, publisher);
