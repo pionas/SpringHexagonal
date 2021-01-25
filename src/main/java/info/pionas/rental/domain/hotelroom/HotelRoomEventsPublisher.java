@@ -14,8 +14,8 @@ public class HotelRoomEventsPublisher {
     private final Clock clock;
     private final EventChannel eventChannel;
 
-    public void publishHotelRoomBooked(String hotelRoomId, String hotelId, String tenantId, List<LocalDate> days) {
-        HotelRoomBooked hotelRoomBooked = HotelRoomBooked.create(hotelRoomId, hotelId, tenantId, days);
+    void publishHotelRoomBooked(String hotelRoomId, String hotelId, String tenantId, List<LocalDate> days) {
+        HotelRoomBooked hotelRoomBooked = new HotelRoomBooked(eventIdFactory.create(), clock.now(), hotelRoomId, hotelId, tenantId, days);
         eventChannel.publish(hotelRoomBooked);
     }
 }
