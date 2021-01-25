@@ -119,8 +119,7 @@ public class Apartment {
         }
 
         private Address address() {
-            Address address = new Address(street, postalCode, houseNumber, apartmentNumber, city, country);
-            return address;
+            return new Address(street, postalCode, houseNumber, apartmentNumber, city, country);
         }
 
         private List<Room> rooms() {
