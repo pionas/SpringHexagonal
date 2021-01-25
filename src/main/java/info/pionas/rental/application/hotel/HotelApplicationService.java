@@ -3,11 +3,9 @@ package info.pionas.rental.application.hotel;
 import info.pionas.rental.domain.hotel.Hotel;
 import info.pionas.rental.domain.hotel.HotelRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import static info.pionas.rental.domain.hotel.Hotel.Builder.hotel;
 
-@Service
 @RequiredArgsConstructor
 public class HotelApplicationService {
 
