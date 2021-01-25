@@ -1,24 +1,18 @@
 package info.pionas.rental.application.apartment;
 
 import info.pionas.rental.domain.apartment.*;
-import info.pionas.rental.domain.event.EventIdFactory;
-import info.pionas.rental.domain.eventchannel.EventChannel;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 
 import static info.pionas.rental.domain.apartment.Apartment.Builder.apartment;
 
+@RequiredArgsConstructor
 public class ApartmentApplicationService {
 
     private final ApartmentRepository apartmentRepository;
     private final BookingRepository bookingRepository;
-    private final ApartmentEventsPublisher publisher;
-
-    ApartmentApplicationService(ApartmentRepository apartmentRepository, BookingRepository bookingRepository, EventChannel eventChannel) {
-        this.apartmentRepository = apartmentRepository;
-        this.bookingRepository = bookingRepository;
-        this.publisher = new ApartmentEventsPublisher(new EventIdFactory(), eventChannel);
-    }
+    private final ApartmentEventsPublisher apartmentEventsPublisher;
 
     public String add(ApartmentDto apartmentDto) {
         Apartment apartment = apartment()
@@ -39,7 +33,7 @@ public class ApartmentApplicationService {
     public String book(String apartmentId, String tenantId, LocalDate start, LocalDate end) {
         Apartment apartment = apartmentRepository.findById(apartmentId);
         Period period = new Period(start, end);
-        Booking booking = apartment.book(tenantId, period, publisher);
+        Booking booking = apartment.book(tenantId, period, apartmentEventsPublisher);
         return bookingRepository.save(booking);
     }
 }
