@@ -27,42 +27,32 @@ public final class ApartmentBooked {
         private LocalDate periodStart;
         private LocalDate periodEnd;
 
-        public static ApartmentBooked.Builder apartmentBooked() {
-            return new ApartmentBooked.Builder();
+        public static Builder apartmentBooked() {
+            return new Builder();
         }
 
-        public ApartmentBooked.Builder withEventId(String eventId) {
+        public Builder withEventId(String eventId) {
             this.eventId = eventId;
             return this;
         }
 
-        public ApartmentBooked.Builder withEventCreationDateTime(LocalDateTime eventCreationDateTime) {
+        public Builder withEventCreationDateTime(LocalDateTime eventCreationDateTime) {
             this.eventCreationDateTime = eventCreationDateTime;
             return this;
         }
 
-        public ApartmentBooked.Builder withApartmentId(String apartmentId) {
+        public Builder withApartmentId(String apartmentId) {
             this.apartmentId = apartmentId;
             return this;
         }
 
-        public ApartmentBooked.Builder withOwnerId(String ownerId) {
+        public Builder withOwnerId(String ownerId) {
             this.ownerId = ownerId;
             return this;
         }
 
-        public ApartmentBooked.Builder withTenantId(String tenantId) {
+        public Builder withTenantId(String tenantId) {
             this.tenantId = tenantId;
-            return this;
-        }
-
-        public ApartmentBooked.Builder withPeriodStart(LocalDate periodStart) {
-            this.periodStart = periodStart;
-            return this;
-        }
-
-        public ApartmentBooked.Builder withPeriodEnd(LocalDate periodEnd) {
-            this.periodEnd = periodEnd;
             return this;
         }
 
