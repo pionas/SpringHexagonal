@@ -1,13 +1,16 @@
 package info.pionas.rental.domain.apartmentoffer;
 
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.Embeddable;
 import java.math.BigDecimal;
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
+@NoArgsConstructor
+@Embeddable
 class Money {
-    private final BigDecimal value;
+    private BigDecimal value;
 
     static Money of(BigDecimal price) {
         if (isHigherThanZero(price)) {

@@ -1,16 +1,28 @@
 package info.pionas.rental.domain.apartmentoffer;
 
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.UUID;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Entity
+@Table(name = "APARTMENT_OFFER")
 public class ApartmentOffer {
-    private final String apartmentId;
-    private final Money money;
-    private final ApartmentAvailability availability;
+    @Id
+    @GeneratedValue
+    private UUID id;
+    private String apartmentId;
+    @Embedded
+    private Money money;
+    @Embedded
+    private ApartmentAvailability availability;
 
     public static class Builder {
 
@@ -40,7 +52,7 @@ public class ApartmentOffer {
         }
 
         public ApartmentOffer build() {
-            return new ApartmentOffer(apartmentId, money(), availability());
+            return new ApartmentOffer(null, apartmentId, money(), availability());
         }
 
         private Money money() {

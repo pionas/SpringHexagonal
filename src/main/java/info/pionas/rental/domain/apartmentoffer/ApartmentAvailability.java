@@ -1,14 +1,17 @@
 package info.pionas.rental.domain.apartmentoffer;
 
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.Embeddable;
 import java.time.LocalDate;
 
-@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+@AllArgsConstructor
+@NoArgsConstructor
+@Embeddable
 class ApartmentAvailability {
-    private final LocalDate start;
-    private final LocalDate end;
+    private LocalDate start;
+    private LocalDate end;
 
     public static ApartmentAvailability of(LocalDate start, LocalDate end) {
         if (start.isAfter(end)) {
