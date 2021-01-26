@@ -3,7 +3,6 @@ package info.pionas.rental.infrastructure.rest.api.hotelroom;
 import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.application.hotel.HotelDto;
 import info.pionas.rental.infrastructure.json.JsonFactory;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Tag("SystemTest")
 class HotelRoomRestControllerSystemTest {
+    private static final String HOTEL_ID = "5678";
     private static final int ROOM_NUMBER_1 = 42;
     private static final ImmutableMap<String, Double> SPACES_DEFINITION_1 = ImmutableMap.of("Room1", 30.0);
     private static final String DESCRIPTION_1 = "This is very nice place";
@@ -32,27 +32,16 @@ class HotelRoomRestControllerSystemTest {
     private static final String DESCRIPTION_2 = "This is even better place";
 
     private final JsonFactory jsonFactory = new JsonFactory();
-    private String hotelId;
 
     @Autowired
     private MockMvc mockMvc;
-
-    @BeforeEach
-    void setUp() {
-        try {
-            HotelDto hotel1 = new HotelDto("Big Hotel", "Florianska", "12-345", "13", "Cracow", "Poland");
-            hotelId = addHotel(hotel1);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @Test
     void shouldReturnAllHotelRooms() throws Exception {
         save(givenHotelRoom1());
         save(givenHotelRoom2());
 
-        mockMvc.perform(get("/hotelroom/hotel/" + hotelId))
+        mockMvc.perform(get("/hotelroom/hotel/" + HOTEL_ID))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isNotEmpty())
                 .andExpect(jsonPath("$").isArray());
@@ -68,11 +57,11 @@ class HotelRoomRestControllerSystemTest {
     }
 
     private HotelRoomDto givenHotelRoom1() {
-        return new HotelRoomDto(hotelId, ROOM_NUMBER_1, SPACES_DEFINITION_1, DESCRIPTION_1);
+        return new HotelRoomDto(HOTEL_ID, ROOM_NUMBER_1, SPACES_DEFINITION_1, DESCRIPTION_1);
     }
 
     private HotelRoomDto givenHotelRoom2() {
-        return new HotelRoomDto(hotelId, ROOM_NUMBER_2, SPACES_DEFINITION_2, DESCRIPTION_2);
+        return new HotelRoomDto(HOTEL_ID, ROOM_NUMBER_2, SPACES_DEFINITION_2, DESCRIPTION_2);
     }
 
     private MvcResult save(HotelRoomDto hotelRoomDto) throws Exception {
