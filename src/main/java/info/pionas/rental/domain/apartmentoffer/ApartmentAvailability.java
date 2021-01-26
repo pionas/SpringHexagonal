@@ -9,4 +9,11 @@ import java.time.LocalDate;
 class ApartmentAvailability {
     private final LocalDate start;
     private final LocalDate end;
+
+    public static ApartmentAvailability of(LocalDate start, LocalDate end) {
+        if (start.isAfter(end)) {
+            throw new ApartmentAvailabilityException();
+        }
+        return new ApartmentAvailability(start, end);
+    }
 }

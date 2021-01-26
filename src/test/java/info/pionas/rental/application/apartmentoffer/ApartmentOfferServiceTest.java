@@ -2,10 +2,7 @@ package info.pionas.rental.application.apartmentoffer;
 
 import info.pionas.rental.domain.apartment.ApartmentNotFoundException;
 import info.pionas.rental.domain.apartment.ApartmentRepository;
-import info.pionas.rental.domain.apartmentoffer.ApartmentOffer;
-import info.pionas.rental.domain.apartmentoffer.ApartmentOfferAssertion;
-import info.pionas.rental.domain.apartmentoffer.ApartmentOfferRepository;
-import info.pionas.rental.domain.apartmentoffer.NotAllowedMoneyValueException;
+import info.pionas.rental.domain.apartmentoffer.*;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -61,6 +58,15 @@ class ApartmentOfferServiceTest {
             service.add(dto);
         });
         assertThat(actual).hasMessage("Price -13 is lower than zero");
+    }
+    @Test
+    void shouldRecognizeThanSartIsAfterEnd() {
+        givenExistingApartment();
+        ApartmentOfferDto dto = new ApartmentOfferDto(APARTMENT_ID, PRICE, END, START);
+        ApartmentAvailabilityException actual = assertThrows(ApartmentAvailabilityException.class, () -> {
+            service.add(dto);
+        });
+        assertThat(actual).hasMessage("Start date of availability is after end date");
     }
 
     private void givenExistingApartment() {

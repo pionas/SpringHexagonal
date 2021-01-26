@@ -48,7 +48,7 @@ public class ApartmentOffer {
         }
 
         private ApartmentAvailability availability() {
-            return new ApartmentAvailability(start, end);
+            return ApartmentAvailability.of(start, end);
         }
 
     }
