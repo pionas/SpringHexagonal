@@ -12,7 +12,7 @@ public class ApartmentEventsPublisher {
     private final EventChannel eventChannel;
 
     public void publishApartmentBooked(String apartmentId, String ownerId, String tenantId, Period period) {
-        ApartmentBooked apartmentBooked = ApartmentBooked.create(eventIdFactory.create(), clock.now(), apartmentId, ownerId, tenantId, period);
+        ApartmentBooked apartmentBooked = new ApartmentBooked(eventIdFactory.create(), clock.now(), apartmentId, ownerId, tenantId, period.getStart(), period.getEnd());
         eventChannel.publish(apartmentBooked);
     }
 }
