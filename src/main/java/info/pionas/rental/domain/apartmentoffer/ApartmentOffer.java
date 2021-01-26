@@ -44,7 +44,7 @@ public class ApartmentOffer {
         }
 
         private Money money() {
-            return new Money(price);
+            return Money.of(price);
         }
 
         private ApartmentAvailability availability() {
