@@ -3,6 +3,7 @@ package info.pionas.rental.application.apartment;
 import info.pionas.rental.domain.apartment.ApartmentEventsPublisher;
 import info.pionas.rental.domain.apartment.ApartmentRepository;
 import info.pionas.rental.domain.booking.BookingRepository;
+import info.pionas.rental.domain.clock.Clock;
 import info.pionas.rental.domain.event.EventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 class ApartmentApplicationServiceFactory {
     @Bean
     ApartmentApplicationService apartmentApplicationService(ApartmentRepository apartmentRepository, BookingRepository bookingRepository, EventChannel eventChannel) {
-        ApartmentEventsPublisher publisher = new ApartmentEventsPublisher(new EventIdFactory(), eventChannel);
+        ApartmentEventsPublisher publisher = new ApartmentEventsPublisher(new EventIdFactory(), new Clock(), eventChannel);
 
         return new ApartmentApplicationService(apartmentRepository, bookingRepository, publisher);
     }

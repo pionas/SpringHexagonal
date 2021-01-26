@@ -1,5 +1,6 @@
 package info.pionas.rental.domain.apartment;
 
+import info.pionas.rental.domain.clock.Clock;
 import info.pionas.rental.domain.event.EventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,7 @@ import static org.mockito.Mockito.mock;
 
 class ApartmentEventsPublisherTest {
     private EventChannel eventChannel = mock(EventChannel.class);
-    private final ApartmentEventsPublisher publisher = new ApartmentEventsPublisher(new EventIdFactory(), eventChannel);
+    private final ApartmentEventsPublisher publisher = new ApartmentEventsPublisher(new EventIdFactory(), new Clock(), eventChannel);
 
     @Test
     void shouldCreateApartmentBooked() {

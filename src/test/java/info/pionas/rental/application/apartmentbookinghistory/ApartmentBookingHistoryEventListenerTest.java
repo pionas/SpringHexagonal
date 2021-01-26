@@ -1,7 +1,6 @@
 package info.pionas.rental.application.apartmentbookinghistory;
 
 import info.pionas.rental.domain.apartment.ApartmentBooked;
-import info.pionas.rental.domain.apartment.ApartmentBookedTestFactory;
 import info.pionas.rental.domain.apartment.Period;
 import info.pionas.rental.domain.apartmentbookinghistory.*;
 import org.junit.jupiter.api.Test;
@@ -11,6 +10,7 @@ import org.mockito.BDDMockito;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import static info.pionas.rental.domain.apartment.ApartmentBooked.Builder.apartmentBooked;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
@@ -79,6 +79,12 @@ class ApartmentBookingHistoryEventListenerTest {
     }
 
     private ApartmentBooked givenApartmentBooked() {
-        return ApartmentBookedTestFactory.create("232132", APARTMENT_ID, OWNER_ID, TENANT_ID, PERIOD);
+        return apartmentBooked()
+                .withEventId("232132")
+                .withApartmentId(APARTMENT_ID)
+                .withOwnerId(OWNER_ID)
+                .withTenantId(TENANT_ID)
+                .withPeriod(PERIOD)
+                .build();
     }
 }
