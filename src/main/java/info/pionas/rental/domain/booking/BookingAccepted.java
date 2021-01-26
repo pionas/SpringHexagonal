@@ -1,6 +1,5 @@
 package info.pionas.rental.domain.booking;
 
-import info.pionas.rental.domain.event.EventIdFactory;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -18,12 +17,6 @@ public class BookingAccepted {
     private final String rentalPlaceId;
     private final String tenantId;
     private final List<LocalDate> days;
-
-    static BookingAccepted create(RentalType rentalType, String rentalPlaceId, String tenantId, List<LocalDate> days) {
-        String eventId = new EventIdFactory().create();
-        LocalDateTime eventCreationDateTime = LocalDateTime.now();
-        return new BookingAccepted(eventId, eventCreationDateTime, rentalType.name(), rentalPlaceId, tenantId, days);
-    }
 
     public static class Builder {
         private String eventId;
