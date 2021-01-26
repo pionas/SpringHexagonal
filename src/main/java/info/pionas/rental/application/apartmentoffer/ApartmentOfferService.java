@@ -18,7 +18,7 @@ class ApartmentOfferService {
 
     void add(String apartmentId, BigDecimal price, LocalDate start, LocalDate end) {
         if (!apartmentRepository.existById(apartmentId)) {
-            throw new ApartmentNotFoundException("Apartment with id " + apartmentId + " does not exist");
+            throw new ApartmentNotFoundException(apartmentId);
         }
         ApartmentOffer offer = apartmentOffer()
                 .withApartmentId(apartmentId)
