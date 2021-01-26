@@ -1,13 +1,13 @@
 package info.pionas.rental.domain.apartmentoffer;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @RequiredArgsConstructor
-public
-class ApartmentOffer {
+public class ApartmentOffer {
     private final String apartmentId;
     private final Money money;
     private final ApartmentAvailability availability;
