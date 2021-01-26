@@ -166,6 +166,7 @@ class QueryApartmentRepositoryIntegrationTest {
                 .hasAddressEqualsTo(STREET_1, POSTAL_CODE_1, HOUSE_NUMBER_1, APARTMENT_NUMBER_1, CITY_1, COUNTRY_1)
                 .hasRoomsEqualsTo(ROOMS_DEFINITION_1);
         ApartmentBookingHistoryReadModelAssertion.assertThat(actual.getBookingHistory())
+                .hasApartmentIdEqualsTo(apartmentId1)
                 .hasOneApartmentBooking()
                 .hasApartmentBookingFor(BOOKING_DATE_TIME_1, OWNER_ID_1, TENANT_ID_1, BOOKING_START_1, BOOKING_END_1);
     }
