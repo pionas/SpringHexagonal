@@ -18,6 +18,6 @@ class Money {
     }
 
     private static boolean isHigherThanZero(BigDecimal price) {
-        return price.compareTo(BigDecimal.ZERO) > 0;
+        return price.compareTo(BigDecimal.ZERO) >= 0;
     }
 }
