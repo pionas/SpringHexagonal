@@ -13,8 +13,9 @@ public class JpaApartmentOfferRepository implements ApartmentOfferRepository {
     private final SpringJpaApartmentOfferRepository springJpaApartmentOfferRepository;
 
     @Override
-    public void save(ApartmentOffer apartmentOffer) {
+    public String save(ApartmentOffer apartmentOffer) {
 
+        return null;
     }
 
     @Override
