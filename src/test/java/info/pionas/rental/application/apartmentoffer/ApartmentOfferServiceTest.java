@@ -59,6 +59,22 @@ class ApartmentOfferServiceTest {
         });
         assertThat(actual).hasMessage("Price -13 is lower than zero");
     }
+
+    @Test
+    void shouldCreateApartmenOfferWithZeroPrice() {
+        ArgumentCaptor<ApartmentOffer> captor = ArgumentCaptor.forClass(ApartmentOffer.class);
+        givenExistingApartment();
+
+        service.add(new ApartmentOfferDto(APARTMENT_ID, BigDecimal.ZERO, START, END));
+
+        then(apartmentOfferRepository).should().save(captor.capture());
+        ApartmentOffer actual = captor.getValue();
+        ApartmentOfferAssertion.assertThat(actual)
+                .hasApartmentIdEqualTo(APARTMENT_ID)
+                .hasPriceEqualTo(BigDecimal.ZERO)
+                .hasAvailabilityEqualTo(START, END);
+    }
+
     @Test
     void shouldRecognizeThanSartIsAfterEnd() {
         givenExistingApartment();
