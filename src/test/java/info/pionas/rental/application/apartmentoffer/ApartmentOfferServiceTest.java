@@ -1,7 +1,8 @@
 package info.pionas.rental.application.apartmentoffer;
 
+import info.pionas.rental.domain.apartmentoffer.ApartmentOffer;
+import info.pionas.rental.domain.apartmentoffer.ApartmentOfferAssertion;
 import info.pionas.rental.domain.apartmentoffer.ApartmentOfferRepository;
-import info.pionas.rental.domain.apartmentoffer.ApartmetnOfferAssertion;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -28,7 +29,7 @@ class ApartmentOfferServiceTest {
 
         then(repository).should().save(captor.capture());
         ApartmentOffer actual = captor.getValue();
-        ApartmetnOfferAssertion.assertThat(actual)
+        ApartmentOfferAssertion.assertThat(actual)
                 .hasApartmentIdEqualTo(APARTMENT_ID)
                 .hasPriceEqualTo(price)
                 .hasAvailabilityEqualTo(start, end);
