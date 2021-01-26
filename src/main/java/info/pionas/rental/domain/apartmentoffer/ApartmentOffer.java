@@ -24,6 +24,14 @@ public class ApartmentOffer {
     @Embedded
     private ApartmentAvailability availability;
 
+
+    public String id() {
+        if (id == null) {
+            return null;
+        }
+        return id.toString();
+    }
+
     public static class Builder {
 
         private String apartmentId;

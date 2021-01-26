@@ -45,7 +45,8 @@ public class JpaApartmentOfferRepositoryIntegrationTest {
         ApartmentOffer actual = repository.findById(existingId);
 
         ApartmentOfferAssertion.assertThat(actual)
-                .hasApartmentIdEqualTo(existingId)
+                .hasIdEqualTo(existingId)
+                .hasApartmentIdEqualTo(APARTMENT_ID)
                 .hasPriceEqualTo(PRICE)
                 .hasAvailabilityEqualTo(START, END);
     }

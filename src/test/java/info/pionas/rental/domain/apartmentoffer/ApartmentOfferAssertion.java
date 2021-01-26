@@ -15,6 +15,11 @@ class ApartmentOfferAssertion {
         return new ApartmentOfferAssertion(actual);
     }
 
+    public ApartmentOfferAssertion hasIdEqualTo(String expected) {
+        Assertions.assertThat(actual.getId().toString()).isEqualTo(expected);
+        return this;
+    }
+
     public ApartmentOfferAssertion hasApartmentIdEqualTo(String expected) {
         Assertions.assertThat(actual).hasFieldOrPropertyWithValue("apartmentId", expected);
         return this;
