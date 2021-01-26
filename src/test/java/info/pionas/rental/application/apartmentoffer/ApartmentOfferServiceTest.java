@@ -5,6 +5,7 @@ import info.pionas.rental.domain.apartment.ApartmentRepository;
 import info.pionas.rental.domain.apartmentoffer.ApartmentOffer;
 import info.pionas.rental.domain.apartmentoffer.ApartmentOfferAssertion;
 import info.pionas.rental.domain.apartmentoffer.ApartmentOfferRepository;
+import info.pionas.rental.domain.apartmentoffer.NotAllowedMoneyValueException;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -50,6 +51,16 @@ class ApartmentOfferServiceTest {
             service.add(getApartmentOfferDto());
         });
         assertThat(actual).hasMessage("Apartment with id " + APARTMENT_ID + " does not exist");
+    }
+
+    @Test
+    void shouldRecognizePriceLowerThanZero() {
+        givenExistingApartment();
+        ApartmentOfferDto dto = new ApartmentOfferDto(APARTMENT_ID, BigDecimal.valueOf(-13), START, END);
+        NotAllowedMoneyValueException actual = assertThrows(NotAllowedMoneyValueException.class, () -> {
+            service.add(dto);
+        });
+        assertThat(actual).hasMessage("Price -13 is lower than zero");
     }
 
     private void givenExistingApartment() {
