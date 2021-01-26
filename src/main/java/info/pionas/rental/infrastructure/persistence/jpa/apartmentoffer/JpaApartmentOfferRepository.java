@@ -5,9 +5,12 @@ import info.pionas.rental.domain.apartmentoffer.ApartmentOfferRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 @Repository
 @RequiredArgsConstructor
 public class JpaApartmentOfferRepository implements ApartmentOfferRepository {
+    private final SpringJpaApartmentOfferRepository springJpaApartmentOfferRepository;
 
     @Override
     public void save(ApartmentOffer apartmentOffer) {
@@ -16,6 +19,7 @@ public class JpaApartmentOfferRepository implements ApartmentOfferRepository {
 
     @Override
     public ApartmentOffer findById(String id) {
-        return null;
+        return springJpaApartmentOfferRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new ApartmentOfferDoesNotExistException(id));
     }
 }
