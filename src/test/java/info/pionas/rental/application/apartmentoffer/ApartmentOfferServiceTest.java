@@ -32,7 +32,7 @@ class ApartmentOfferServiceTest {
         ArgumentCaptor<ApartmentOffer> captor = ArgumentCaptor.forClass(ApartmentOffer.class);
         givenExistingApartment();
 
-        service.add(APARTMENT_ID, PRICE, START, END);
+        service.add(getApartmentOfferDto());
 
         then(apartmentOfferRepository).should().save(captor.capture());
         ApartmentOffer actual = captor.getValue();
@@ -46,7 +46,9 @@ class ApartmentOfferServiceTest {
     void shouldRecognizeApartmentDoesNotExist() {
         givenNonExistingApartment();
 
-        ApartmentNotFoundException actual = assertThrows(ApartmentNotFoundException.class, () -> service.add(APARTMENT_ID, PRICE, START, END));
+        ApartmentNotFoundException actual = assertThrows(ApartmentNotFoundException.class, () -> {
+            service.add(getApartmentOfferDto());
+        });
         assertThat(actual).hasMessage("Apartment with id " + APARTMENT_ID + " does not exist");
     }
 
@@ -56,5 +58,9 @@ class ApartmentOfferServiceTest {
 
     private void givenNonExistingApartment() {
         given(apartmentRepository.existById(APARTMENT_ID)).willReturn(false);
+    }
+
+    private ApartmentOfferDto getApartmentOfferDto() {
+        return new ApartmentOfferDto(APARTMENT_ID, PRICE, START, END);
     }
 }
