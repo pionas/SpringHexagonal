@@ -12,7 +12,7 @@ class ApartmentAvailability {
 
     public static ApartmentAvailability of(LocalDate start, LocalDate end) {
         if (start.isAfter(end)) {
-            throw new ApartmentAvailabilityException();
+            throw new ApartmentAvailabilityException(start, end);
         }
         return new ApartmentAvailability(start, end);
     }
