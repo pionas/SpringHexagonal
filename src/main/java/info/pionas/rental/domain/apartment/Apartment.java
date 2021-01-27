@@ -23,6 +23,8 @@ public class Apartment {
 
     private String ownerId;
 
+    private String apartmentNumber;
+
     @Embedded
     private Address address;
 
@@ -32,9 +34,10 @@ public class Apartment {
 
     private String description;
 
-    private Apartment(String ownerId, Address address, List<Room> rooms, String description) {
+    private Apartment(String ownerId, Address address, String apartmentNumber, List<Room> rooms, String description) {
         this.ownerId = ownerId;
         this.address = address;
+        this.apartmentNumber = apartmentNumber;
         this.rooms = rooms;
         this.description = description;
     }
@@ -115,11 +118,11 @@ public class Apartment {
         }
 
         public Apartment build() {
-            return new Apartment(ownerId, address(), rooms(), description);
+            return new Apartment(ownerId, address(), apartmentNumber, rooms(), description);
         }
 
         private Address address() {
-            return new Address(street, postalCode, houseNumber, apartmentNumber, city, country);
+            return new Address(street, postalCode, houseNumber, city, country);
         }
 
         private List<Room> rooms() {
