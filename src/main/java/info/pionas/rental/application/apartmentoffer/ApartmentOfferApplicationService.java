@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import static info.pionas.rental.domain.apartmentoffer.ApartmentOffer.Builder.apartmentOffer;
 
 @RequiredArgsConstructor
-class ApartmentOfferService {
+class ApartmentOfferApplicationService {
     private final ApartmentRepository apartmentRepository;
     private final ApartmentOfferRepository apartmentOfferRepository;
 

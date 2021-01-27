@@ -15,7 +15,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
 
-class ApartmentOfferServiceTest {
+class ApartmentOfferApplicationServiceTest {
     private static final String APARTMENT_ID = "1234";
     private static final BigDecimal PRICE = BigDecimal.valueOf(123);
     private static final LocalDate START = LocalDate.of(2020, 10, 11);
@@ -23,7 +23,7 @@ class ApartmentOfferServiceTest {
 
     private final ApartmentRepository apartmentRepository = mock(ApartmentRepository.class);
     private final ApartmentOfferRepository apartmentOfferRepository = mock(ApartmentOfferRepository.class);
-    private final ApartmentOfferService service = new ApartmentOfferService(apartmentRepository, apartmentOfferRepository);
+    private final ApartmentOfferApplicationService service = new ApartmentOfferApplicationService(apartmentRepository, apartmentOfferRepository);
 
     @Test
     void shouldCreateApartmenOfferForExistApartment() {
