@@ -14,7 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Entity
-@Table(name = "HOTELR_ROOM_OFFER")
+@Table(name = "HOTEL_ROOM_OFFER")
 public class HotelRoomOffer {
     @Id
     @GeneratedValue
