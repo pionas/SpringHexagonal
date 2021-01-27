@@ -1,10 +1,7 @@
 package info.pionas.rental.application.hotelroomoffer;
 
 import info.pionas.rental.domain.hotelroom.HotelRoomRepository;
-import info.pionas.rental.domain.hotelroomoffer.HotelRoomNotFoundException;
-import info.pionas.rental.domain.hotelroomoffer.HotelRoomOffer;
-import info.pionas.rental.domain.hotelroomoffer.HotelRoomOfferRepository;
-import info.pionas.rental.domain.hotelroomoffer.NotAllowedMoneyValueException;
+import info.pionas.rental.domain.hotelroomoffer.*;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -58,6 +55,16 @@ public class HotelRoomOfferApplicationServiceTest {
             service.add(dto);
         });
         assertThat(actual).hasMessage("Price 0 is not greater than zero");
+    }
+
+    @Test
+    void shouldRecognizeAvailabilityStartIsAfterEnd() {
+        givenExistingHotelRoom();
+        HotelRoomOffertDto dto = new HotelRoomOffertDto(HOTEL_ROOM_ID, PRICE, END, START);
+        HotelRoomAvailabilityException actual = assertThrows(HotelRoomAvailabilityException.class, () -> {
+            service.add(dto);
+        });
+        assertThat(actual).hasMessage("Start date: 2021-12-20 of availability is after end date: 2020-12-10");
     }
 
     private void givenExistingHotelRoom() {
