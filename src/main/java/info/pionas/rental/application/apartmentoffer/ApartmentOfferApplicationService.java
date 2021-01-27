@@ -5,15 +5,17 @@ import info.pionas.rental.domain.apartment.ApartmentRepository;
 import info.pionas.rental.domain.apartmentoffer.ApartmentOffer;
 import info.pionas.rental.domain.apartmentoffer.ApartmentOfferRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import static info.pionas.rental.domain.apartmentoffer.ApartmentOffer.Builder.apartmentOffer;
 
 @RequiredArgsConstructor
-class ApartmentOfferService {
+@Service
+public class ApartmentOfferApplicationService {
     private final ApartmentRepository apartmentRepository;
     private final ApartmentOfferRepository apartmentOfferRepository;
 
-    void add(ApartmentOfferDto dto) {
+    public String add(ApartmentOfferDto dto) {
         if (!apartmentRepository.existById(dto.getApartmentId())) {
             throw new ApartmentNotFoundException(dto.getApartmentId());
         }
@@ -22,6 +24,6 @@ class ApartmentOfferService {
                 .withPrice(dto.getPrice())
                 .withAvailability(dto.getStart(), dto.getEnd())
                 .build();
-        apartmentOfferRepository.save(offer);
+        return apartmentOfferRepository.save(offer);
     }
 }

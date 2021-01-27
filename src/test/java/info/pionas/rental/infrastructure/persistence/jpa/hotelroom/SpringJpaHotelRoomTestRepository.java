@@ -1,5 +1,6 @@
 package info.pionas.rental.infrastructure.persistence.jpa.hotelroom;
 
+import info.pionas.rental.domain.hotelroom.HotelRoom;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -18,5 +19,9 @@ public class SpringJpaHotelRoomTestRepository {
 
     public void deleteAll(List<String> ids) {
         ids.forEach(this::deleteById);
+    }
+
+    public String save(HotelRoom hotelRoom) {
+        return repository.save(hotelRoom).id();
     }
 }
