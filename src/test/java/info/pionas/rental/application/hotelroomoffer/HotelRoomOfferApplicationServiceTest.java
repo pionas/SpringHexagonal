@@ -4,6 +4,7 @@ import info.pionas.rental.domain.hotelroom.HotelRoomRepository;
 import info.pionas.rental.domain.hotelroomoffer.HotelRoomNotFoundException;
 import info.pionas.rental.domain.hotelroomoffer.HotelRoomOffer;
 import info.pionas.rental.domain.hotelroomoffer.HotelRoomOfferRepository;
+import info.pionas.rental.domain.hotelroomoffer.NotAllowedMoneyValueException;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -47,6 +48,16 @@ public class HotelRoomOfferApplicationServiceTest {
             service.add(getHotelRoomOfferDto());
         });
         assertThat(actual).hasMessage("Hotel room with id " + HOTEL_ROOM_ID + " does not exist");
+    }
+
+    @Test
+    void shouldRecognizePriceIsNotHigherThanZero() {
+        givenExistingHotelRoom();
+        HotelRoomOffertDto dto = new HotelRoomOffertDto(HOTEL_ROOM_ID, BigDecimal.ZERO, START, END);
+        NotAllowedMoneyValueException actual = assertThrows(NotAllowedMoneyValueException.class, () -> {
+            service.add(dto);
+        });
+        assertThat(actual).hasMessage("Price 0 is not greater than zero");
     }
 
     private void givenExistingHotelRoom() {
