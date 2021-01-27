@@ -1,6 +1,8 @@
 package info.pionas.rental.infrastructure.rest.api.hotelroom;
 
 import com.google.common.collect.ImmutableMap;
+import info.pionas.rental.application.hotelroom.HotelRoomBookingDto;
+import info.pionas.rental.application.hotelroom.HotelRoomDto;
 import info.pionas.rental.domain.hotel.Hotel;
 import info.pionas.rental.infrastructure.json.JsonFactory;
 import info.pionas.rental.infrastructure.persistence.jpa.hotel.SpringJpaHotelTestRepository;
@@ -78,8 +80,9 @@ class HotelRoomRestControllerSystemTest {
 
     @Test
     void shouldBookHotelRoom() throws Exception {
-        HotelRoomBookingDto hotelRoomBookingDto = new HotelRoomBookingDto("1357", asList(LocalDate.of(2020, 11, 12), LocalDate.of(2020, 12, 1)));
         String url = save(givenHotelRoom1()).getResponse().getRedirectedUrl();
+        String hotelRoomId = url.replace("/hotelroom/", "");
+        HotelRoomBookingDto hotelRoomBookingDto = new HotelRoomBookingDto(hotelRoomId,"1357", asList(LocalDate.of(2020, 11, 12), LocalDate.of(2020, 12, 1)));
 
         mockMvc.perform(put(url.replace("hotelroom/", "hotelroom/book/")).contentType(MediaType.APPLICATION_JSON).content(jsonFactory.create(hotelRoomBookingDto)))
                 .andExpect(status().isCreated());

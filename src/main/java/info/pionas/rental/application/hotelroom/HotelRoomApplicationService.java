@@ -5,13 +5,10 @@ import info.pionas.rental.domain.booking.BookingRepository;
 import info.pionas.rental.domain.hotel.HotelRepository;
 import info.pionas.rental.domain.hotelroom.HotelRoom;
 import info.pionas.rental.domain.hotelroom.HotelRoomEventsPublisher;
-import info.pionas.rental.domain.hotelroom.HotelRoomFactory;
 import info.pionas.rental.domain.hotelroom.HotelRoomRepository;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
+import static info.pionas.rental.domain.hotelroom.HotelRoom.Builder.hotelRoom;
 
 @RequiredArgsConstructor
 public class HotelRoomApplicationService {
@@ -21,15 +18,22 @@ public class HotelRoomApplicationService {
     private final BookingRepository bookingRepository;
     private final HotelRoomEventsPublisher hotelRoomEventsPublisher;
 
-    public String add(String hotelId, int number, Map<String, Double> spacesDefinition, String description) {
-        hotelRepository.findById(hotelId);
-        HotelRoom hotelRoom = new HotelRoomFactory().create(hotelId, number, spacesDefinition, description);
+    public String add(HotelRoomDto hotelRoomDto) {
+        hotelRepository.findById(hotelRoomDto.getHotelId());
+        HotelRoom hotelRoom = hotelRoom()
+                .withHotelId(hotelRoomDto.getHotelId())
+                .withNumber(hotelRoomDto.getNumber())
+                .withSpacesDefinition(hotelRoomDto.getSpacesDefinition())
+                .withDescription(hotelRoomDto.getDescription())
+                .build();
+
         return hotelRoomRepository.save(hotelRoom);
     }
 
-    public String book(String id, String tenantId, List<LocalDate> days) {
-        HotelRoom hotelRoom = hotelRoomRepository.findById(id);
-        Booking booking = hotelRoom.book(tenantId, days, hotelRoomEventsPublisher);
+    public String book(HotelRoomBookingDto hotelRoomBookingDto) {
+        HotelRoom hotelRoom = hotelRoomRepository.findById(hotelRoomBookingDto.getHotelRoomId());
+        Booking booking = hotelRoom.book(hotelRoomBookingDto.getTenantId(), hotelRoomBookingDto.getDays(), hotelRoomEventsPublisher);
+
         return bookingRepository.save(booking);
     }
 }
