@@ -17,6 +17,9 @@ class HotelRoomAvailability {
         if (start.isAfter(end)) {
             throw new HotelRoomAvailabilityException(start, end);
         }
+        if (start.isBefore(LocalDate.now())) {
+            throw new HotelRoomAvailabilityException(start);
+        }
         return new HotelRoomAvailability(start, end);
     }
 }
