@@ -1,10 +1,11 @@
 package info.pionas.rental.domain.hotelroomoffer;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 class Money {
     private final BigDecimal value;
 
