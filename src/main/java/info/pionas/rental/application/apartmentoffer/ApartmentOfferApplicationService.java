@@ -9,11 +9,11 @@ import lombok.RequiredArgsConstructor;
 import static info.pionas.rental.domain.apartmentoffer.ApartmentOffer.Builder.apartmentOffer;
 
 @RequiredArgsConstructor
-class ApartmentOfferApplicationService {
+public class ApartmentOfferApplicationService {
     private final ApartmentRepository apartmentRepository;
     private final ApartmentOfferRepository apartmentOfferRepository;
 
-    void add(ApartmentOfferDto dto) {
+    public String add(ApartmentOfferDto dto) {
         if (!apartmentRepository.existById(dto.getApartmentId())) {
             throw new ApartmentNotFoundException(dto.getApartmentId());
         }
@@ -22,6 +22,6 @@ class ApartmentOfferApplicationService {
                 .withPrice(dto.getPrice())
                 .withAvailability(dto.getStart(), dto.getEnd())
                 .build();
-        apartmentOfferRepository.save(offer);
+        return apartmentOfferRepository.save(offer);
     }
 }
