@@ -1,5 +1,5 @@
 package info.pionas.rental.domain.hotelroomoffer;
 
-public interface HotelRoomRepistory {
+public interface HotelRoomOfferRepository {
     void save(HotelRoomOffer hotelRoomOffer);
 }

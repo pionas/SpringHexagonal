@@ -1,13 +1,18 @@
 package info.pionas.rental.application.hotelroomoffer;
 
+import info.pionas.rental.domain.hotelroom.HotelRoomRepository;
+import info.pionas.rental.domain.hotelroomoffer.HotelRoomNotFoundException;
 import info.pionas.rental.domain.hotelroomoffer.HotelRoomOffer;
-import info.pionas.rental.domain.hotelroomoffer.HotelRoomRepistory;
+import info.pionas.rental.domain.hotelroomoffer.HotelRoomOfferRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
 
@@ -16,16 +21,16 @@ public class HotelRoomOfferApplicationServiceTest {
     private static final BigDecimal PRICE = BigDecimal.valueOf(123);
     private static final LocalDate START = LocalDate.of(2020, 12, 10);
     private static final LocalDate END = LocalDate.of(2021, 12, 20);
-    private final HotelRoomRepistory repository = mock(HotelRoomRepistory.class);
-    private final HotelRoomOfferApplicationService service = new HotelRoomOfferApplicationService(repository);
+    private final HotelRoomRepository hotelRoomRepository = mock(HotelRoomRepository.class);
+    private final HotelRoomOfferRepository repository = mock(HotelRoomOfferRepository.class);
+    private final HotelRoomOfferApplicationService service = new HotelRoomOfferApplicationService(repository, hotelRoomRepository);
 
     @Test
     void shouldCreateHotelRoomOffer() {
         ArgumentCaptor<HotelRoomOffer> captor = ArgumentCaptor.forClass(HotelRoomOffer.class);
-        HotelRoomOffertDto dto = new HotelRoomOffertDto(HOTEL_ROOM_ID, PRICE, START, END);
         givenExistingHotelRoom();
 
-        service.add(dto);
+        service.add(getHotelRoomOfferDto());
 
         then(repository).should().save(captor.capture());
         HotelRoomOfferAssertion.assertThat(captor.getValue())
@@ -34,7 +39,26 @@ public class HotelRoomOfferApplicationServiceTest {
                 .hasAvailabilityEqualTo(START, END);
     }
 
-    private void givenExistingHotelRoom() {
+    @Test
+    void shouldRecognizeHotelRoomDoesNotExist() {
+        givenNotExistingHotelRoom();
 
+        HotelRoomNotFoundException actual = assertThrows(HotelRoomNotFoundException.class, () -> {
+            service.add(getHotelRoomOfferDto());
+        });
+        assertThat(actual).hasMessage("Hotel room with id " + HOTEL_ROOM_ID + " does not exist");
     }
+
+    private void givenExistingHotelRoom() {
+        given(hotelRoomRepository.existById(HOTEL_ROOM_ID)).willReturn(true);
+    }
+
+    private void givenNotExistingHotelRoom() {
+        given(hotelRoomRepository.existById(HOTEL_ROOM_ID)).willReturn(false);
+    }
+
+    private HotelRoomOffertDto getHotelRoomOfferDto() {
+        return new HotelRoomOffertDto(HOTEL_ROOM_ID, PRICE, START, END);
+    }
+
 }
