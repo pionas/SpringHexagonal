@@ -1,5 +1,6 @@
-package info.pionas.rental.domain.hotel;
+package info.pionas.rental.domain.address;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,7 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Embeddable;
 
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Embeddable
 @SuppressWarnings("PMD.UnusedPrivateField")

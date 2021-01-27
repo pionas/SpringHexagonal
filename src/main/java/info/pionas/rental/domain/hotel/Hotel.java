@@ -1,5 +1,6 @@
 package info.pionas.rental.domain.hotel;
 
+import info.pionas.rental.domain.address.Address;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
