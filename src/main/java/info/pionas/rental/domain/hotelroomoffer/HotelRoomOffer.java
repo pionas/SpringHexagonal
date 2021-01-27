@@ -37,7 +37,7 @@ public class HotelRoomOffer {
             return this;
         }
 
-        public Builder witAvailability(LocalDate start, LocalDate end) {
+        public Builder withAvailability(LocalDate start, LocalDate end) {
             this.start = start;
             this.end = end;
             return this;
