@@ -5,13 +5,15 @@ import info.pionas.rental.domain.hotelroomoffer.HotelRoomNotFoundException;
 import info.pionas.rental.domain.hotelroomoffer.HotelRoomOffer;
 import info.pionas.rental.domain.hotelroomoffer.HotelRoomOfferRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
-class HotelRoomOfferApplicationService {
+@Service
+public class HotelRoomOfferApplicationService {
     private final HotelRoomOfferRepository hotelRoomOfferRepository;
     private final HotelRoomRepository hotelRoomRepository;
 
-    void add(HotelRoomOffertDto dto) {
+    public String add(HotelRoomOffertDto dto) {
         if (!hotelRoomRepository.existById(dto.getHotelRoomId())) {
             throw new HotelRoomNotFoundException(dto.getHotelRoomId());
         }
@@ -20,6 +22,6 @@ class HotelRoomOfferApplicationService {
                 .withPrice(dto.getPrice())
                 .withAvailability(dto.getStart(), dto.getEnd())
                 .build();
-        hotelRoomOfferRepository.save(hotelRoomOffer);
+        return hotelRoomOfferRepository.save(hotelRoomOffer);
     }
 }
