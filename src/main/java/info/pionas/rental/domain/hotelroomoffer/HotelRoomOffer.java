@@ -31,7 +31,7 @@ public class HotelRoomOffer {
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Builder {
-
+        private static final LocalDate NO_END_DATE = null;
         private String hotelRoomId;
         private BigDecimal price;
         private LocalDate start;
@@ -66,6 +66,9 @@ public class HotelRoomOffer {
         }
 
         private HotelRoomAvailability hotelRoomAvailability() {
+            if (end == NO_END_DATE) {
+                return HotelRoomAvailability.of(start);
+            }
             return HotelRoomAvailability.of(start, end);
         }
     }
