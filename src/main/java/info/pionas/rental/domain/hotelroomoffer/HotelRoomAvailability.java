@@ -15,10 +15,10 @@ class HotelRoomAvailability {
 
     static HotelRoomAvailability of(LocalDate start, LocalDate end) {
         if (start.isAfter(end)) {
-            throw new HotelRoomAvailabilityException(start, end);
+            throw HotelRoomAvailabilityException.startAfterEnd(start, end);
         }
         if (start.isBefore(LocalDate.now())) {
-            throw new HotelRoomAvailabilityException(start);
+            throw HotelRoomAvailabilityException.startFromPast(start);
         }
         return new HotelRoomAvailability(start, end);
     }
