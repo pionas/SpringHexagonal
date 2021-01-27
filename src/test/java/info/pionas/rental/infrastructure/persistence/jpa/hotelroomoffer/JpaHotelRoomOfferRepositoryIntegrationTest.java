@@ -25,8 +25,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class JpaHotelRoomOfferRepositoryIntegrationTest {
     private static final String HOTEL_ROOM_ID = "1234";
     private static final BigDecimal PRICE = BigDecimal.valueOf(123);
-    private static final LocalDate START = LocalDate.of(2020, 10, 11);
-    private static final LocalDate END = LocalDate.of(2020, 10, 20);
+    private static final LocalDate START = LocalDate.now();
+    private static final LocalDate END = START.plusDays(6);
 
     @Autowired
     private HotelRoomOfferRepository hotelRoomOfferRepository;
