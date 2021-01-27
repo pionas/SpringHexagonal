@@ -1,7 +1,7 @@
 package info.pionas.rental.infrastructure.persistence.jpa.apartmentoffer;
 
 import info.pionas.rental.domain.apartmentoffer.ApartmentOffer;
-import info.pionas.rental.domain.apartmentoffer.ApartmentOfferAssertion;
+import info.pionas.rental.application.apartmentoffer.ApartmentOfferAssertion;
 import info.pionas.rental.domain.apartmentoffer.ApartmentOfferRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Tag;

@@ -23,4 +23,9 @@ class JpaHotelRoomRepository implements HotelRoomRepository {
         return springJpaHotelRoomRepository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new HotelRoomDoesNotExistException(id));
     }
+
+    @Override
+    public boolean existById(String hotelRoomId) {
+        return springJpaHotelRoomRepository.existsById(UUID.fromString(hotelRoomId));
+    }
 }

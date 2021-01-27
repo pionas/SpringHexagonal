@@ -1,5 +1,6 @@
-package info.pionas.rental.domain.apartmentoffer;
+package info.pionas.rental.application.apartmentoffer;
 
+import info.pionas.rental.domain.apartmentoffer.ApartmentOffer;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
 
