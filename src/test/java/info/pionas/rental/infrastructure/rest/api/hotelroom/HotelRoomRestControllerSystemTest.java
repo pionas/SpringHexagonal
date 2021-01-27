@@ -1,8 +1,11 @@
 package info.pionas.rental.infrastructure.rest.api.hotelroom;
 
 import com.google.common.collect.ImmutableMap;
-import info.pionas.rental.application.hotel.HotelDto;
+import info.pionas.rental.domain.hotel.Hotel;
 import info.pionas.rental.infrastructure.json.JsonFactory;
+import info.pionas.rental.infrastructure.persistence.jpa.hotel.SpringJpaHotelTestRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDate;
 
+import static info.pionas.rental.domain.hotel.Hotel.Builder.hotel;
 import static java.util.Arrays.asList;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -23,7 +27,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Tag("SystemTest")
 class HotelRoomRestControllerSystemTest {
-    private static final String HOTEL_ID = "5678";
     private static final int ROOM_NUMBER_1 = 42;
     private static final ImmutableMap<String, Double> SPACES_DEFINITION_1 = ImmutableMap.of("Room1", 30.0);
     private static final String DESCRIPTION_1 = "This is very nice place";
@@ -35,13 +38,39 @@ class HotelRoomRestControllerSystemTest {
 
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private SpringJpaHotelTestRepository springJpaHotelTestRepository;
+
+    private String hotelId;
+
+    @AfterEach
+    void deleteHotel() {
+        if (hotelId != null) {
+            springJpaHotelTestRepository.deleteById(hotelId);
+        }
+    }
+
+    @BeforeEach
+    void createHotel() {
+        if (hotelId == null) {
+            Hotel hotel = hotel()
+                    .withName("Great hotel")
+                    .withStreet("Florianska")
+                    .withPostalCode("98-999")
+                    .withBuildingNumber("10")
+                    .withCity("Krakow")
+                    .withCountry("Poland")
+                    .build();
+            hotelId = springJpaHotelTestRepository.save(hotel);
+        }
+    }
 
     @Test
     void shouldReturnAllHotelRooms() throws Exception {
         save(givenHotelRoom1());
         save(givenHotelRoom2());
 
-        mockMvc.perform(get("/hotelroom/hotel/" + HOTEL_ID))
+        mockMvc.perform(get("/hotelroom/hotel/" + hotelId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isNotEmpty())
                 .andExpect(jsonPath("$").isArray());
@@ -57,19 +86,15 @@ class HotelRoomRestControllerSystemTest {
     }
 
     private HotelRoomDto givenHotelRoom1() {
-        return new HotelRoomDto(HOTEL_ID, ROOM_NUMBER_1, SPACES_DEFINITION_1, DESCRIPTION_1);
+        return new HotelRoomDto(hotelId, ROOM_NUMBER_1, SPACES_DEFINITION_1, DESCRIPTION_1);
     }
 
     private HotelRoomDto givenHotelRoom2() {
-        return new HotelRoomDto(HOTEL_ID, ROOM_NUMBER_2, SPACES_DEFINITION_2, DESCRIPTION_2);
+        return new HotelRoomDto(hotelId, ROOM_NUMBER_2, SPACES_DEFINITION_2, DESCRIPTION_2);
     }
 
     private MvcResult save(HotelRoomDto hotelRoomDto) throws Exception {
         return mockMvc.perform(post("/hotelroom").contentType(MediaType.APPLICATION_JSON).content(jsonFactory.create(hotelRoomDto))).andReturn();
     }
 
-    private String addHotel(HotelDto hotelDto) throws Exception {
-        return mockMvc.perform(post("/hotel").contentType(MediaType.APPLICATION_JSON).content(jsonFactory.create(hotelDto)))
-                .andExpect(status().isCreated()).andReturn().getResponse().getRedirectedUrl().replace("/hotel/", "");
-    }
 }

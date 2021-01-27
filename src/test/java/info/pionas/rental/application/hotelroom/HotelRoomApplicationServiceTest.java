@@ -5,6 +5,7 @@ import info.pionas.rental.domain.booking.Booking;
 import info.pionas.rental.domain.booking.BookingAssertion;
 import info.pionas.rental.domain.booking.BookingRepository;
 import info.pionas.rental.domain.eventchannel.EventChannel;
+import info.pionas.rental.domain.hotel.HotelRepository;
 import info.pionas.rental.domain.hotelroom.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -34,15 +35,17 @@ class HotelRoomApplicationServiceTest {
     private static final List<LocalDate> DAYS = asList(LocalDate.now(), LocalDate.now().plusDays(1));
     private static final String HOTEL_ROOM_ID = "7821321";
 
+    private final HotelRepository hotelRepository = Mockito.mock(HotelRepository.class);
     private final HotelRoomRepository hotelRoomRepository = Mockito.mock(HotelRoomRepository.class);
     private final BookingRepository bookingRepository = Mockito.mock(BookingRepository.class);
     private final EventChannel eventChannel = Mockito.mock(EventChannel.class);
-    private final HotelRoomApplicationService service = new HotelRoomApplicationServiceFactory().hotelRoomApplicationService(hotelRoomRepository, bookingRepository, eventChannel);
+    private final HotelRoomApplicationService service = new HotelRoomApplicationServiceFactory().hotelRoomApplicationService(hotelRepository, hotelRoomRepository, bookingRepository, eventChannel);
     private final HotelRoomFactory factory = new HotelRoomFactory();
 
     @Test
     void shouldCreateHotelRoom() {
         ArgumentCaptor<HotelRoom> captor = ArgumentCaptor.forClass(HotelRoom.class);
+        given(hotelRepository.save(any())).willReturn(HOTEL_ID);
 
         service.add(HOTEL_ID, ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
 
@@ -56,6 +59,7 @@ class HotelRoomApplicationServiceTest {
 
     @Test
     void shouldReturnIdOfNewHotelRoom() {
+        given(hotelRepository.save(any())).willReturn(HOTEL_ID);
         given(hotelRoomRepository.save(any())).willReturn(HOTEL_ROOM_ID);
 
         String actual = service.add(HOTEL_ID, ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);

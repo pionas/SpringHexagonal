@@ -2,6 +2,7 @@ package info.pionas.rental.application.hotelroom;
 
 import info.pionas.rental.domain.booking.Booking;
 import info.pionas.rental.domain.booking.BookingRepository;
+import info.pionas.rental.domain.hotel.HotelRepository;
 import info.pionas.rental.domain.hotelroom.HotelRoom;
 import info.pionas.rental.domain.hotelroom.HotelRoomEventsPublisher;
 import info.pionas.rental.domain.hotelroom.HotelRoomFactory;
@@ -15,11 +16,13 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class HotelRoomApplicationService {
 
+    private final HotelRepository hotelRepository;
     private final HotelRoomRepository hotelRoomRepository;
     private final BookingRepository bookingRepository;
     private final HotelRoomEventsPublisher hotelRoomEventsPublisher;
 
     public String add(String hotelId, int number, Map<String, Double> spacesDefinition, String description) {
+        hotelRepository.findById(hotelId);
         HotelRoom hotelRoom = new HotelRoomFactory().create(hotelId, number, spacesDefinition, description);
         return hotelRoomRepository.save(hotelRoom);
     }

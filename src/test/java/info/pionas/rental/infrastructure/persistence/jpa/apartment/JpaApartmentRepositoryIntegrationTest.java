@@ -120,6 +120,13 @@ class JpaApartmentRepositoryIntegrationTest {
                 .hasRoomsEqualsTo(ROOMS_DEFINITION);
     }
 
+    @Test
+    void shouldRecognizeApartmentDoesNotExist() {
+        String id = randomId();
+
+        assertThat(apartmentRepository.existById(id)).isFalse();
+    }
+
     private String givenExistingApartment(Apartment apartment3) {
         String apartmentId = apartmentRepository.save(apartment3);
         apartmentIds.add(apartmentId);
@@ -139,5 +146,9 @@ class JpaApartmentRepositoryIntegrationTest {
                 .withDescription(DESCRIPTION)
                 .withRoomsDefinition(ROOMS_DEFINITION)
                 .build();
+    }
+
+    private String randomId() {
+        return UUID.randomUUID().toString();
     }
 }
