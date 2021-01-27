@@ -62,6 +62,13 @@ class JpaHotelRoomRepositoryIntegrationTest {
                 .hasDescriptionEqualTo(DESCRIPTION);
     }
 
+    @Test
+    void shouldRecognizeApartmentDoesNotExist() {
+        String id = UUID.randomUUID().toString();
+
+        assertThat(hotelRoomRepository.existById(id)).isFalse();
+    }
+
     private HotelRoom createHotelRoom() {
         return new HotelRoomFactory().create(HOTEL_ID, ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
     }
