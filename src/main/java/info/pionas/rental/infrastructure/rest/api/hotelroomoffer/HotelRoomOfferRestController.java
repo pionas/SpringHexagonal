@@ -1,6 +1,5 @@
 package info.pionas.rental.infrastructure.rest.api.hotelroomoffer;
 
-import info.pionas.rental.application.apartmentoffer.ApartmentOfferDto;
 import info.pionas.rental.application.hotelroomoffer.HotelRoomOfferApplicationService;
 import info.pionas.rental.application.hotelroomoffer.HotelRoomOffertDto;
 import lombok.RequiredArgsConstructor;
