@@ -1,5 +1,6 @@
 package info.pionas.rental.domain.apartment;
 
+import info.pionas.rental.domain.address.Address;
 import info.pionas.rental.domain.booking.Booking;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,9 @@ public class Apartment {
     private String apartmentNumber;
 
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "buildingNumber", column = @Column(name = "house_number"))
+    })
     private Address address;
 
     @ElementCollection
