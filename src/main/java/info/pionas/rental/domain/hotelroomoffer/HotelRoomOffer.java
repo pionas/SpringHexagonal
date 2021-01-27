@@ -1,19 +1,33 @@
 package info.pionas.rental.domain.hotelroomoffer;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.UUID;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
+@Entity
+@Table(name = "HOTELR_ROOM_OFFER")
 public class HotelRoomOffer {
-    private final String hotelRoomId;
-    private final Money money;
-    private final HotelRoomAvailability availability;
+    @Id
+    @GeneratedValue
+    private UUID id;
+    private String hotelRoomId;
+    @Embedded
+    private Money money;
+    @Embedded
+    private HotelRoomAvailability availability;
+
+    public String id() {
+        return id.toString();
+    }
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Builder {
@@ -44,7 +58,7 @@ public class HotelRoomOffer {
         }
 
         public HotelRoomOffer build() {
-            return new HotelRoomOffer(hotelRoomId, money(), hotelRoomAvailability());
+            return new HotelRoomOffer(null, hotelRoomId, money(), hotelRoomAvailability());
         }
 
         private Money money() {

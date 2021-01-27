@@ -18,7 +18,7 @@ class HotelRoomOfferApplicationService {
         HotelRoomOffer hotelRoomOffer = HotelRoomOffer.Builder.hotelRoomOffer()
                 .withHotelRoomId(dto.getHotelRoomId())
                 .withPrice(dto.getPrice())
-                .witAvailability(dto.getStart(), dto.getEnd())
+                .withAvailability(dto.getStart(), dto.getEnd())
                 .build();
         hotelRoomOfferRepository.save(hotelRoomOffer);
     }

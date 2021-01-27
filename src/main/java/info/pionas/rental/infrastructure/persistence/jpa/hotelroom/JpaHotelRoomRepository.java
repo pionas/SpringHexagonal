@@ -26,6 +26,6 @@ class JpaHotelRoomRepository implements HotelRoomRepository {
 
     @Override
     public boolean existById(String hotelRoomId) {
-        return false;
+        return springJpaHotelRoomRepository.existsById(UUID.fromString(hotelRoomId));
     }
 }
