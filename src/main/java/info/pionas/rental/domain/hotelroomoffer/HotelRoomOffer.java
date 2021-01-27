@@ -67,9 +67,9 @@ public class HotelRoomOffer {
 
         private HotelRoomAvailability hotelRoomAvailability() {
             if (end == NO_END_DATE) {
-                return HotelRoomAvailability.of(start);
+                return HotelRoomAvailability.fromStart(start);
             }
-            return HotelRoomAvailability.of(start, end);
+            return HotelRoomAvailability.from(start, end);
         }
     }
 }
