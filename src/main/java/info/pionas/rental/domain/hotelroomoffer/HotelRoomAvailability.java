@@ -24,6 +24,6 @@ class HotelRoomAvailability {
     }
 
     static HotelRoomAvailability fromStart(LocalDate start) {
-        return new HotelRoomAvailability(start, start.plusYears(1));
+        return from(start, start.plusYears(1));
     }
 }
