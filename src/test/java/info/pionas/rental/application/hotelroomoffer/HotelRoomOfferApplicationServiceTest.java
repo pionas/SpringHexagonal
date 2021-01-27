@@ -19,6 +19,8 @@ public class HotelRoomOfferApplicationServiceTest {
     private static final BigDecimal PRICE = BigDecimal.valueOf(123);
     private static final LocalDate START = LocalDate.of(2040, 12, 10);
     private static final LocalDate END = LocalDate.of(2041, 12, 20);
+    private static final LocalDate NO_DATE = null;
+    private static final LocalDate START_YEAR_LATER = LocalDate.of(2041, 12, 10);
     private final HotelRoomRepository hotelRoomRepository = mock(HotelRoomRepository.class);
     private final HotelRoomOfferRepository repository = mock(HotelRoomOfferRepository.class);
     private final HotelRoomOfferApplicationService service = new HotelRoomOfferApplicationService(repository, hotelRoomRepository);
@@ -75,6 +77,20 @@ public class HotelRoomOfferApplicationServiceTest {
             service.add(dto);
         });
         assertThat(actual).hasMessage("Start date: 2020-10-10 is past date.");
+    }
+
+    @Test
+    void shouldCreateHotelRoomOfferWhenAvailabilityEndNotGiven() {
+        ArgumentCaptor<HotelRoomOffer> captor = ArgumentCaptor.forClass(HotelRoomOffer.class);
+        givenExistingHotelRoom();
+        HotelRoomOffertDto dto = new HotelRoomOffertDto(HOTEL_ROOM_ID, PRICE, START, NO_DATE);
+        service.add(dto);
+
+        then(repository).should().save(captor.capture());
+        HotelRoomOfferAssertion.assertThat(captor.getValue())
+                .hasHotelRoomIdEqualTo(HOTEL_ROOM_ID)
+                .hasPriceEqualTo(PRICE)
+                .hasAvailabilityEqualTo(START, START_YEAR_LATER);
     }
 
     private void givenExistingHotelRoom() {
