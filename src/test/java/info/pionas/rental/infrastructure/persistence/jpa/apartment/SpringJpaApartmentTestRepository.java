@@ -1,5 +1,6 @@
 package info.pionas.rental.infrastructure.persistence.jpa.apartment;
 
+import info.pionas.rental.domain.apartment.Apartment;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -18,5 +19,9 @@ public class SpringJpaApartmentTestRepository {
 
     public void deleteAll(List<String> apartmentIds) {
         apartmentIds.forEach(this::deleteById);
+    }
+
+    public String save(Apartment apartment) {
+        return repository.save(apartment).id();
     }
 }

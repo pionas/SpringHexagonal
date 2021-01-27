@@ -5,10 +5,12 @@ import info.pionas.rental.domain.apartment.ApartmentRepository;
 import info.pionas.rental.domain.apartmentoffer.ApartmentOffer;
 import info.pionas.rental.domain.apartmentoffer.ApartmentOfferRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import static info.pionas.rental.domain.apartmentoffer.ApartmentOffer.Builder.apartmentOffer;
 
 @RequiredArgsConstructor
+@Service
 public class ApartmentOfferApplicationService {
     private final ApartmentRepository apartmentRepository;
     private final ApartmentOfferRepository apartmentOfferRepository;
