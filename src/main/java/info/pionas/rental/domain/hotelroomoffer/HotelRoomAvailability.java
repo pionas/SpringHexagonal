@@ -1,13 +1,17 @@
 package info.pionas.rental.domain.hotelroomoffer;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.Embeddable;
 import java.time.LocalDate;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
+@Embeddable
 class HotelRoomAvailability {
-    private final LocalDate start;
-    private final LocalDate end;
+    private LocalDate start;
+    private LocalDate end;
 
     static HotelRoomAvailability of(LocalDate start, LocalDate end) {
         if (start.isAfter(end)) {
