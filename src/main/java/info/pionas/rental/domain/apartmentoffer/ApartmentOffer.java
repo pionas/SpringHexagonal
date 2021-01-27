@@ -24,7 +24,6 @@ public class ApartmentOffer {
     @Embedded
     private ApartmentAvailability availability;
 
-
     public String id() {
         return id.toString();
     }
