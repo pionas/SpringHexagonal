@@ -1,4 +1,4 @@
-package info.pionas.rental.query.hotelroom;
+package info.pionas.rental.query.space;
 
 import lombok.AccessLevel;
 import lombok.Getter;
