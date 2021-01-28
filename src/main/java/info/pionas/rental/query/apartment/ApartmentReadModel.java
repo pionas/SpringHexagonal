@@ -1,5 +1,6 @@
 package info.pionas.rental.query.apartment;
 
+import info.pionas.rental.query.space.SpaceReadModel;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +32,10 @@ public class ApartmentReadModel {
 
     @ElementCollection
     @CollectionTable(name = "APARTMENT_ROOM", joinColumns = @JoinColumn(name = "APARTMENT_ID"))
-    private List<RoomReadModel> rooms;
+    @AttributeOverrides({
+            @AttributeOverride(name = "value", column = @Column(name = "size"))
+    })
+    private List<SpaceReadModel> spaces;
 
 
 }

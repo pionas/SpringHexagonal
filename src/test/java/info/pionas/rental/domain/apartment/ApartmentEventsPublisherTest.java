@@ -3,6 +3,7 @@ package info.pionas.rental.domain.apartment;
 import info.pionas.rental.domain.clock.Clock;
 import info.pionas.rental.domain.event.EventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
+import info.pionas.rental.domain.period.Period;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 

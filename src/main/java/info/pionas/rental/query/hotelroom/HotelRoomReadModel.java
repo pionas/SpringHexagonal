@@ -1,5 +1,6 @@
 package info.pionas.rental.query.hotelroom;
 
+import info.pionas.rental.query.space.SpaceReadModel;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

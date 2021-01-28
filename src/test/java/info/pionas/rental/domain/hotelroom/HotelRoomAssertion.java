@@ -1,5 +1,7 @@
 package info.pionas.rental.domain.hotelroom;
 
+import info.pionas.rental.domain.space.Space;
+import info.pionas.rental.domain.space.SpacesAssertion;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
@@ -29,19 +31,11 @@ public class HotelRoomAssertion {
     public HotelRoomAssertion hasSpacesDefinitionEqualTo(Map<String, Double> expected) {
         Assertions.assertThat(actual).extracting("spaces").satisfies(spacesActual -> {
             List<Space> spaces = (List<Space>) spacesActual;
-            Assertions.assertThat(spaces).hasSize(expected.size());
-
-            expected.forEach((name, squareMeter) -> {
-                Assertions.assertThat(spaces).anySatisfy(hasSpaceThat(name, squareMeter));
-            });
+            SpacesAssertion.assertThat(spaces)
+                    .hasSize(expected.size())
+                    .hasAllSpacesFrom(expected);
         });
         return this;
-    }
-
-    private Consumer<Space> hasSpaceThat(String name, Double squareMeter) {
-        return space -> Assertions.assertThat(space)
-                .hasFieldOrPropertyWithValue("name", name)
-                .hasFieldOrPropertyWithValue("squareMeter.value", squareMeter);
     }
 
     public HotelRoomAssertion hasDescriptionEqualTo(String expected) {
