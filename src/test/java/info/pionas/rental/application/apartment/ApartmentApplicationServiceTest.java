@@ -10,14 +10,13 @@ import info.pionas.rental.domain.booking.BookingAssertion;
 import info.pionas.rental.domain.booking.BookingRepository;
 import info.pionas.rental.domain.event.FakeEventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
+import info.pionas.rental.infrastructure.clock.FakeClock;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import static info.pionas.rental.domain.apartment.Apartment.Builder.apartment;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -90,7 +89,6 @@ class ApartmentApplicationServiceTest {
     @Test
     void shouldReturnIdOfBooking() {
         givenApartment();
-        LocalDateTime beforeNow = LocalDateTime.now().minusNanos(1);
         ArgumentCaptor<ApartmentBooked> captor = ArgumentCaptor.forClass(ApartmentBooked.class);
 
         service.book(APARTMENT_ID, TENANT_ID, START, END);
@@ -98,9 +96,7 @@ class ApartmentApplicationServiceTest {
         then(eventChannel).should().publish(captor.capture());
         ApartmentBooked actual = captor.getValue();
         assertThat(actual.getEventId()).isEqualTo(FakeEventIdFactory.UUID);
-        assertThat(actual.getEventCreationDateTime())
-                .isAfter(beforeNow)
-                .isBefore(LocalDateTime.now().plusNanos(1));
+        assertThat(actual.getEventCreationDateTime()).isEqualTo(FakeClock.NOW);
         assertThat(actual.getOwnerId()).isEqualTo(OWNER_ID);
         assertThat(actual.getTenantId()).isEqualTo(TENANT_ID);
         assertThat(actual.getPeriodStart()).isEqualTo(START);
@@ -108,7 +104,7 @@ class ApartmentApplicationServiceTest {
     }
 
     @Test
-    void shouldPublishAPartmentBookedEvent() {
+    void shouldPublishApartmentBookedEvent() {
         givenApartment();
         given(bookingRepository.save(any())).willReturn(BOOKING_ID);
 
