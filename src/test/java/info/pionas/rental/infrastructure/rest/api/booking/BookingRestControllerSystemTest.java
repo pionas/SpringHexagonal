@@ -1,9 +1,9 @@
 package info.pionas.rental.infrastructure.rest.api.booking;
 
 import com.google.common.collect.ImmutableMap;
-import info.pionas.rental.infrastructure.json.JsonFactory;
-import info.pionas.rental.infrastructure.rest.api.apartment.ApartmentBookingDto;
+import info.pionas.rental.application.apartment.ApartmentBookingDto;
 import info.pionas.rental.application.apartment.ApartmentDto;
+import info.pionas.rental.infrastructure.json.JsonFactory;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,8 +54,9 @@ class BookingRestControllerSystemTest {
     }
 
     private String getUrlToExistingBooking() throws Exception {
-        ApartmentBookingDto apartmentBookingDto = new ApartmentBookingDto("1357", LocalDate.of(2020, 11, 12), LocalDate.of(2020, 12, 1));
         String url = save(givenApartment()).getResponse().getRedirectedUrl();
+        String apartmentId = url.replace("/apartment/", "");
+        ApartmentBookingDto apartmentBookingDto = new ApartmentBookingDto(apartmentId, "1357", LocalDate.of(2020, 11, 12), LocalDate.of(2020, 12, 1));
 
         MvcResult mvcResult = mockMvc.perform(put(url.replace("apartment/", "apartment/book/")).contentType(MediaType.APPLICATION_JSON).content(jsonFactory.create(apartmentBookingDto)))
                 .andExpect(status().isCreated())

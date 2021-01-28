@@ -2,6 +2,7 @@ package info.pionas.rental.application.apartmentbookinghistory;
 
 import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.application.apartment.ApartmentApplicationService;
+import info.pionas.rental.application.apartment.ApartmentBookingDto;
 import info.pionas.rental.domain.apartment.Apartment;
 import info.pionas.rental.domain.apartment.ApartmentRepository;
 import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingAssertion;
@@ -62,7 +63,8 @@ class ApartmentBookingHistoryEventListenerIntegrationTest {
         LocalDate end = LocalDate.of(2020, 1, 14);
         givenExistingApartment();
 
-        apartmentApplicationService.book(apartmentId, tenantId, start, end);
+        ApartmentBookingDto apartmentBookingDto = new ApartmentBookingDto(apartmentId, tenantId, start, end);
+        apartmentApplicationService.book(apartmentBookingDto);
         ApartmentBookingHistory actual = apartmentBookingHistoryRepository.findFor(apartmentId);
 
         ApartmentBookingHistoryAssertion.assertThat(actual)
