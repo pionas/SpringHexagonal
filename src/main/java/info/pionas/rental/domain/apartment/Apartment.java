@@ -2,6 +2,7 @@ package info.pionas.rental.domain.apartment;
 
 import info.pionas.rental.domain.address.Address;
 import info.pionas.rental.domain.booking.Booking;
+import info.pionas.rental.domain.period.Period;
 import info.pionas.rental.domain.space.Space;
 import info.pionas.rental.domain.space.SpacesFactory;
 import lombok.Getter;
