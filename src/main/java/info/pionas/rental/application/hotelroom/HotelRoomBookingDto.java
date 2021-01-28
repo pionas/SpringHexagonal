@@ -1,4 +1,4 @@
-package info.pionas.rental.infrastructure.rest.api.hotelroom;
+package info.pionas.rental.application.hotelroom;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Getter
 public class HotelRoomBookingDto {
-
-    private final String tenentId;
+    private final String hotelRoomId;
+    private final String tenantId;
     private final List<LocalDate> days;
 }
