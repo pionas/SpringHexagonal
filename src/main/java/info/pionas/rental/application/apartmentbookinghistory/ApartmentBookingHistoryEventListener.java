@@ -4,7 +4,7 @@ import info.pionas.rental.domain.apartment.ApartmentBooked;
 import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBooking;
 import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingHistory;
 import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingHistoryRepository;
-import info.pionas.rental.domain.apartmentbookinghistory.BookingPeriod;
+import info.pionas.rental.domain.apartmentbookinghistory.Period;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -18,13 +18,13 @@ public class ApartmentBookingHistoryEventListener {
     @EventListener
     public void consume(ApartmentBooked apartmentBooked) {
         ApartmentBookingHistory apartmentBookingHistory = getApartmentBookingHistoryFor(apartmentBooked.getApartmentId());
-        BookingPeriod bookingPeriod = new BookingPeriod(apartmentBooked.getPeriodStart(), apartmentBooked.getPeriodEnd());
+        Period period = new Period(apartmentBooked.getPeriodStart(), apartmentBooked.getPeriodEnd());
         apartmentBookingHistory.add(
                 ApartmentBooking.start(
                         apartmentBooked.getEventCreationDateTime(),
                         apartmentBooked.getOwnerId(),
                         apartmentBooked.getTenantId(),
-                        bookingPeriod
+                        period
                 )
         );
         apartmentBookingHistoryRepository.save(apartmentBookingHistory);

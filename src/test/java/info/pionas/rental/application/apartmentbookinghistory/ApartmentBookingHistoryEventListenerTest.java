@@ -1,7 +1,6 @@
 package info.pionas.rental.application.apartmentbookinghistory;
 
 import info.pionas.rental.domain.apartment.ApartmentBooked;
-import info.pionas.rental.domain.apartment.Period;
 import info.pionas.rental.domain.apartmentbookinghistory.*;
 import info.pionas.rental.domain.clock.Clock;
 import org.junit.jupiter.api.Test;
@@ -22,7 +21,7 @@ class ApartmentBookingHistoryEventListenerTest {
     private static final String TENANT_ID = "8989";
     private static final LocalDate START = LocalDate.of(2020, 10, 11);
     private static final LocalDate END = LocalDate.of(2020, 10, 12);
-    private static final Period PERIOD = new Period(START, END);
+    private static final info.pionas.rental.domain.apartment.Period PERIOD = new info.pionas.rental.domain.apartment.Period(START, END);
     private static final int FIRST_BOOKING = 1;
     private static final int NEXT_BOOKING = 2;
 
@@ -61,7 +60,7 @@ class ApartmentBookingHistoryEventListenerTest {
                     ApartmentBookingAssertion.assertThat(actualBooking)
                             .hasOwnerIdEqualTo(OWNER_ID)
                             .hasTenantIdEqualTo(TENANT_ID)
-                            .hasBookingPeriodThatHas(START, END);
+                            .hasPeriodThatHas(START, END);
                 });
     }
 
@@ -74,7 +73,7 @@ class ApartmentBookingHistoryEventListenerTest {
     private ApartmentBookingHistory getApartmentBookingHistory() {
         ApartmentBookingHistory apartmentBookingHistory = new ApartmentBookingHistory(APARTMENT_ID);
         ApartmentBooking apartmentBooking = ApartmentBooking.start(
-                LocalDateTime.now(), OWNER_ID, "9807", new BookingPeriod(LocalDate.now(), LocalDate.now().plusDays(1)));
+                LocalDateTime.now(), OWNER_ID, "9807", new Period(LocalDate.now(), LocalDate.now().plusDays(1)));
         apartmentBookingHistory.add(apartmentBooking);
         return apartmentBookingHistory;
     }

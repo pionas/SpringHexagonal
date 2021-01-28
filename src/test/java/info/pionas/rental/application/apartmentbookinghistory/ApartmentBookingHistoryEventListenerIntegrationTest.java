@@ -73,7 +73,7 @@ class ApartmentBookingHistoryEventListenerIntegrationTest {
                     ApartmentBookingAssertion.assertThat(actualBooking)
                             .hasOwnerIdEqualTo(OWNER_ID)
                             .hasTenantIdEqualTo(tenantId)
-                            .hasBookingPeriodThatHas(start, end);
+                            .hasPeriodThatHas(start, end);
                 });
     }
 

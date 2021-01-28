@@ -21,9 +21,9 @@ public class ApartmentBooking {
     private String ownerId;
     private String tenantId;
     @Embedded
-    private BookingPeriod bookingPeriod;
+    private Period period;
 
-    public static ApartmentBooking start(LocalDateTime bookingDateTime, String ownerId, String tenantId, BookingPeriod bookingPeriod) {
-        return new ApartmentBooking(BookingStep.START, bookingDateTime, ownerId, tenantId, bookingPeriod);
+    public static ApartmentBooking start(LocalDateTime bookingDateTime, String ownerId, String tenantId, Period period) {
+        return new ApartmentBooking(BookingStep.START, bookingDateTime, ownerId, tenantId, period);
     }
 }

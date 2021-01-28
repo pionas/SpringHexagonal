@@ -6,7 +6,7 @@ import info.pionas.rental.domain.apartment.ApartmentRepository;
 import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBooking;
 import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingHistory;
 import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingHistoryRepository;
-import info.pionas.rental.domain.apartmentbookinghistory.BookingPeriod;
+import info.pionas.rental.domain.apartmentbookinghistory.Period;
 import info.pionas.rental.infrastructure.persistence.jpa.apartment.SpringJpaApartmentTestRepository;
 import info.pionas.rental.infrastructure.persistence.jpa.apartmentbookinghistory.SpringJpaApartmentBookingHistoryTestRepository;
 import org.assertj.core.api.Assertions;
@@ -82,7 +82,7 @@ class QueryApartmentRepositoryIntegrationTest {
                 .build();
         apartmentId1 = apartmentRepository.save(apartment1);
         ApartmentBookingHistory apartmentBookingHistory = new ApartmentBookingHistory(apartmentId1);
-        apartmentBookingHistory.add(ApartmentBooking.start(BOOKING_DATE_TIME_1, OWNER_ID_1, TENANT_ID_1, new BookingPeriod(BOOKING_START_1, BOOKING_END_1)));
+        apartmentBookingHistory.add(ApartmentBooking.start(BOOKING_DATE_TIME_1, OWNER_ID_1, TENANT_ID_1, new Period(BOOKING_START_1, BOOKING_END_1)));
         apartmentBookingHistoryRepository.save(apartmentBookingHistory);
 
         Apartment apartment2 = apartment()

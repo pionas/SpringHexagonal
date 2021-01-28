@@ -55,7 +55,7 @@ class JpaApartmentBookingHistoryRepositoryIntegrationTest {
         String ownerId = randomId();
         String tenantId = randomId();
         ApartmentBookingHistory apartmentBookingHistory = new ApartmentBookingHistory(apartmentId);
-        apartmentBookingHistory.add(ApartmentBooking.start(eventCreationDate, ownerId, tenantId, new BookingPeriod(start, end)));
+        apartmentBookingHistory.add(ApartmentBooking.start(eventCreationDate, ownerId, tenantId, new Period(start, end)));
         repository.save(apartmentBookingHistory);
 
         ApartmentBookingHistory actual = repository.findFor(apartmentId);
@@ -66,7 +66,7 @@ class JpaApartmentBookingHistoryRepositoryIntegrationTest {
                     ApartmentBookingAssertion.assertThat(actualBooking)
                             .hasOwnerIdEqualTo(ownerId)
                             .hasTenantIdEqualTo(tenantId)
-                            .hasBookingPeriodThatHas(start, end);
+                            .hasPeriodThatHas(start, end);
                 });
     }
 
