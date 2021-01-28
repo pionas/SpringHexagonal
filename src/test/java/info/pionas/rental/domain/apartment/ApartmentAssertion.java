@@ -1,5 +1,6 @@
 package info.pionas.rental.domain.apartment;
 
+import info.pionas.rental.domain.space.Space;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
 
@@ -40,20 +41,20 @@ public class ApartmentAssertion {
         return this;
     }
 
-    public ApartmentAssertion hasRoomsEqualsTo(Map<String, Double> roomsDefinition) {
-        Assertions.assertThat(actual).extracting("rooms").satisfies(roomsActual -> {
-            List<Room> rooms = (List<Room>) roomsActual;
-            Assertions.assertThat(rooms).hasSize(roomsDefinition.size());
+    public ApartmentAssertion hasSpacesEqualsTo(Map<String, Double> spacesDefinition) {
+        Assertions.assertThat(actual).extracting("spaces").satisfies(spacesActual -> {
+            List<Room> spaces = (List<Room>) spacesActual;
+            Assertions.assertThat(spaces).hasSize(spacesDefinition.size());
 
-            roomsDefinition.forEach((name, squareMeter) -> {
-                Assertions.assertThat(rooms).anySatisfy(hasRoomThat(name, squareMeter));
+            spacesDefinition.forEach((name, squareMeter) -> {
+                Assertions.assertThat(spaces).anySatisfy(hasSpaceThat(name, squareMeter));
             });
         });
 
         return this;
     }
 
-    private Consumer<Room> hasRoomThat(String name, Double squareMeter) {
+    private Consumer<Room> hasSpaceThat(String name, Double squareMeter) {
         return room -> Assertions.assertThat(room)
                 .hasFieldOrPropertyWithValue("name", name)
                 .hasFieldOrPropertyWithValue("squareMeter.size", squareMeter);

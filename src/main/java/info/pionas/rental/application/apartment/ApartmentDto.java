@@ -18,5 +18,5 @@ public class ApartmentDto {
     private final String city;
     private final String country;
     private final String description;
-    private final Map<String, Double> roomsDefinition;
+    private final Map<String, Double> spacesDefinition;
 }

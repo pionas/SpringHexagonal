@@ -38,7 +38,7 @@ class QueryApartmentRepositoryIntegrationTest {
     private static final String CITY_1 = "Cracow";
     private static final String COUNTRY_1 = "Poland";
     private static final String DESCRIPTION_1 = "Nice place to stay";
-    private static final Map<String, Double> ROOMS_DEFINITION_1 = ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0);
+    private static final Map<String, Double> SPACES_DEFINITION_1 = ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0);
     private static final LocalDateTime BOOKING_DATE_TIME_1 = LocalDateTime.of(2020, 12, 10, 11, 12);
     private static final String TENANT_ID_1 = "2468";
     private static final LocalDate BOOKING_START_1 = LocalDate.of(2020, 12, 11);
@@ -51,7 +51,7 @@ class QueryApartmentRepositoryIntegrationTest {
     private static final String CITY_2 = "Berlin";
     private static final String COUNTRY_2 = "Germany";
     private static final String DESCRIPTION_2 = "Lovely place";
-    private static final Map<String, Double> ROOMS_DEFINITION_2 = ImmutableMap.of("Toilet", 15.0, "RoomOne", 20.0, "RoomTwo", 25.0);
+    private static final Map<String, Double> SPACES_DEFINITION_2 = ImmutableMap.of("Toilet", 15.0, "RoomOne", 20.0, "RoomTwo", 25.0);
 
     @Autowired
     private QueryApartmentRepository queryApartmentRepository;
@@ -78,7 +78,7 @@ class QueryApartmentRepositoryIntegrationTest {
                 .withCity(CITY_1)
                 .withCountry(COUNTRY_1)
                 .withDescription(DESCRIPTION_1)
-                .withRoomsDefinition(ROOMS_DEFINITION_1)
+                .withSpacesDefinition(SPACES_DEFINITION_1)
                 .build();
         apartmentId1 = apartmentRepository.save(apartment1);
         ApartmentBookingHistory apartmentBookingHistory = new ApartmentBookingHistory(apartmentId1);
@@ -94,7 +94,7 @@ class QueryApartmentRepositoryIntegrationTest {
                 .withCity(CITY_2)
                 .withCountry(COUNTRY_2)
                 .withDescription(DESCRIPTION_2)
-                .withRoomsDefinition(ROOMS_DEFINITION_2)
+                .withSpacesDefinition(SPACES_DEFINITION_2)
                 .build();
         apartmentId2 = apartmentRepository.save(apartment2);
 
@@ -120,7 +120,7 @@ class QueryApartmentRepositoryIntegrationTest {
                             .hasOwnerIdEqualsTo(OWNER_ID_1)
                             .hasDescriptionEqualsTo(DESCRIPTION_1)
                             .hasAddressEqualsTo(STREET_1, POSTAL_CODE_1, HOUSE_NUMBER_1, APARTMENT_NUMBER_1, CITY_1, COUNTRY_1)
-                            .hasRoomsEqualsTo(ROOMS_DEFINITION_1);
+                            .hasRoomsEqualsTo(SPACES_DEFINITION_1);
                 })
                 .anySatisfy(apartmentReadModel -> {
                     ApartmentReadModelAssertion.assertThat(apartmentReadModel)
@@ -128,7 +128,7 @@ class QueryApartmentRepositoryIntegrationTest {
                             .hasOwnerIdEqualsTo(OWNER_ID_2)
                             .hasDescriptionEqualsTo(DESCRIPTION_2)
                             .hasAddressEqualsTo(STREET_2, POSTAL_CODE_2, HOUSE_NUMBER_2, APARTMENT_NUMBER_2, CITY_2, COUNTRY_2)
-                            .hasRoomsEqualsTo(ROOMS_DEFINITION_2);
+                            .hasRoomsEqualsTo(SPACES_DEFINITION_2);
                 });
     }
 
@@ -150,7 +150,7 @@ class QueryApartmentRepositoryIntegrationTest {
                 .hasOwnerIdEqualsTo(OWNER_ID_2)
                 .hasDescriptionEqualsTo(DESCRIPTION_2)
                 .hasAddressEqualsTo(STREET_2, POSTAL_CODE_2, HOUSE_NUMBER_2, APARTMENT_NUMBER_2, CITY_2, COUNTRY_2)
-                .hasRoomsEqualsTo(ROOMS_DEFINITION_2);
+                .hasRoomsEqualsTo(SPACES_DEFINITION_2);
         Assertions.assertThat(actual.getBookingHistory()).isNull();
     }
 
@@ -164,7 +164,7 @@ class QueryApartmentRepositoryIntegrationTest {
                 .hasOwnerIdEqualsTo(OWNER_ID_1)
                 .hasDescriptionEqualsTo(DESCRIPTION_1)
                 .hasAddressEqualsTo(STREET_1, POSTAL_CODE_1, HOUSE_NUMBER_1, APARTMENT_NUMBER_1, CITY_1, COUNTRY_1)
-                .hasRoomsEqualsTo(ROOMS_DEFINITION_1);
+                .hasRoomsEqualsTo(SPACES_DEFINITION_1);
         ApartmentBookingHistoryReadModelAssertion.assertThat(actual.getBookingHistory())
                 .hasApartmentIdEqualsTo(apartmentId1)
                 .hasOneApartmentBooking()

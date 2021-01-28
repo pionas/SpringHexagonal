@@ -41,10 +41,10 @@ class ApartmentReadModelAssertion {
     }
 
     ApartmentReadModelAssertion hasRoomsEqualsTo(Map<String, Double> expected) {
-        Assertions.assertThat(actual.getRooms()).hasSize(expected.size());
+        Assertions.assertThat(actual.getSpaces()).hasSize(expected.size());
 
         expected.forEach((name, squareMeter) -> {
-            Assertions.assertThat(actual.getRooms()).anySatisfy(hasRoomThat(name, squareMeter));
+            Assertions.assertThat(actual.getSpaces()).anySatisfy(hasRoomThat(name, squareMeter));
         });
 
         return this;

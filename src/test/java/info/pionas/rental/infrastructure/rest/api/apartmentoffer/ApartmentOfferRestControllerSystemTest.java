@@ -56,7 +56,7 @@ class ApartmentOfferRestControllerSystemTest {
                     .withCity("Krakow")
                     .withCountry("Poland")
                     .withDescription("The greatest apartment")
-                    .withRoomsDefinition(ImmutableMap.of("Room1", 50.0))
+                    .withSpacesDefinition(ImmutableMap.of("Room1", 50.0))
                     .build();
             apartmentId = springJpaApartmentTestRepository.save(apartment);
         }
