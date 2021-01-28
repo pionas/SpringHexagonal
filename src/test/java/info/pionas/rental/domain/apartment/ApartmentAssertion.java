@@ -1,12 +1,12 @@
 package info.pionas.rental.domain.apartment;
 
 import info.pionas.rental.domain.space.Space;
+import info.pionas.rental.domain.space.SpacesAssertion;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 
 @RequiredArgsConstructor
@@ -41,23 +41,13 @@ public class ApartmentAssertion {
         return this;
     }
 
-    public ApartmentAssertion hasSpacesEqualsTo(Map<String, Double> spacesDefinition) {
+    public ApartmentAssertion hasSpacesEqualsTo(Map<String, Double> expected) {
         Assertions.assertThat(actual).extracting("spaces").satisfies(spacesActual -> {
-            List<Room> spaces = (List<Room>) spacesActual;
-
-            Assertions.assertThat(spaces).hasSize(spacesDefinition.size());
-
-            spacesDefinition.forEach((name, squareMeter) -> {
-                Assertions.assertThat(spaces).anySatisfy(hasSpaceThat(name, squareMeter));
-            });
+            SpacesAssertion.assertThat((List<Space>) spacesActual)
+                    .hasSize(expected.size())
+                    .hasAllSpacesFrom(expected);
         });
-
         return this;
     }
 
-    private Consumer<Room> hasSpaceThat(String name, Double squareMeter) {
-        return room -> Assertions.assertThat(room)
-                .hasFieldOrPropertyWithValue("name", name)
-                .hasFieldOrPropertyWithValue("squareMeter.size", squareMeter);
-    }
 }

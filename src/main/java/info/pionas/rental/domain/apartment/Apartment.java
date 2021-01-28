@@ -2,11 +2,12 @@ package info.pionas.rental.domain.apartment;
 
 import info.pionas.rental.domain.address.Address;
 import info.pionas.rental.domain.booking.Booking;
+import info.pionas.rental.domain.space.Space;
+import info.pionas.rental.domain.space.SpacesFactory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -34,11 +35,14 @@ public class Apartment {
 
     @ElementCollection
     @CollectionTable(name = "APARTMENT_ROOM", joinColumns = @JoinColumn(name = "APARTMENT_ID"))
-    private List<Room> spaces;
+    @AttributeOverrides({
+            @AttributeOverride(name = "squareMeter.value", column = @Column(name = "size"))
+    })
+    private List<Space> spaces;
 
     private String description;
 
-    private Apartment(String ownerId, Address address, String apartmentNumber, List<Room> spaces, String description) {
+    private Apartment(String ownerId, Address address, String apartmentNumber, List<Space> spaces, String description) {
         this.ownerId = ownerId;
         this.address = address;
         this.apartmentNumber = apartmentNumber;
@@ -129,14 +133,8 @@ public class Apartment {
             return new Address(street, postalCode, houseNumber, city, country);
         }
 
-        private List<Room> spaces() {
-            List<Room> spaces = new ArrayList<>();
-            spacesDefinition.forEach((name, size) -> {
-                SquareMeter squareMeter = new SquareMeter(size);
-                spaces.add(new Room(name, squareMeter));
-            });
-
-            return spaces;
+        private List<Space> spaces() {
+            return SpacesFactory.create(spacesDefinition);
         }
     }
 }

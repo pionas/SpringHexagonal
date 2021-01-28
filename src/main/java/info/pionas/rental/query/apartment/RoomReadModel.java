@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -12,5 +13,6 @@ import javax.persistence.Embeddable;
 class RoomReadModel {
 
     private String name;
+    @Column(name = "size")
     private Double size;
 }
