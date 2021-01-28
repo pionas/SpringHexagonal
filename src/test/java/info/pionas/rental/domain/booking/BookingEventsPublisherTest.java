@@ -1,8 +1,6 @@
 package info.pionas.rental.domain.booking;
 
 import com.google.common.collect.ImmutableList;
-import info.pionas.rental.domain.apartment.ApartmentBooked;
-import info.pionas.rental.domain.apartment.Period;
 import info.pionas.rental.domain.clock.Clock;
 import info.pionas.rental.domain.event.EventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
@@ -32,7 +30,7 @@ class BookingEventsPublisherTest {
                 LocalDate.of(2020, 10, 10), LocalDate.of(2020, 10, 11), LocalDate.of(2020, 10, 12));
         LocalDateTime beforeNow = LocalDateTime.now().minusNanos(1);
 
-        publisher.publishApartmentBooked(APARTMENT, rentalPlaceId, tenantId, days);
+        publisher.bookingAccepted(APARTMENT, rentalPlaceId, tenantId, days);
         then(eventChannel).should().publish(captor.capture());
         BookingAccepted actual = captor.getValue();
         assertThat(actual.getEventId()).matches(Pattern.compile("[0-9a-z\\-]{36}"));
