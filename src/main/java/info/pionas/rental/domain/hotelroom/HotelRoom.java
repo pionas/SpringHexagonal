@@ -1,6 +1,8 @@
 package info.pionas.rental.domain.hotelroom;
 
 import info.pionas.rental.domain.booking.Booking;
+import info.pionas.rental.domain.space.Space;
+import info.pionas.rental.domain.space.SpacesFactory;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -85,8 +87,7 @@ public class HotelRoom {
         }
 
         private List<Space> spaces() {
-            List<Space> spaces = SpacesFactory.create(spacesDefinition);
-            return spaces;
+            return SpacesFactory.create(spacesDefinition);
         }
     }
 }

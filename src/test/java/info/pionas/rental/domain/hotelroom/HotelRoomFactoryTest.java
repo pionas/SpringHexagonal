@@ -1,6 +1,7 @@
 package info.pionas.rental.domain.hotelroom;
 
 import com.google.common.collect.ImmutableMap;
+import info.pionas.rental.domain.space.Space;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

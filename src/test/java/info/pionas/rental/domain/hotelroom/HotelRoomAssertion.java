@@ -1,5 +1,6 @@
 package info.pionas.rental.domain.hotelroom;
 
+import info.pionas.rental.domain.space.Space;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;

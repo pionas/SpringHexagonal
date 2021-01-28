@@ -1,11 +1,11 @@
-package info.pionas.rental.domain.hotelroom;
+package info.pionas.rental.domain.space;
 
 import java.util.List;
 import java.util.Map;
 
 import static java.util.stream.Collectors.toList;
 
-class SpacesFactory {
+public class SpacesFactory {
     private SpacesFactory() {
     }
 
