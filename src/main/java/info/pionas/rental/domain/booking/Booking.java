@@ -1,9 +1,6 @@
 package info.pionas.rental.domain.booking;
 
 import info.pionas.rental.domain.apartment.Period;
-import info.pionas.rental.domain.clock.Clock;
-import info.pionas.rental.domain.event.EventIdFactory;
-import info.pionas.rental.domain.eventchannel.EventChannel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -51,10 +48,9 @@ public class Booking {
         bookingStatus = BookingStatus.REJECTED;
     }
 
-    public void accept(EventChannel eventChannel) {
+    public void accept(BookingEventsPublisher bookingEventsPublisher) {
         bookingStatus = BookingStatus.ACCEPTED;
-        BookingEventsPublisher publisher = new BookingEventsPublisher(new EventIdFactory(), new Clock(), eventChannel);
-        publisher.publishApartmentBooked(rentalType, rentalPlaceId, tenantId, days);
+        bookingEventsPublisher.bookingAccepted(rentalType, rentalPlaceId, tenantId, days);
     }
 
     public String id() {
