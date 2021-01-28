@@ -3,6 +3,7 @@ package info.pionas.rental.application.apartmentbookinghistory;
 import info.pionas.rental.domain.apartment.ApartmentBooked;
 import info.pionas.rental.domain.apartmentbookinghistory.*;
 import info.pionas.rental.domain.clock.Clock;
+import info.pionas.rental.domain.period.Period;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.BDDMockito;

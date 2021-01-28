@@ -6,7 +6,7 @@ import info.pionas.rental.domain.apartment.ApartmentRepository;
 import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBooking;
 import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingHistory;
 import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingHistoryRepository;
-import info.pionas.rental.domain.apartmentbookinghistory.Period;
+import info.pionas.rental.domain.period.Period;
 import info.pionas.rental.infrastructure.persistence.jpa.apartment.SpringJpaApartmentTestRepository;
 import info.pionas.rental.infrastructure.persistence.jpa.apartmentbookinghistory.SpringJpaApartmentBookingHistoryTestRepository;
 import org.assertj.core.api.Assertions;

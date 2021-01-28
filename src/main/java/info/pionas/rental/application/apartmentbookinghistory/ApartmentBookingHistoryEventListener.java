@@ -4,7 +4,7 @@ import info.pionas.rental.domain.apartment.ApartmentBooked;
 import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBooking;
 import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingHistory;
 import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingHistoryRepository;
-import info.pionas.rental.domain.apartmentbookinghistory.Period;
+import info.pionas.rental.domain.period.Period;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;

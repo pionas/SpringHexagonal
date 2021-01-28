@@ -1,6 +1,7 @@
 package info.pionas.rental.infrastructure.persistence.jpa.apartmentbookinghistory;
 
 import info.pionas.rental.domain.apartmentbookinghistory.*;
+import info.pionas.rental.domain.period.Period;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;

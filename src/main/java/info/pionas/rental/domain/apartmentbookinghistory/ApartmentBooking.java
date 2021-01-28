@@ -1,5 +1,6 @@
 package info.pionas.rental.domain.apartmentbookinghistory;
 
+import info.pionas.rental.domain.period.Period;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

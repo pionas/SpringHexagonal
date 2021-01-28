@@ -1,4 +1,4 @@
-package info.pionas.rental.domain.apartmentbookinghistory;
+package info.pionas.rental.domain.period;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
