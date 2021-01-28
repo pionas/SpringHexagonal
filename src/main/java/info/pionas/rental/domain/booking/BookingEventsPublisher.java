@@ -15,7 +15,7 @@ public class BookingEventsPublisher {
     private final Clock clock;
     private final EventChannel eventChannel;
 
-    public void bookingAccepted(RentalType rentalType, String rentalPlaceId, String tenantId, List<LocalDate> days) {
+    void bookingAccepted(RentalType rentalType, String rentalPlaceId, String tenantId, List<LocalDate> days) {
         BookingAccepted bookingAccepted = new BookingAccepted(eventIdFactory.create(), clock.now(), rentalType.name(), rentalPlaceId, tenantId, days);
         eventChannel.publish(bookingAccepted);
     }

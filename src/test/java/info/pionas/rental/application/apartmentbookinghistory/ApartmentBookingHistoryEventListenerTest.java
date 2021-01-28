@@ -2,8 +2,8 @@ package info.pionas.rental.application.apartmentbookinghistory;
 
 import info.pionas.rental.domain.apartment.ApartmentBooked;
 import info.pionas.rental.domain.apartmentbookinghistory.*;
-import info.pionas.rental.domain.clock.Clock;
 import info.pionas.rental.domain.period.Period;
+import info.pionas.rental.infrastructure.clock.FakeClock;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.BDDMockito;
@@ -22,7 +22,7 @@ class ApartmentBookingHistoryEventListenerTest {
     private static final String TENANT_ID = "8989";
     private static final LocalDate START = LocalDate.of(2020, 10, 11);
     private static final LocalDate END = LocalDate.of(2020, 10, 12);
-    private static final info.pionas.rental.domain.apartment.Period PERIOD = new info.pionas.rental.domain.apartment.Period(START, END);
+    private static final Period PERIOD = new Period(START, END);
     private static final int FIRST_BOOKING = 1;
     private static final int NEXT_BOOKING = 2;
 
@@ -82,7 +82,7 @@ class ApartmentBookingHistoryEventListenerTest {
     private ApartmentBooked givenApartmentBooked() {
         return apartmentBooked()
                 .withEventId("232132")
-                .withEventCreationDateTime(new Clock().now())
+                .withEventCreationDateTime(FakeClock.NOW)
                 .withApartmentId(APARTMENT_ID)
                 .withOwnerId(OWNER_ID)
                 .withTenantId(TENANT_ID)

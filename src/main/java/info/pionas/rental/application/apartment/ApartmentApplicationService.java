@@ -3,9 +3,9 @@ package info.pionas.rental.application.apartment;
 import info.pionas.rental.domain.apartment.Apartment;
 import info.pionas.rental.domain.apartment.ApartmentEventsPublisher;
 import info.pionas.rental.domain.apartment.ApartmentRepository;
-import info.pionas.rental.domain.apartment.Period;
 import info.pionas.rental.domain.booking.Booking;
 import info.pionas.rental.domain.booking.BookingRepository;
+import info.pionas.rental.domain.period.Period;
 import lombok.RequiredArgsConstructor;
 
 import static info.pionas.rental.domain.apartment.Apartment.Builder.apartment;
@@ -36,7 +36,9 @@ public class ApartmentApplicationService {
     public String book(ApartmentBookingDto apartmentBookingDto) {
         Apartment apartment = apartmentRepository.findById(apartmentBookingDto.getApartmentId());
         Period period = new Period(apartmentBookingDto.getStart(), apartmentBookingDto.getEnd());
+
         Booking booking = apartment.book(apartmentBookingDto.getTenantId(), period, apartmentEventsPublisher);
+
         return bookingRepository.save(booking);
     }
 }
