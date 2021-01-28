@@ -44,6 +44,7 @@ public class ApartmentAssertion {
     public ApartmentAssertion hasSpacesEqualsTo(Map<String, Double> spacesDefinition) {
         Assertions.assertThat(actual).extracting("spaces").satisfies(spacesActual -> {
             List<Room> spaces = (List<Room>) spacesActual;
+
             Assertions.assertThat(spaces).hasSize(spacesDefinition.size());
 
             spacesDefinition.forEach((name, squareMeter) -> {
