@@ -28,7 +28,7 @@ class BookingCommandHandlerTest {
 
     private final BookingRepository bookingRepository = mock(BookingRepository.class);
     private final EventChannel eventChannel = mock(EventChannel.class);
-    private final BookingCommandHandler commandHandler = new BookingCommandHandler(bookingRepository, eventChannel);
+    private final BookingCommandHandler commandHandler = new BookingCommandHandlerFactory().bookingCommandHandler(bookingRepository, eventChannel);
 
     @Test
     void shouldAcceptBooking() {
