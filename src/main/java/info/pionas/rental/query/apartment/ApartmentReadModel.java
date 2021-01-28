@@ -22,6 +22,7 @@ public class ApartmentReadModel {
     private String ownerId;
     private String street;
     private String postalCode;
+    @Column(name = "house_number")
     private String houseNumber;
     private String apartmentNumber;
     private String city;

@@ -28,11 +28,12 @@ public class ApartmentAssertion {
 
     public ApartmentAssertion hasAddressEqualsTo(
             String street, String postalCode, String houseNumber, String apartmentNumber, String city, String country) {
+        Assertions.assertThat(actual)
+                .hasFieldOrPropertyWithValue("apartmentNumber", apartmentNumber);
         Assertions.assertThat(actual).extracting("address")
                 .hasFieldOrPropertyWithValue("street", street)
                 .hasFieldOrPropertyWithValue("postalCode", postalCode)
-                .hasFieldOrPropertyWithValue("houseNumber", houseNumber)
-                .hasFieldOrPropertyWithValue("apartmentNumber", apartmentNumber)
+                .hasFieldOrPropertyWithValue("buildingNumber", houseNumber)
                 .hasFieldOrPropertyWithValue("city", city)
                 .hasFieldOrPropertyWithValue("country", country);
 
