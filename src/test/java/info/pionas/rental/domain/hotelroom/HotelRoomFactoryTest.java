@@ -30,10 +30,10 @@ public class HotelRoomFactoryTest {
         assertThat(actual).hasFieldOrPropertyWithValue("hotelId", hotelId);
         assertThat(actual).hasFieldOrPropertyWithValue("number", number);
         assertThat(actual).hasFieldOrPropertyWithValue("description", description);
-        assertThatHasRooms(actual, spacesDefinition);
+        assertThatHasSpaces(actual, spacesDefinition);
     }
 
-    private void assertThatHasRooms(HotelRoom actual, Map<String, Double> spacesDefinition) {
+    private void assertThatHasSpaces(HotelRoom actual, Map<String, Double> spacesDefinition) {
         assertThat(actual).extracting("spaces").satisfies(spacesActual -> {
             List<Space> spaces = (List<Space>) spacesActual;
             assertThat(spaces).hasSize(spacesDefinition.size());

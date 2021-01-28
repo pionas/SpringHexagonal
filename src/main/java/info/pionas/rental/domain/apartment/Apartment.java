@@ -34,15 +34,15 @@ public class Apartment {
 
     @ElementCollection
     @CollectionTable(name = "APARTMENT_ROOM", joinColumns = @JoinColumn(name = "APARTMENT_ID"))
-    private List<Room> rooms;
+    private List<Room> spaces;
 
     private String description;
 
-    private Apartment(String ownerId, Address address, String apartmentNumber, List<Room> rooms, String description) {
+    private Apartment(String ownerId, Address address, String apartmentNumber, List<Room> spaces, String description) {
         this.ownerId = ownerId;
         this.address = address;
         this.apartmentNumber = apartmentNumber;
-        this.rooms = rooms;
+        this.spaces = spaces;
         this.description = description;
     }
 
@@ -67,7 +67,7 @@ public class Apartment {
         private String city;
         private String country;
         private String description;
-        private Map<String, Double> roomsDefinition;
+        private Map<String, Double> spacesDefinition;
 
         private Builder() {
         }
@@ -116,27 +116,27 @@ public class Apartment {
             return this;
         }
 
-        public Builder withRoomsDefinition(Map<String, Double> roomsDefinition) {
-            this.roomsDefinition = roomsDefinition;
+        public Builder withSpacesDefinition(Map<String, Double> spacesDefinition) {
+            this.spacesDefinition = spacesDefinition;
             return this;
         }
 
         public Apartment build() {
-            return new Apartment(ownerId, address(), apartmentNumber, rooms(), description);
+            return new Apartment(ownerId, address(), apartmentNumber, spaces(), description);
         }
 
         private Address address() {
             return new Address(street, postalCode, houseNumber, city, country);
         }
 
-        private List<Room> rooms() {
-            List<Room> rooms = new ArrayList<>();
-            roomsDefinition.forEach((name, size) -> {
+        private List<Room> spaces() {
+            List<Room> spaces = new ArrayList<>();
+            spacesDefinition.forEach((name, size) -> {
                 SquareMeter squareMeter = new SquareMeter(size);
-                rooms.add(new Room(name, squareMeter));
+                spaces.add(new Room(name, squareMeter));
             });
 
-            return rooms;
+            return spaces;
         }
     }
 }
