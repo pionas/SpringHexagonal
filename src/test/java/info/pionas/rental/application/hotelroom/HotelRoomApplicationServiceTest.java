@@ -8,6 +8,7 @@ import info.pionas.rental.domain.event.FakeEventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import info.pionas.rental.domain.hotel.HotelRepository;
 import info.pionas.rental.domain.hotelroom.*;
+import info.pionas.rental.infrastructure.clock.FakeClock;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -15,11 +16,9 @@ import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -83,16 +82,13 @@ class HotelRoomApplicationServiceTest {
         ArgumentCaptor<HotelRoomBooked> captor = ArgumentCaptor.forClass(HotelRoomBooked.class);
         String hotelRoomId = "1234";
         givenHotelRoom(hotelRoomId);
-        LocalDateTime beforeNow = LocalDateTime.now().minusNanos(1);
 
         service.book(hotelRoomId, TENANT_ID, DAYS);
 
         then(eventChannel).should().publish(captor.capture());
         HotelRoomBooked actual = captor.getValue();
         assertThat(actual.getEventId()).isEqualTo(FakeEventIdFactory.UUID);
-        assertThat(actual.getEventCreationDateTime())
-                .isAfter(beforeNow)
-                .isBefore(LocalDateTime.now().plusNanos(1));
+        assertThat(actual.getEventCreationDateTime()).isEqualTo(FakeClock.NOW);
         assertThat(actual.getHotelId()).isEqualTo(HOTEL_ID);
         assertThat(actual.getTenantId()).isEqualTo(TENANT_ID);
         assertThat(actual.getDays()).containsExactlyElementsOf(DAYS);
