@@ -8,8 +8,6 @@ import info.pionas.rental.domain.booking.Booking;
 import info.pionas.rental.domain.booking.BookingRepository;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDate;
-
 import static info.pionas.rental.domain.apartment.Apartment.Builder.apartment;
 
 @RequiredArgsConstructor
