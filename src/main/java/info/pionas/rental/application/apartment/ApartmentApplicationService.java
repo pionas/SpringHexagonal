@@ -35,11 +35,6 @@ public class ApartmentApplicationService {
         return apartmentRepository.save(apartment);
     }
 
-    public String book(String apartmentId, String tenantId, LocalDate start, LocalDate end) {
-        ApartmentBookingDto apartmentBookingDto = new ApartmentBookingDto(apartmentId, tenantId, start, end);
-        return book(apartmentBookingDto);
-    }
-
     public String book(ApartmentBookingDto apartmentBookingDto) {
         Apartment apartment = apartmentRepository.findById(apartmentBookingDto.getApartmentId());
         Period period = new Period(apartmentBookingDto.getStart(), apartmentBookingDto.getEnd());

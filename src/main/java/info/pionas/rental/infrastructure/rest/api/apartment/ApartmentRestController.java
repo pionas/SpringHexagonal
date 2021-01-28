@@ -28,13 +28,8 @@ public class ApartmentRestController {
     }
 
     @PutMapping("/book/{id}")
-    public ResponseEntity<String> book(@PathVariable String id, @RequestBody ApartmentBookingDto apartmentBookingDto) {
-        String bookingId = apartmentApplicationService.book(
-                id,
-                apartmentBookingDto.getTenantId(),
-                apartmentBookingDto.getStart(),
-                apartmentBookingDto.getEnd()
-        );
+    public ResponseEntity<String> book(@RequestBody ApartmentBookingDto apartmentBookingDto) {
+        String bookingId = apartmentApplicationService.book(apartmentBookingDto);
 
         return ResponseEntity.created(URI.create("/booking/" + bookingId)).build();
     }
