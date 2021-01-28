@@ -1,6 +1,7 @@
 package info.pionas.rental.query.hotelroom;
 
 import com.google.common.collect.ImmutableMap;
+import info.pionas.rental.query.space.SpaceReadModel;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;

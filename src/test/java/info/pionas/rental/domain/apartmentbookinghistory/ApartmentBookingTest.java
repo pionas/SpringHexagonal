@@ -1,5 +1,6 @@
 package info.pionas.rental.domain.apartmentbookinghistory;
 
+import info.pionas.rental.domain.period.Period;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -17,13 +18,13 @@ class ApartmentBookingTest {
         LocalDate start = LocalDate.of(2020, 2, 1);
         LocalDate end = LocalDate.of(2020, 2, 8);
 
-        ApartmentBooking actual = ApartmentBooking.start(bookingDateTime, ownerId, tenantId, new BookingPeriod(start, end));
+        ApartmentBooking actual = ApartmentBooking.start(bookingDateTime, ownerId, tenantId, new Period(start, end));
 
         assertThat(actual)
                 .isStart()
                 .hasBookingDateTimeEqualTo(bookingDateTime)
                 .hasOwnerIdEqualTo(ownerId)
                 .hasTenantIdEqualTo(tenantId)
-                .hasBookingPeriodThatHas(start, end);
+                .hasPeriodThatHas(start, end);
     }
 }

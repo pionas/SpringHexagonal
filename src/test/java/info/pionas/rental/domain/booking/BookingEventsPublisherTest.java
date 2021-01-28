@@ -1,8 +1,6 @@
 package info.pionas.rental.domain.booking;
 
 import com.google.common.collect.ImmutableList;
-import info.pionas.rental.domain.apartment.ApartmentBooked;
-import info.pionas.rental.domain.apartment.Period;
 import info.pionas.rental.domain.clock.Clock;
 import info.pionas.rental.domain.event.EventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;

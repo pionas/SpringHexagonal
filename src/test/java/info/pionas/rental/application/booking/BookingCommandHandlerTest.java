@@ -4,8 +4,9 @@ import info.pionas.rental.domain.booking.Booking;
 import info.pionas.rental.domain.booking.BookingAccepted;
 import info.pionas.rental.domain.booking.BookingAssertion;
 import info.pionas.rental.domain.booking.BookingRepository;
+import info.pionas.rental.domain.event.FakeEventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
-import org.assertj.core.api.Assertions;
+import info.pionas.rental.infrastructure.clock.FakeClock;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.BDDMockito;
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
@@ -28,7 +30,7 @@ class BookingCommandHandlerTest {
 
     private final BookingRepository bookingRepository = mock(BookingRepository.class);
     private final EventChannel eventChannel = mock(EventChannel.class);
-    private final BookingCommandHandler commandHandler = new BookingCommandHandler(bookingRepository, eventChannel);
+    private final BookingCommandHandler commandHandler = new BookingCommandHandlerFactory().bookingCommandHandler(bookingRepository, new FakeEventIdFactory(), new FakeClock(), eventChannel);
 
     @Test
     void shouldAcceptBooking() {
@@ -47,12 +49,13 @@ class BookingCommandHandlerTest {
 
         commandHandler.accept(new BookingAccept(BOOKING_ID));
 
-        BDDMockito.then(eventChannel).should().publish(captor.capture());
+        then(eventChannel).should().publish(captor.capture());
         BookingAccepted actual = captor.getValue();
-        Assertions.assertThat(actual.getRentalType()).isEqualTo("HOTEL_ROOM");
-        Assertions.assertThat(actual.getRentalPlaceId()).isEqualTo(RENTAL_PLACE_ID);
-        Assertions.assertThat(actual.getTenantId()).isEqualTo(TENANT_ID);
-        Assertions.assertThat(actual.getDays()).containsExactlyElementsOf(DAYS);
+        assertThat(actual.getRentalType()).isEqualTo("HOTEL_ROOM");
+        assertThat(actual.getEventCreationDateTime()).isEqualTo(FakeClock.NOW);
+        assertThat(actual.getRentalPlaceId()).isEqualTo(RENTAL_PLACE_ID);
+        assertThat(actual.getTenantId()).isEqualTo(TENANT_ID);
+        assertThat(actual.getDays()).containsExactlyElementsOf(DAYS);
     }
 
     @Test

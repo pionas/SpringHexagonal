@@ -1,5 +1,6 @@
 package info.pionas.rental.query.apartment;
 
+import info.pionas.rental.query.space.SpaceReadModel;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
@@ -40,20 +41,20 @@ class ApartmentReadModelAssertion {
         return this;
     }
 
-    ApartmentReadModelAssertion hasRoomsEqualsTo(Map<String, Double> expected) {
-        Assertions.assertThat(actual.getRooms()).hasSize(expected.size());
+    ApartmentReadModelAssertion hasSpacesEqualsTo(Map<String, Double> expected) {
+        Assertions.assertThat(actual.getSpaces()).hasSize(expected.size());
 
         expected.forEach((name, squareMeter) -> {
-            Assertions.assertThat(actual.getRooms()).anySatisfy(hasRoomThat(name, squareMeter));
+            Assertions.assertThat(actual.getSpaces()).anySatisfy(hasSpaceThat(name, squareMeter));
         });
 
         return this;
     }
 
-    private Consumer<RoomReadModel> hasRoomThat(String name, Double squareMeter) {
-        return roomReadModel -> {
-            Assertions.assertThat(roomReadModel.getName()).isEqualTo(name);
-            Assertions.assertThat(roomReadModel.getSize()).isEqualTo(squareMeter);
+    private Consumer<SpaceReadModel> hasSpaceThat(String name, Double squareMeter) {
+        return spaceReadModel -> {
+            Assertions.assertThat(spaceReadModel.getName()).isEqualTo(name);
+            Assertions.assertThat(spaceReadModel.getValue()).isEqualTo(squareMeter);
         };
     }
 }

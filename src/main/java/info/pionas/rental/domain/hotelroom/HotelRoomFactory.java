@@ -1,5 +1,8 @@
 package info.pionas.rental.domain.hotelroom;
 
+import info.pionas.rental.domain.space.Space;
+import info.pionas.rental.domain.space.SquareMeter;
+
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;

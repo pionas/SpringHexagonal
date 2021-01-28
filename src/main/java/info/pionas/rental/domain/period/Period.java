@@ -1,0 +1,25 @@
+package info.pionas.rental.domain.period;
+
+import lombok.*;
+
+import javax.persistence.Embeddable;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Embeddable
+@EqualsAndHashCode
+@SuppressWarnings("PMD.UnusedPrivateMethod")
+public class Period {
+
+    private LocalDate periodStart;
+    private LocalDate periodEnd;
+
+    public List<LocalDate> asDays() {
+        return periodStart.datesUntil(periodEnd.plusDays(1)).collect(Collectors.toList());
+    }
+}

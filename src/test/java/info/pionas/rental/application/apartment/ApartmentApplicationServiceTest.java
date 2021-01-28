@@ -8,15 +8,15 @@ import info.pionas.rental.domain.apartment.ApartmentRepository;
 import info.pionas.rental.domain.booking.Booking;
 import info.pionas.rental.domain.booking.BookingAssertion;
 import info.pionas.rental.domain.booking.BookingRepository;
+import info.pionas.rental.domain.event.FakeEventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
+import info.pionas.rental.infrastructure.clock.FakeClock;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import static info.pionas.rental.domain.apartment.Apartment.Builder.apartment;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,7 +35,7 @@ class ApartmentApplicationServiceTest {
     private static final String CITY = "Cracow";
     private static final String COUNTRY = "Poland";
     private static final String DESCRIPTION = "Nice place to stay";
-    private static final Map<String, Double> ROOMS_DEFINITION = ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0);
+    private static final Map<String, Double> SPACES_DEFINITION = ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0);
     private static final String TENANT_ID = "137";
     private static final LocalDate START = LocalDate.of(2020, 3, 4);
     private static final LocalDate MIDDLE = LocalDate.of(2020, 3, 5);
@@ -59,7 +59,7 @@ class ApartmentApplicationServiceTest {
                 .hasOwnerIdEqualsTo(OWNER_ID)
                 .hasDescriptionEqualsTo(DESCRIPTION)
                 .hasAddressEqualsTo(STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY)
-                .hasRoomsEqualsTo(ROOMS_DEFINITION);
+                .hasSpacesEqualsTo(SPACES_DEFINITION);
     }
 
     @Test
@@ -89,17 +89,14 @@ class ApartmentApplicationServiceTest {
     @Test
     void shouldReturnIdOfBooking() {
         givenApartment();
-        LocalDateTime beforeNow = LocalDateTime.now().minusNanos(1);
         ArgumentCaptor<ApartmentBooked> captor = ArgumentCaptor.forClass(ApartmentBooked.class);
 
         service.book(getApartmentBookingDto());
 
         then(eventChannel).should().publish(captor.capture());
         ApartmentBooked actual = captor.getValue();
-        assertThat(actual.getEventId()).matches(Pattern.compile("[0-9a-z\\-]{36}"));
-        assertThat(actual.getEventCreationDateTime())
-                .isAfter(beforeNow)
-                .isBefore(LocalDateTime.now().plusNanos(1));
+        assertThat(actual.getEventId()).isEqualTo(FakeEventIdFactory.UUID);
+        assertThat(actual.getEventCreationDateTime()).isEqualTo(FakeClock.NOW);
         assertThat(actual.getOwnerId()).isEqualTo(OWNER_ID);
         assertThat(actual.getTenantId()).isEqualTo(TENANT_ID);
         assertThat(actual.getPeriodStart()).isEqualTo(START);
@@ -130,13 +127,13 @@ class ApartmentApplicationServiceTest {
                 .withCity(CITY)
                 .withCountry(COUNTRY)
                 .withDescription(DESCRIPTION)
-                .withRoomsDefinition(ROOMS_DEFINITION)
+                .withSpacesDefinition(SPACES_DEFINITION)
                 .build();
         given(apartmentRepository.findById(APARTMENT_ID)).willReturn(apartment);
     }
 
     private ApartmentDto givenApartmentDto() {
-        return new ApartmentDto(OWNER_ID, STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY, DESCRIPTION, ROOMS_DEFINITION);
+        return new ApartmentDto(OWNER_ID, STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY, DESCRIPTION, SPACES_DEFINITION);
     }
 
 }

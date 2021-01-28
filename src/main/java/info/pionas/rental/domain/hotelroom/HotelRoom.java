@@ -1,6 +1,8 @@
 package info.pionas.rental.domain.hotelroom;
 
 import info.pionas.rental.domain.booking.Booking;
+import info.pionas.rental.domain.space.Space;
+import info.pionas.rental.domain.space.SpacesFactory;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,8 +12,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import static java.util.stream.Collectors.toList;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
@@ -83,18 +83,11 @@ public class HotelRoom {
         }
 
         public HotelRoom build() {
-            List<Space> spaces = spacesDefinition.entrySet().stream()
-                    .map(this::asSpace)
-                    .collect(toList());
-
-            return new HotelRoom(hotelId, number, spaces, description);
-
+            return new HotelRoom(hotelId, number, spaces(), description);
         }
 
-        private Space asSpace(Map.Entry<String, Double> entry) {
-            SquareMeter squareMeter = new SquareMeter(entry.getValue());
-
-            return new Space(entry.getKey(), squareMeter);
+        private List<Space> spaces() {
+            return SpacesFactory.create(spacesDefinition);
         }
     }
 }
