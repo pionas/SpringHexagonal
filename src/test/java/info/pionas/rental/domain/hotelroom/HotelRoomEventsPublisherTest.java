@@ -1,7 +1,7 @@
 package info.pionas.rental.domain.hotelroom;
 
 import info.pionas.rental.domain.clock.Clock;
-import info.pionas.rental.domain.event.EventIdFactory;
+import info.pionas.rental.domain.event.FakeEventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.mock;
 
 class HotelRoomEventsPublisherTest {
     private final EventChannel eventChannel = mock(EventChannel.class);
-    private final HotelRoomEventsPublisher hotelRoomEventsPublisher = new HotelRoomEventsPublisher(new EventIdFactory(), new Clock(), eventChannel);
+    private final HotelRoomEventsPublisher hotelRoomEventsPublisher = new HotelRoomEventsPublisher(new FakeEventIdFactory(), new Clock(), eventChannel);
 
     @Test
     void shouldPublishHotelRoomBookedEvent() {
@@ -33,7 +33,7 @@ class HotelRoomEventsPublisherTest {
 
         then(eventChannel).should().publish(captor.capture());
         HotelRoomBooked actual = captor.getValue();
-        assertThat(actual.getEventId()).matches(Pattern.compile("[0-9a-z\\-]{36}"));
+        assertThat(actual.getEventId()).isEqualTo(FakeEventIdFactory.UUID);
         assertThat(actual.getEventCreationDateTime())
                 .isAfter(beforeNow)
                 .isBefore(LocalDateTime.now().plusNanos(1));

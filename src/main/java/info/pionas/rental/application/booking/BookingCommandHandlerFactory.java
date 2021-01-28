@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 class BookingCommandHandlerFactory {
     @Bean
-    BookingCommandHandler bookingCommandHandler(BookingRepository bookingRepository, EventChannel eventChannel) {
-        return new BookingCommandHandler(bookingRepository, new BookingEventsPublisher(new EventIdFactory(), new Clock(), eventChannel));
+    BookingCommandHandler bookingCommandHandler(BookingRepository bookingRepository, EventIdFactory eventIdFactory, EventChannel eventChannel) {
+        return new BookingCommandHandler(bookingRepository, new BookingEventsPublisher(eventIdFactory, new Clock(), eventChannel));
     }
 }
