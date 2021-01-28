@@ -1,6 +1,5 @@
 package info.pionas.rental.domain.apartment;
 
-import info.pionas.rental.domain.period.Period;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -58,8 +57,8 @@ public final class ApartmentBooked {
         }
 
         public Builder withPeriod(Period period) {
-            this.periodStart = period.getPeriodStart();
-            this.periodEnd = period.getPeriodEnd();
+            this.periodStart = period.getStart();
+            this.periodEnd = period.getEnd();
             return this;
         }
 

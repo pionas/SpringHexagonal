@@ -22,4 +22,20 @@ public class Period {
     public List<LocalDate> asDays() {
         return periodStart.datesUntil(periodEnd.plusDays(1)).collect(Collectors.toList());
     }
+
+    public LocalDate getStart() {
+        return periodStart;
+    }
+
+    public void setStart(LocalDate periodStart) {
+        this.periodStart = periodStart;
+    }
+
+    public LocalDate getEnd() {
+        return periodEnd;
+    }
+
+    public void setEnd(LocalDate periodEnd) {
+        this.periodEnd = periodEnd;
+    }
 }
