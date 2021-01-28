@@ -1,4 +1,4 @@
-package info.pionas.rental.query.apartment;
+package info.pionas.rental.query.space;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -9,8 +9,8 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Embeddable
-class RoomReadModel {
+public class SpaceReadModel {
 
     private String name;
-    private Double size;
+    private Double value;
 }

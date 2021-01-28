@@ -2,6 +2,7 @@ package info.pionas.rental.application.apartmentbookinghistory;
 
 import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.application.apartment.ApartmentApplicationService;
+import info.pionas.rental.application.apartment.ApartmentBookingDto;
 import info.pionas.rental.domain.apartment.Apartment;
 import info.pionas.rental.domain.apartment.ApartmentRepository;
 import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingAssertion;
@@ -33,7 +34,7 @@ class ApartmentBookingHistoryEventListenerIntegrationTest {
     private static final String CITY = "Cracow";
     private static final String COUNTRY = "Poland";
     private static final String DESCRIPTION = "Nice place to stay";
-    private static final Map<String, Double> ROOMS_DEFINITION = ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0);
+    private static final Map<String, Double> SPACES_DEFINITION = ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0);
 
     @Autowired
     private ApartmentApplicationService apartmentApplicationService;
@@ -62,7 +63,8 @@ class ApartmentBookingHistoryEventListenerIntegrationTest {
         LocalDate end = LocalDate.of(2020, 1, 14);
         givenExistingApartment();
 
-        apartmentApplicationService.book(apartmentId, tenantId, start, end);
+        ApartmentBookingDto apartmentBookingDto = new ApartmentBookingDto(apartmentId, tenantId, start, end);
+        apartmentApplicationService.book(apartmentBookingDto);
         ApartmentBookingHistory actual = apartmentBookingHistoryRepository.findFor(apartmentId);
 
         ApartmentBookingHistoryAssertion.assertThat(actual)
@@ -71,7 +73,7 @@ class ApartmentBookingHistoryEventListenerIntegrationTest {
                     ApartmentBookingAssertion.assertThat(actualBooking)
                             .hasOwnerIdEqualTo(OWNER_ID)
                             .hasTenantIdEqualTo(tenantId)
-                            .hasBookingPeriodThatHas(start, end);
+                            .hasPeriodThatHas(start, end);
                 });
     }
 
@@ -89,7 +91,7 @@ class ApartmentBookingHistoryEventListenerIntegrationTest {
                 .withCity(CITY)
                 .withCountry(COUNTRY)
                 .withDescription(DESCRIPTION)
-                .withRoomsDefinition(ROOMS_DEFINITION)
+                .withSpacesDefinition(SPACES_DEFINITION)
                 .build();
     }
 }

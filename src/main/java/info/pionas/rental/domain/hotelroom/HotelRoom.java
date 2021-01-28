@@ -1,6 +1,8 @@
 package info.pionas.rental.domain.hotelroom;
 
 import info.pionas.rental.domain.booking.Booking;
+import info.pionas.rental.domain.space.Space;
+import info.pionas.rental.domain.space.SpacesFactory;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +10,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -44,5 +47,47 @@ public class HotelRoom {
             return null;
         }
         return id.toString();
+    }
+
+    public static class Builder {
+        private String hotelId;
+        private int number;
+        private Map<String, Double> spacesDefinition;
+        private String description;
+
+        private Builder() {
+        }
+
+        public static Builder hotelRoom() {
+            return new Builder();
+        }
+
+        public Builder withHotelId(String hotelId) {
+            this.hotelId = hotelId;
+            return this;
+        }
+
+        public Builder withNumber(int number) {
+            this.number = number;
+            return this;
+        }
+
+        public Builder withSpacesDefinition(Map<String, Double> spacesDefinition) {
+            this.spacesDefinition = spacesDefinition;
+            return this;
+        }
+
+        public Builder withDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public HotelRoom build() {
+            return new HotelRoom(hotelId, number, spaces(), description);
+        }
+
+        private List<Space> spaces() {
+            return SpacesFactory.create(spacesDefinition);
+        }
     }
 }

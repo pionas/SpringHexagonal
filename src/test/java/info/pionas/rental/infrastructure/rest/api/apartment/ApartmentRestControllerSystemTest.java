@@ -1,6 +1,7 @@
 package info.pionas.rental.infrastructure.rest.api.apartment;
 
 import com.google.common.collect.ImmutableMap;
+import info.pionas.rental.application.apartment.ApartmentBookingDto;
 import info.pionas.rental.application.apartment.ApartmentDto;
 import info.pionas.rental.infrastructure.json.JsonFactory;
 import org.junit.jupiter.api.Tag;
@@ -34,7 +35,7 @@ class ApartmentRestControllerSystemTest {
     private static final String CITY_1 = "Cracow";
     private static final String COUNTRY_1 = "Poland";
     private static final String DESCRIPTION_1 = "Nice place to stay";
-    private static final Map<String, Double> ROOMS_DEFINITION_1 = ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0);
+    private static final Map<String, Double> SPACES_DEFINITION_1 = ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0);
     private static final String OWNER_ID_2 = "4321";
     private static final String STREET_2 = "Grodzka";
     private static final String POSTAL_CODE_2 = "54-321";
@@ -43,7 +44,7 @@ class ApartmentRestControllerSystemTest {
     private static final String CITY_2 = "Berlin";
     private static final String COUNTRY_2 = "Germany";
     private static final String DESCRIPTION_2 = "Lovely place";
-    private static final Map<String, Double> ROOMS_DEFINITION_2 = ImmutableMap.of("Toilet", 15.0, "RoomOne", 20.0, "RoomTwo", 25.0);
+    private static final Map<String, Double> SPACES_DEFINITION_2 = ImmutableMap.of("Toilet", 15.0, "RoomOne", 20.0, "RoomTwo", 25.0);
 
     private final JsonFactory jsonFactory = new JsonFactory();
     @Autowired
@@ -80,8 +81,9 @@ class ApartmentRestControllerSystemTest {
 
     @Test
     void shouldBookApartment() throws Exception {
-        ApartmentBookingDto apartmentBookingDto = new ApartmentBookingDto("1357", LocalDate.of(2020, 11, 12), LocalDate.of(2020, 12, 1));
         String url = save(givenApartment1()).getResponse().getRedirectedUrl();
+        String apartmentId = url.replace("/apartment/", "");
+        ApartmentBookingDto apartmentBookingDto = new ApartmentBookingDto(apartmentId, "1357", LocalDate.of(2020, 11, 12), LocalDate.of(2020, 12, 1));
 
         mockMvc.perform(put(url.replace("apartment/", "apartment/book/")).contentType(MediaType.APPLICATION_JSON).content(jsonFactory.create(apartmentBookingDto)))
                 .andExpect(status().isCreated())
@@ -107,11 +109,11 @@ class ApartmentRestControllerSystemTest {
     }
 
     private ApartmentDto givenApartment1() {
-        return new ApartmentDto(OWNER_ID_1, STREET_1, POSTAL_CODE_1, HOUSE_NUMBER_1, APARTMENT_NUMBER_1, CITY_1, COUNTRY_1, DESCRIPTION_1, ROOMS_DEFINITION_1);
+        return new ApartmentDto(OWNER_ID_1, STREET_1, POSTAL_CODE_1, HOUSE_NUMBER_1, APARTMENT_NUMBER_1, CITY_1, COUNTRY_1, DESCRIPTION_1, SPACES_DEFINITION_1);
     }
 
     private ApartmentDto givenApartment2() {
-        return new ApartmentDto(OWNER_ID_2, STREET_2, POSTAL_CODE_2, HOUSE_NUMBER_2, APARTMENT_NUMBER_2, CITY_2, COUNTRY_2, DESCRIPTION_2, ROOMS_DEFINITION_2);
+        return new ApartmentDto(OWNER_ID_2, STREET_2, POSTAL_CODE_2, HOUSE_NUMBER_2, APARTMENT_NUMBER_2, CITY_2, COUNTRY_2, DESCRIPTION_2, SPACES_DEFINITION_2);
     }
 
     private MvcResult save(ApartmentDto apartmentDto) throws Exception {

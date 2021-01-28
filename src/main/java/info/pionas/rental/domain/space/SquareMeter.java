@@ -1,16 +1,16 @@
-package info.pionas.rental.domain.hotelroom;
+package info.pionas.rental.domain.space;
 
 import lombok.*;
 
 import javax.persistence.Embeddable;
 
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Setter
 @Embeddable
 @SuppressWarnings("PMD.UnusedPrivateMethod")
-class SquareMeter {
+public class SquareMeter {
 
     private Double value;
 }

@@ -1,6 +1,8 @@
 package info.pionas.rental.infrastructure.rest.api.hotelroom;
 
 import info.pionas.rental.application.hotelroom.HotelRoomApplicationService;
+import info.pionas.rental.application.hotelroom.HotelRoomBookingDto;
+import info.pionas.rental.application.hotelroom.HotelRoomDto;
 import info.pionas.rental.query.hotelroom.HotelRoomReadModel;
 import info.pionas.rental.query.hotelroom.QueryHotelRoomRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,22 +21,13 @@ public class HotelRoomRestController {
 
     @PostMapping
     public ResponseEntity<String> add(@RequestBody HotelRoomDto hotelRoomDto) {
-        String id = hotelRoomApplicationService.add(
-                hotelRoomDto.getHotelId(),
-                hotelRoomDto.getNumber(),
-                hotelRoomDto.getSpacesDefinition(),
-                hotelRoomDto.getDescription()
-        );
+        String id = hotelRoomApplicationService.add(hotelRoomDto);
         return ResponseEntity.created(URI.create("/hotelroom/" + id)).build();
     }
 
     @PutMapping("/book/{id}")
     public ResponseEntity<String> book(@PathVariable String id, @RequestBody HotelRoomBookingDto hotelRoomBookingDto) {
-        String bookingId = hotelRoomApplicationService.book(
-                id,
-                hotelRoomBookingDto.getTenentId(),
-                hotelRoomBookingDto.getDays()
-        );
+        String bookingId = hotelRoomApplicationService.book(hotelRoomBookingDto);
 
         return ResponseEntity.created(URI.create("/booking/" + bookingId)).build();
     }

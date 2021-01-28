@@ -1,7 +1,10 @@
 package info.pionas.rental.domain.booking;
 
-import info.pionas.rental.domain.apartment.Period;
+import info.pionas.rental.domain.eventchannel.EventChannel;
+import info.pionas.rental.domain.period.Period;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.BDDMockito;
 
 import java.time.LocalDate;
@@ -16,7 +19,7 @@ class BookingTest {
     private static final String TENANT_ID = "1234";
     private static final String RENTAL_PLACE_ID = "5748";
 
-    private final BookingEventsPublisher bookingEventsPublisher = mock(BookingEventsPublisher.class);
+    private final EventChannel eventChannel = mock(EventChannel.class);
 
     @Test
     void shouldCreateBookingForApartment() {
@@ -50,18 +53,24 @@ class BookingTest {
     void shouldChangeStatusOfBookingOnceAccepted() {
         Booking booking = Booking.hotelRoom(RENTAL_PLACE_ID, TENANT_ID, DAYS);
 
-        booking.accept(bookingEventsPublisher);
+        booking.accept(eventChannel);
 
         assertThat(booking).isAccepted();
     }
 
     @Test
     void shouldPublishBookingAcceptedOnceAccepted() {
+        ArgumentCaptor<BookingAccepted> captor = ArgumentCaptor.forClass(BookingAccepted.class);
         Booking booking = Booking.hotelRoom(RENTAL_PLACE_ID, TENANT_ID, DAYS);
 
-        booking.accept(bookingEventsPublisher);
+        booking.accept(eventChannel);
 
-        BDDMockito.then(bookingEventsPublisher).should().bookingAccepted(RentalType.HOTEL_ROOM, RENTAL_PLACE_ID, TENANT_ID, DAYS);
+        BDDMockito.then(eventChannel).should().publish(captor.capture());
+        BookingAccepted actual = captor.getValue();
+        Assertions.assertThat(actual.getRentalType()).isEqualTo("HOTEL_ROOM");
+        Assertions.assertThat(actual.getRentalPlaceId()).isEqualTo(RENTAL_PLACE_ID);
+        Assertions.assertThat(actual.getTenantId()).isEqualTo(TENANT_ID);
+        Assertions.assertThat(actual.getDays()).containsExactlyElementsOf(DAYS);
     }
 
     @Test

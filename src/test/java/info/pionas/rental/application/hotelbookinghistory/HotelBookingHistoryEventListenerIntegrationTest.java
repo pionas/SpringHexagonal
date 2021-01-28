@@ -2,6 +2,7 @@ package info.pionas.rental.application.hotelbookinghistory;
 
 import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.application.hotelroom.HotelRoomApplicationService;
+import info.pionas.rental.application.hotelroom.HotelRoomBookingDto;
 import info.pionas.rental.domain.hotelbookinghistory.HotelBookingHistory;
 import info.pionas.rental.domain.hotelbookinghistory.HotelBookingHistoryAssertion;
 import info.pionas.rental.domain.hotelbookinghistory.HotelBookingHistoryRepository;
@@ -57,8 +58,9 @@ class HotelBookingHistoryEventListenerIntegrationTest {
         String tenantId = "11223344";
         List<LocalDate> days = asList(LocalDate.of(2020, 1, 13), LocalDate.of(2020, 1, 14));
         givenExistingHotelRoom();
+        HotelRoomBookingDto hotelRoomBookingDto = new HotelRoomBookingDto(hotelRoomId, tenantId, days);
 
-        hotelRoomApplicationService.book(hotelRoomId, tenantId, days);
+        hotelRoomApplicationService.book(hotelRoomBookingDto);
         HotelBookingHistory actual = hotelBookingHistoryRepository.findFor(HOTEL_ID);
 
         HotelBookingHistoryAssertion.assertThat(actual).hasHotelRoomBookingHistoryFor(hotelRoomId, tenantId, days);

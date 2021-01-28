@@ -1,6 +1,7 @@
 package info.pionas.rental.infrastructure.rest.api.apartment;
 
 import info.pionas.rental.application.apartment.ApartmentApplicationService;
+import info.pionas.rental.application.apartment.ApartmentBookingDto;
 import info.pionas.rental.application.apartment.ApartmentDto;
 import info.pionas.rental.query.apartment.ApartmentDetails;
 import info.pionas.rental.query.apartment.ApartmentReadModel;
@@ -27,13 +28,8 @@ public class ApartmentRestController {
     }
 
     @PutMapping("/book/{id}")
-    public ResponseEntity<String> book(@PathVariable String id, @RequestBody ApartmentBookingDto apartmentBookingDto) {
-        String bookingId = apartmentApplicationService.book(
-                id,
-                apartmentBookingDto.getTenantId(),
-                apartmentBookingDto.getStart(),
-                apartmentBookingDto.getEnd()
-        );
+    public ResponseEntity<String> book(@RequestBody ApartmentBookingDto apartmentBookingDto) {
+        String bookingId = apartmentApplicationService.book(apartmentBookingDto);
 
         return ResponseEntity.created(URI.create("/booking/" + bookingId)).build();
     }

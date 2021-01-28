@@ -1,6 +1,7 @@
 package info.pionas.rental.infrastructure.persistence.jpa.apartmentbookinghistory;
 
 import info.pionas.rental.domain.apartmentbookinghistory.*;
+import info.pionas.rental.domain.period.Period;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -55,7 +56,7 @@ class JpaApartmentBookingHistoryRepositoryIntegrationTest {
         String ownerId = randomId();
         String tenantId = randomId();
         ApartmentBookingHistory apartmentBookingHistory = new ApartmentBookingHistory(apartmentId);
-        apartmentBookingHistory.add(ApartmentBooking.start(eventCreationDate, ownerId, tenantId, new BookingPeriod(start, end)));
+        apartmentBookingHistory.add(ApartmentBooking.start(eventCreationDate, ownerId, tenantId, new Period(start, end)));
         repository.save(apartmentBookingHistory);
 
         ApartmentBookingHistory actual = repository.findFor(apartmentId);
@@ -66,7 +67,7 @@ class JpaApartmentBookingHistoryRepositoryIntegrationTest {
                     ApartmentBookingAssertion.assertThat(actualBooking)
                             .hasOwnerIdEqualTo(ownerId)
                             .hasTenantIdEqualTo(tenantId)
-                            .hasBookingPeriodThatHas(start, end);
+                            .hasPeriodThatHas(start, end);
                 });
     }
 

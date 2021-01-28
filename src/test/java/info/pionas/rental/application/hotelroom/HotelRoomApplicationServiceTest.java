@@ -47,7 +47,7 @@ class HotelRoomApplicationServiceTest {
         ArgumentCaptor<HotelRoom> captor = ArgumentCaptor.forClass(HotelRoom.class);
         given(hotelRepository.save(any())).willReturn(HOTEL_ID);
 
-        service.add(HOTEL_ID, ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
+        service.add(createHotelRoomDto());
 
         then(hotelRoomRepository).should().save(captor.capture());
         HotelRoomAssertion.assertThat(captor.getValue())
@@ -62,7 +62,7 @@ class HotelRoomApplicationServiceTest {
         given(hotelRepository.save(any())).willReturn(HOTEL_ID);
         given(hotelRoomRepository.save(any())).willReturn(HOTEL_ROOM_ID);
 
-        String actual = service.add(HOTEL_ID, ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
+        String actual = service.add(createHotelRoomDto());
 
         Assertions.assertThat(actual).isEqualTo(HOTEL_ROOM_ID);
     }
@@ -72,7 +72,7 @@ class HotelRoomApplicationServiceTest {
         String hotelRoomId = "1234";
         givenHotelRoom(hotelRoomId);
 
-        service.book(hotelRoomId, TENANT_ID, DAYS);
+        service.book(givenHotelRoomBookingDto(hotelRoomId));
 
         thenBookingShouldBeCreated();
     }
@@ -83,7 +83,7 @@ class HotelRoomApplicationServiceTest {
         String hotelRoomId = "1234";
         givenHotelRoom(hotelRoomId);
 
-        service.book(hotelRoomId, TENANT_ID, DAYS);
+        service.book(givenHotelRoomBookingDto(hotelRoomId));
 
         then(eventChannel).should().publish(captor.capture());
         HotelRoomBooked actual = captor.getValue();
@@ -112,4 +112,13 @@ class HotelRoomApplicationServiceTest {
     private HotelRoom createHotelRoom() {
         return factory.create(HOTEL_ID, ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
     }
+
+    private HotelRoomDto createHotelRoomDto() {
+        return new HotelRoomDto(HOTEL_ID, ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
+    }
+
+    private HotelRoomBookingDto givenHotelRoomBookingDto(String hotelRoomId) {
+        return new HotelRoomBookingDto(hotelRoomId, TENANT_ID, DAYS);
+    }
+
 }

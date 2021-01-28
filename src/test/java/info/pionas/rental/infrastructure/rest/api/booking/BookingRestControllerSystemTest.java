@@ -1,9 +1,9 @@
 package info.pionas.rental.infrastructure.rest.api.booking;
 
 import com.google.common.collect.ImmutableMap;
-import info.pionas.rental.infrastructure.json.JsonFactory;
-import info.pionas.rental.infrastructure.rest.api.apartment.ApartmentBookingDto;
+import info.pionas.rental.application.apartment.ApartmentBookingDto;
 import info.pionas.rental.application.apartment.ApartmentDto;
+import info.pionas.rental.infrastructure.json.JsonFactory;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ class BookingRestControllerSystemTest {
     private static final String CITY = "Cracow";
     private static final String COUNTRY = "Poland";
     private static final String DESCRIPTION = "Nice place to stay";
-    private static final Map<String, Double> ROOMS_DEFINITION = ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0);
+    private static final Map<String, Double> SPACES_DEFINITION = ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0);
 
     private final JsonFactory jsonFactory = new JsonFactory();
 
@@ -54,8 +54,9 @@ class BookingRestControllerSystemTest {
     }
 
     private String getUrlToExistingBooking() throws Exception {
-        ApartmentBookingDto apartmentBookingDto = new ApartmentBookingDto("1357", LocalDate.of(2020, 11, 12), LocalDate.of(2020, 12, 1));
         String url = save(givenApartment()).getResponse().getRedirectedUrl();
+        String apartmentId = url.replace("/apartment/", "");
+        ApartmentBookingDto apartmentBookingDto = new ApartmentBookingDto(apartmentId, "1357", LocalDate.of(2020, 11, 12), LocalDate.of(2020, 12, 1));
 
         MvcResult mvcResult = mockMvc.perform(put(url.replace("apartment/", "apartment/book/")).contentType(MediaType.APPLICATION_JSON).content(jsonFactory.create(apartmentBookingDto)))
                 .andExpect(status().isCreated())
@@ -65,7 +66,7 @@ class BookingRestControllerSystemTest {
     }
 
     private ApartmentDto givenApartment() {
-        return new ApartmentDto(OWNER_ID, STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY, DESCRIPTION, ROOMS_DEFINITION);
+        return new ApartmentDto(OWNER_ID, STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY, DESCRIPTION, SPACES_DEFINITION);
     }
 
     private MvcResult save(ApartmentDto apartmentDto) throws Exception {

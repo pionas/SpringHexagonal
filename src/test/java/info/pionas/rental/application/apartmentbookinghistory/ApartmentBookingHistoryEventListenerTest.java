@@ -1,9 +1,9 @@
 package info.pionas.rental.application.apartmentbookinghistory;
 
 import info.pionas.rental.domain.apartment.ApartmentBooked;
-import info.pionas.rental.domain.apartment.Period;
 import info.pionas.rental.domain.apartmentbookinghistory.*;
-import info.pionas.rental.infrastructure.clock.FakeClock;
+import info.pionas.rental.domain.clock.Clock;
+import info.pionas.rental.domain.period.Period;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.BDDMockito;
@@ -61,7 +61,7 @@ class ApartmentBookingHistoryEventListenerTest {
                     ApartmentBookingAssertion.assertThat(actualBooking)
                             .hasOwnerIdEqualTo(OWNER_ID)
                             .hasTenantIdEqualTo(TENANT_ID)
-                            .hasBookingPeriodThatHas(START, END);
+                            .hasPeriodThatHas(START, END);
                 });
     }
 
@@ -74,7 +74,7 @@ class ApartmentBookingHistoryEventListenerTest {
     private ApartmentBookingHistory getApartmentBookingHistory() {
         ApartmentBookingHistory apartmentBookingHistory = new ApartmentBookingHistory(APARTMENT_ID);
         ApartmentBooking apartmentBooking = ApartmentBooking.start(
-                LocalDateTime.now(), OWNER_ID, "9807", new BookingPeriod(LocalDate.now(), LocalDate.now().plusDays(1)));
+                LocalDateTime.now(), OWNER_ID, "9807", new Period(LocalDate.now(), LocalDate.now().plusDays(1)));
         apartmentBookingHistory.add(apartmentBooking);
         return apartmentBookingHistory;
     }
@@ -82,7 +82,7 @@ class ApartmentBookingHistoryEventListenerTest {
     private ApartmentBooked givenApartmentBooked() {
         return apartmentBooked()
                 .withEventId("232132")
-                .withEventCreationDateTime(FakeClock.NOW)
+                .withEventCreationDateTime(new Clock().now())
                 .withApartmentId(APARTMENT_ID)
                 .withOwnerId(OWNER_ID)
                 .withTenantId(TENANT_ID)

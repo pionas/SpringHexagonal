@@ -30,10 +30,10 @@ public class ApartmentBookingAssertion {
         return this;
     }
 
-    public ApartmentBookingAssertion hasBookingPeriodThatHas(LocalDate expectedStart, LocalDate expectedEnd) {
+    public ApartmentBookingAssertion hasPeriodThatHas(LocalDate expectedStart, LocalDate expectedEnd) {
         Assertions.assertThat(actual)
-                .hasFieldOrPropertyWithValue("bookingPeriod.periodStart", expectedStart)
-                .hasFieldOrPropertyWithValue("bookingPeriod.periodEnd", expectedEnd);
+                .hasFieldOrPropertyWithValue("period.periodStart", expectedStart)
+                .hasFieldOrPropertyWithValue("period.periodEnd", expectedEnd);
         return this;
     }
 

@@ -35,7 +35,7 @@ class ApartmentApplicationServiceTest {
     private static final String CITY = "Cracow";
     private static final String COUNTRY = "Poland";
     private static final String DESCRIPTION = "Nice place to stay";
-    private static final Map<String, Double> ROOMS_DEFINITION = ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0);
+    private static final Map<String, Double> SPACES_DEFINITION = ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0);
     private static final String TENANT_ID = "137";
     private static final LocalDate START = LocalDate.of(2020, 3, 4);
     private static final LocalDate MIDDLE = LocalDate.of(2020, 3, 5);
@@ -59,7 +59,7 @@ class ApartmentApplicationServiceTest {
                 .hasOwnerIdEqualsTo(OWNER_ID)
                 .hasDescriptionEqualsTo(DESCRIPTION)
                 .hasAddressEqualsTo(STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY)
-                .hasRoomsEqualsTo(ROOMS_DEFINITION);
+                .hasSpacesEqualsTo(SPACES_DEFINITION);
     }
 
     @Test
@@ -77,7 +77,7 @@ class ApartmentApplicationServiceTest {
         givenApartment();
         ArgumentCaptor<Booking> captor = ArgumentCaptor.forClass(Booking.class);
 
-        service.book(APARTMENT_ID, TENANT_ID, START, END);
+        service.book(getApartmentBookingDto());
 
         then(bookingRepository).should().save(captor.capture());
         BookingAssertion.assertThat(captor.getValue())
@@ -91,7 +91,7 @@ class ApartmentApplicationServiceTest {
         givenApartment();
         ArgumentCaptor<ApartmentBooked> captor = ArgumentCaptor.forClass(ApartmentBooked.class);
 
-        service.book(APARTMENT_ID, TENANT_ID, START, END);
+        service.book(getApartmentBookingDto());
 
         then(eventChannel).should().publish(captor.capture());
         ApartmentBooked actual = captor.getValue();
@@ -108,9 +108,13 @@ class ApartmentApplicationServiceTest {
         givenApartment();
         given(bookingRepository.save(any())).willReturn(BOOKING_ID);
 
-        String actual = service.book(APARTMENT_ID, TENANT_ID, START, END);
+        String actual = service.book(getApartmentBookingDto());
 
         Assertions.assertThat(actual).isEqualTo(BOOKING_ID);
+    }
+
+    private ApartmentBookingDto getApartmentBookingDto() {
+        return new ApartmentBookingDto(APARTMENT_ID, TENANT_ID, START, END);
     }
 
     private void givenApartment() {
@@ -123,13 +127,13 @@ class ApartmentApplicationServiceTest {
                 .withCity(CITY)
                 .withCountry(COUNTRY)
                 .withDescription(DESCRIPTION)
-                .withRoomsDefinition(ROOMS_DEFINITION)
+                .withSpacesDefinition(SPACES_DEFINITION)
                 .build();
         given(apartmentRepository.findById(APARTMENT_ID)).willReturn(apartment);
     }
 
     private ApartmentDto givenApartmentDto() {
-        return new ApartmentDto(OWNER_ID, STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY, DESCRIPTION, ROOMS_DEFINITION);
+        return new ApartmentDto(OWNER_ID, STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY, DESCRIPTION, SPACES_DEFINITION);
     }
 
 }
