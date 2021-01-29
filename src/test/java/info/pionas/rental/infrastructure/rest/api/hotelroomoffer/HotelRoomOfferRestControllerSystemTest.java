@@ -6,7 +6,6 @@ import info.pionas.rental.application.hotelroom.HotelRoomDto;
 import info.pionas.rental.application.hotelroomoffer.HotelRoomOffertDto;
 import info.pionas.rental.infrastructure.json.JsonFactory;
 import info.pionas.rental.infrastructure.persistence.jpa.hotel.SpringJpaHotelTestRepository;
-import info.pionas.rental.infrastructure.persistence.jpa.hotelroom.SpringJpaHotelRoomTestRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -65,8 +64,8 @@ class HotelRoomOfferRestControllerSystemTest {
     }
 
     @Test
-    void shouldCreateHotelRoomOffer() throws Exception {
-        HotelRoomOffertDto dto = new HotelRoomOffertDto(hotelRoomId, PRICE, START, END);
+    void shouldCreateHotelRoomOfferForExistingHotelRoom() throws Exception {
+        HotelRoomOffertDto dto = new HotelRoomOffertDto(hotelId, ROOM_NUMBER, hotelRoomId, PRICE, START, END);
         mockMvc.perform(post("/hotelroomoffer")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonFactory.create(dto)))
@@ -77,7 +76,7 @@ class HotelRoomOfferRestControllerSystemTest {
     void shouldThrowExceptionWhenHotelRoomNotFound() {
         String nonExistingHotelRoomId = UUID.randomUUID().toString();
 
-        HotelRoomOffertDto dto = new HotelRoomOffertDto(nonExistingHotelRoomId, PRICE, START, END);
+        HotelRoomOffertDto dto = new HotelRoomOffertDto(hotelId, ROOM_NUMBER, nonExistingHotelRoomId, PRICE, START, END);
 
         Assertions.assertThrows(Exception.class, () -> {
             mockMvc.perform(post("/hotelroomoffer")
