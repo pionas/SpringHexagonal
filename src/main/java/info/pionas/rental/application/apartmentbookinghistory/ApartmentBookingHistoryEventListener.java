@@ -1,7 +1,6 @@
 package info.pionas.rental.application.apartmentbookinghistory;
 
 import info.pionas.rental.domain.apartment.ApartmentBooked;
-import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBooking;
 import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingHistory;
 import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingHistoryRepository;
 import info.pionas.rental.domain.period.Period;
