@@ -1,8 +1,10 @@
 package info.pionas.rental.domain.apartmentbookinghistory;
 
+import info.pionas.rental.domain.period.Period;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +22,17 @@ public class ApartmentBookingHistory {
 
     public ApartmentBookingHistory(String apartmentId) {
         this.apartmentId = apartmentId;
+    }
+
+    public void addBookingStart(LocalDateTime eventCreationDateTime, String ownerId, String tenantId, Period period) {
+        add(
+                ApartmentBooking.start(
+                        eventCreationDateTime,
+                        ownerId,
+                        tenantId,
+                        period
+                )
+        );
     }
 
     public void add(ApartmentBooking apartmentBooking) {
