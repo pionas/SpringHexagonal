@@ -71,7 +71,7 @@ class HotelRoomApplicationServiceTest {
         String hotelRoomId = "1234";
         givenHotelRoom(hotelRoomId);
 
-        service.book(givenHotelRoomBookingDto(hotelRoomId));
+        service.book(givenHotelRoomBookingDto());
 
         thenBookingShouldBeCreated();
     }
@@ -82,7 +82,7 @@ class HotelRoomApplicationServiceTest {
         String hotelRoomId = "1234";
         givenHotelRoom(hotelRoomId);
 
-        service.book(givenHotelRoomBookingDto(hotelRoomId));
+        service.book(givenHotelRoomBookingDto());
 
         then(eventChannel).should().publish(captor.capture());
         HotelRoomBooked actual = captor.getValue();
@@ -116,8 +116,8 @@ class HotelRoomApplicationServiceTest {
         return new HotelRoomDto(HOTEL_ID.toString(), ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
     }
 
-    private HotelRoomBookingDto givenHotelRoomBookingDto(String hotelRoomId) {
-        return new HotelRoomBookingDto(HOTEL_ID.toString(), ROOM_NUMBER, hotelRoomId, TENANT_ID, DAYS);
+    private HotelRoomBookingDto givenHotelRoomBookingDto() {
+        return new HotelRoomBookingDto(HOTEL_ID.toString(), ROOM_NUMBER, TENANT_ID, DAYS);
     }
 
 }

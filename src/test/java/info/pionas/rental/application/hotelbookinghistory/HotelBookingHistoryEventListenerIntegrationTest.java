@@ -58,7 +58,7 @@ class HotelBookingHistoryEventListenerIntegrationTest {
         String tenantId = "11223344";
         List<LocalDate> days = asList(LocalDate.of(2020, 1, 13), LocalDate.of(2020, 1, 14));
         givenExistingHotelRoom();
-        HotelRoomBookingDto hotelRoomBookingDto = new HotelRoomBookingDto(HOTEL_ID.toString(), HOTEL_NUMBER, hotelRoomId, tenantId, days);
+        HotelRoomBookingDto hotelRoomBookingDto = new HotelRoomBookingDto(HOTEL_ID.toString(), HOTEL_NUMBER, tenantId, days);
 
         hotelRoomApplicationService.book(hotelRoomBookingDto);
         HotelBookingHistory actual = hotelBookingHistoryRepository.findFor(HOTEL_ID.toString());
