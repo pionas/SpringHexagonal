@@ -35,7 +35,7 @@ public class ApartmentBookingHistory {
         );
     }
 
-    public void add(ApartmentBooking apartmentBooking) {
+    private void add(ApartmentBooking apartmentBooking) {
         bookings.add(apartmentBooking);
     }
 
