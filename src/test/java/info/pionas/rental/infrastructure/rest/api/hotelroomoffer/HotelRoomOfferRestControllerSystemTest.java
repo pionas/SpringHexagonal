@@ -1,10 +1,11 @@
 package info.pionas.rental.infrastructure.rest.api.hotelroomoffer;
 
 import com.google.common.collect.ImmutableMap;
+import info.pionas.rental.application.hotel.HotelDto;
+import info.pionas.rental.application.hotelroom.HotelRoomDto;
 import info.pionas.rental.application.hotelroomoffer.HotelRoomOffertDto;
-import info.pionas.rental.domain.hotel.HotelRoom;
-import info.pionas.rental.domain.hotel.HotelRoomFactory;
 import info.pionas.rental.infrastructure.json.JsonFactory;
+import info.pionas.rental.infrastructure.persistence.jpa.hotel.SpringJpaHotelTestRepository;
 import info.pionas.rental.infrastructure.persistence.jpa.hotelroom.SpringJpaHotelRoomTestRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -25,7 +27,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Tag("SystemTest")
 class HotelRoomOfferRestControllerSystemTest {
-    private static final UUID HOTEL_ID = UUID.randomUUID();
     private static final int ROOM_NUMBER = 13;
     private static final Map<String, Double> SPACES_DEFINITION = ImmutableMap.of("RoomOne", 20.0, "RoomTwo", 20.0);
     private static final String DESCRIPTION = "What a lovely place";
@@ -35,31 +36,40 @@ class HotelRoomOfferRestControllerSystemTest {
     private static final LocalDate END = LocalDate.of(2041, 12, 20);
 
     private final JsonFactory jsonFactory = new JsonFactory();
+    private String hotelId;
     private String hotelRoomId;
     @Autowired
-    private SpringJpaHotelRoomTestRepository springJpaHotelRoomTestRepository;
+    private SpringJpaHotelTestRepository springJpaHotelTestRepository;
     @Autowired
     private MockMvc mockMvc;
 
-    @AfterEach
-    void deleteHotel() {
-        if (hotelRoomId != null) {
-            springJpaHotelRoomTestRepository.deleteById(hotelRoomId);
-        }
+    @BeforeEach
+    void givenHotelAndHotelRoom() throws Exception {
+        HotelDto hotelDto = new HotelDto("Big Hotel", "Florianska", "12-345", "13", "Cracow", "Poland");
+        MvcResult result = mockMvc.perform(post("/hotel").contentType(MediaType.APPLICATION_JSON).content(jsonFactory.create(hotelDto)))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        hotelId = result.getResponse().getRedirectedUrl().replace("/hotel/", "");
+
+        HotelRoomDto hotelRoomDto = new HotelRoomDto(hotelId, ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
+        result = mockMvc.perform(post("/hotelroom").contentType(MediaType.APPLICATION_JSON).content(jsonFactory.create(hotelRoomDto)))
+                .andExpect(status().isCreated())
+                .andReturn();
+        hotelRoomId = result.getResponse().getRedirectedUrl().replace("/hotelroom/", "");
     }
 
-    @BeforeEach
-    void createHotel() {
-        if (hotelRoomId == null) {
-            hotelRoomId = springJpaHotelRoomTestRepository.save(createHotelRoom());
-        }
+    @AfterEach
+    void deleteHotelRooms() {
+        springJpaHotelTestRepository.deleteById(hotelId);
     }
 
     @Test
     void shouldCreateHotelRoomOffer() throws Exception {
+        HotelRoomOffertDto dto = new HotelRoomOffertDto(hotelRoomId, PRICE, START, END);
         mockMvc.perform(post("/hotelroomoffer")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonFactory.create(getHotelRoomOfferDto())))
+                .content(jsonFactory.create(dto)))
                 .andExpect(status().isCreated());
     }
 
@@ -74,13 +84,5 @@ class HotelRoomOfferRestControllerSystemTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(jsonFactory.create(dto)));
         });
-    }
-
-    private HotelRoom createHotelRoom() {
-        return new HotelRoomFactory().create(HOTEL_ID, ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
-    }
-
-    private HotelRoomOffertDto getHotelRoomOfferDto() {
-        return new HotelRoomOffertDto(hotelRoomId, PRICE, START, END);
     }
 }
