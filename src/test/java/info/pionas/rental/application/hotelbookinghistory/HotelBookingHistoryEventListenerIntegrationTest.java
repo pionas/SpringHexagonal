@@ -3,12 +3,12 @@ package info.pionas.rental.application.hotelbookinghistory;
 import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.application.hotelroom.HotelRoomApplicationService;
 import info.pionas.rental.application.hotelroom.HotelRoomBookingDto;
-import info.pionas.rental.domain.hotelbookinghistory.HotelBookingHistory;
-import info.pionas.rental.domain.hotelbookinghistory.HotelBookingHistoryAssertion;
-import info.pionas.rental.domain.hotelbookinghistory.HotelBookingHistoryRepository;
 import info.pionas.rental.domain.hotel.HotelRoom;
 import info.pionas.rental.domain.hotel.HotelRoomFactory;
 import info.pionas.rental.domain.hotel.HotelRoomRepository;
+import info.pionas.rental.domain.hotelbookinghistory.HotelBookingHistory;
+import info.pionas.rental.domain.hotelbookinghistory.HotelBookingHistoryAssertion;
+import info.pionas.rental.domain.hotelbookinghistory.HotelBookingHistoryRepository;
 import info.pionas.rental.infrastructure.persistence.jpa.hotelbookinghistory.SpringJpaHotelBookingHistoryTestRepository;
 import info.pionas.rental.infrastructure.persistence.jpa.hotelroom.SpringJpaHotelRoomTestRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -58,7 +58,7 @@ class HotelBookingHistoryEventListenerIntegrationTest {
         String tenantId = "11223344";
         List<LocalDate> days = asList(LocalDate.of(2020, 1, 13), LocalDate.of(2020, 1, 14));
         givenExistingHotelRoom();
-        HotelRoomBookingDto hotelRoomBookingDto = new HotelRoomBookingDto(hotelRoomId, tenantId, days);
+        HotelRoomBookingDto hotelRoomBookingDto = new HotelRoomBookingDto(HOTEL_ID.toString(), HOTEL_NUMBER, hotelRoomId, tenantId, days);
 
         hotelRoomApplicationService.book(hotelRoomBookingDto);
         HotelBookingHistory actual = hotelBookingHistoryRepository.findFor(HOTEL_ID.toString());

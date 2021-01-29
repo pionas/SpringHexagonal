@@ -1,0 +1,25 @@
+create table hotel (
+    id binary not null,
+    building_number varchar(255),
+    city varchar(255),
+    country varchar(255),
+    postal_code varchar(255),
+    street varchar(255),
+    name varchar(255),
+    primary key (id)
+)
+
+create table hotel_room (
+    id binary not null,
+    description varchar(255),
+    hotel_id varchar(255),
+    number integer not null,
+    primary key (id)
+)
+
+create table hotel_room_space (
+    hotel_room_id binary not null,
+    name varchar(255),
+    value double
+)
+    
