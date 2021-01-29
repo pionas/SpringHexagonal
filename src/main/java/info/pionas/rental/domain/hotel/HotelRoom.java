@@ -39,14 +39,23 @@ public class HotelRoom {
     }
 
     Booking book(String tenantId, List<LocalDate> days, HotelRoomEventsPublisher hotelRoomEventsPublisher) {
-        hotelRoomEventsPublisher.publishHotelRoomBooked(id(), hotelId.toString(), tenantId, days);
+        hotelRoomEventsPublisher.publishHotelRoomBooked(id(), hotelId(), tenantId, days);
         return Booking.hotelRoom(id(), tenantId, days);
     }
 
+    private String hotelId() {
+        return getNullable(hotelId);
+    }
+
     public String id() {
+        return getNullable(id);
+    }
+
+    private String getNullable(UUID id) {
         if (id == null) {
             return null;
         }
+
         return id.toString();
     }
 

@@ -43,7 +43,7 @@ public class Hotel {
 
     public void addRoom(int number, Map<String, Double> spacesDefinition, String description) {
         HotelRoom hotelRoom = hotelRoom()
-                .withHotelId(id())
+                .withHotelId(id)
                 .withNumber(number)
                 .withSpacesDefinition(spacesDefinition)
                 .withDescription(description)

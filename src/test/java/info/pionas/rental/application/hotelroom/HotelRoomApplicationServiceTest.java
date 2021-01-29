@@ -8,25 +8,29 @@ import info.pionas.rental.domain.event.FakeEventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import info.pionas.rental.domain.hotel.*;
 import info.pionas.rental.infrastructure.clock.FakeClock;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.BDDMockito;
-import org.mockito.Mockito;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
+import static info.pionas.rental.domain.hotel.Hotel.Builder.hotel;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.mock;
 
 class HotelRoomApplicationServiceTest {
-    private static final UUID HOTEL_ID = UUID.randomUUID();
+    private static final String NAME = "Great hotel";
+    private static final String STREET = "Unknown";
+    private static final String POSTAL_CODE = "12-345";
+    private static final String BUILDING_NUMBER = "13";
+    private static final String CITY = "Somewhere";
+    private static final String COUNTRY = "Nowhere";
+    private static final String HOTEL_ID = "1234567";
     private static final int ROOM_NUMBER = 13;
     private static final Map<String, Double> SPACES_DEFINITION = ImmutableMap.of("RoomOne", 20.0, "RoomTwo", 20.0);
     private static final String DESCRIPTION = "What a lovely place";
@@ -34,42 +38,42 @@ class HotelRoomApplicationServiceTest {
     private static final List<LocalDate> DAYS = asList(LocalDate.now(), LocalDate.now().plusDays(1));
     private static final String HOTEL_ROOM_ID = "7821321";
 
-    private final HotelRepository hotelRepository = Mockito.mock(HotelRepository.class);
-    private final HotelRoomRepository hotelRoomRepository = Mockito.mock(HotelRoomRepository.class);
-    private final BookingRepository bookingRepository = Mockito.mock(BookingRepository.class);
-    private final EventChannel eventChannel = Mockito.mock(EventChannel.class);
+    private final HotelRepository hotelRepository = mock(HotelRepository.class);
+    private final HotelRoomRepository hotelRoomRepository = mock(HotelRoomRepository.class);
+    private final BookingRepository bookingRepository = mock(BookingRepository.class);
+    private final EventChannel eventChannel = mock(EventChannel.class);
     private final HotelRoomApplicationService service = new HotelRoomApplicationServiceFactory().hotelRoomApplicationService(hotelRepository, bookingRepository, eventChannel);
-    private final HotelRoomFactory factory = new HotelRoomFactory();
 
     @Test
     void shouldCreateHotelRoom() {
-        ArgumentCaptor<HotelRoom> captor = ArgumentCaptor.forClass(HotelRoom.class);
-        given(hotelRepository.save(any())).willReturn(HOTEL_ID.toString());
+        givenExistingHotel();
+        ArgumentCaptor<Hotel> captor = ArgumentCaptor.forClass(Hotel.class);
 
-        service.add(createHotelRoomDto());
+        service.add(givenHotelRoomDto());
 
-        then(hotelRoomRepository).should().save(captor.capture());
-        HotelRoomAssertion.assertThat(captor.getValue())
-                .hasHotelIdEqualTo(HOTEL_ID)
-                .hasRoomNumberEqualTo(ROOM_NUMBER)
-                .hasSpacesDefinitionEqualTo(SPACES_DEFINITION)
-                .hasDescriptionEqualTo(DESCRIPTION);
+        then(hotelRepository).should().save(captor.capture());
+        HotelAssertion.assertThat(captor.getValue())
+                .hasOnlyOneHotelRoom(hotelRoom -> {
+                    HotelRoomAssertion.assertThat(hotelRoom)
+                            .hasRoomNumberEqualTo(ROOM_NUMBER)
+                            .hasSpacesDefinitionEqualTo(SPACES_DEFINITION)
+                            .hasDescriptionEqualTo(DESCRIPTION);
+                });
     }
 
     @Test
     void shouldReturnIdOfNewHotelRoom() {
-        given(hotelRepository.save(any())).willReturn(HOTEL_ID.toString());
-        given(hotelRoomRepository.save(any())).willReturn(HOTEL_ROOM_ID);
+        givenExistingHotel();
 
-        String actual = service.add(createHotelRoomDto());
+        String actual = service.add(givenHotelRoomDto());
 
-        Assertions.assertThat(actual).isEqualTo(HOTEL_ROOM_ID);
+        assertThat(actual).isNull();
     }
 
     @Test
     void shouldCreateBookingWhenHotelRoomBooked() {
-        String hotelRoomId = "1234";
-        givenHotelRoom(hotelRoomId);
+        Hotel hotel = givenExistingHotel();
+        hotel.addRoom(ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
 
         service.book(givenHotelRoomBookingDto());
 
@@ -79,8 +83,8 @@ class HotelRoomApplicationServiceTest {
     @Test
     void shouldPublishHotelRoomBookedEvent() {
         ArgumentCaptor<HotelRoomBooked> captor = ArgumentCaptor.forClass(HotelRoomBooked.class);
-        String hotelRoomId = "1234";
-        givenHotelRoom(hotelRoomId);
+        Hotel hotel = givenExistingHotel();
+        hotel.addRoom(ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
 
         service.book(givenHotelRoomBookingDto());
 
@@ -88,7 +92,6 @@ class HotelRoomApplicationServiceTest {
         HotelRoomBooked actual = captor.getValue();
         assertThat(actual.getEventId()).isEqualTo(FakeEventIdFactory.UUID);
         assertThat(actual.getEventCreationDateTime()).isEqualTo(FakeClock.NOW);
-        assertThat(actual.getHotelId()).isEqualTo(HOTEL_ID.toString());
         assertThat(actual.getTenantId()).isEqualTo(TENANT_ID);
         assertThat(actual.getDays()).containsExactlyElementsOf(DAYS);
     }
@@ -103,21 +106,26 @@ class HotelRoomApplicationServiceTest {
                 .containsAllDays(DAYS);
     }
 
-    private void givenHotelRoom(String hotelRoomId) {
-        HotelRoom hotelRoom = createHotelRoom();
-        given(hotelRoomRepository.findById(hotelRoomId)).willReturn(hotelRoom);
+    private Hotel givenExistingHotel() {
+        Hotel hotel = hotel()
+                .withName(NAME)
+                .withStreet(STREET)
+                .withPostalCode(POSTAL_CODE)
+                .withBuildingNumber(BUILDING_NUMBER)
+                .withCity(CITY)
+                .withCountry(COUNTRY)
+                .build();
+        given(hotelRepository.findById(HOTEL_ID)).willReturn(hotel);
+
+        return hotel;
     }
 
-    private HotelRoom createHotelRoom() {
-        return factory.create(HOTEL_ID, ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
-    }
-
-    private HotelRoomDto createHotelRoomDto() {
-        return new HotelRoomDto(HOTEL_ID.toString(), ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
+    private HotelRoomDto givenHotelRoomDto() {
+        return new HotelRoomDto(HOTEL_ID, ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
     }
 
     private HotelRoomBookingDto givenHotelRoomBookingDto() {
-        return new HotelRoomBookingDto(HOTEL_ID.toString(), ROOM_NUMBER, TENANT_ID, DAYS);
+        return new HotelRoomBookingDto(HOTEL_ID, ROOM_NUMBER, TENANT_ID, DAYS);
     }
 
 }
