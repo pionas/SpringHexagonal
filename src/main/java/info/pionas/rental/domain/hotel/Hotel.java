@@ -66,6 +66,10 @@ public class Hotel {
         return getHotelRooms(number).book(tenantId, days, hotelRoomEventsPublisher);
     }
 
+    public boolean hasRoomWithNumber(int number) {
+        return hotelRooms.stream().anyMatch(hotelRoom -> hotelRoom.hasNumberEqualTo(number));
+    }
+
     public static class Builder {
         private String name;
         private String street;

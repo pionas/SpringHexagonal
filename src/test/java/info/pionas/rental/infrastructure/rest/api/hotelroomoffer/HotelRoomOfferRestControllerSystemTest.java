@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Map;
-import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -74,9 +73,7 @@ class HotelRoomOfferRestControllerSystemTest {
 
     @Test
     void shouldThrowExceptionWhenHotelRoomNotFound() {
-        String nonExistingHotelRoomId = UUID.randomUUID().toString();
-
-        HotelRoomOffertDto dto = new HotelRoomOffertDto(hotelId, ROOM_NUMBER, nonExistingHotelRoomId, PRICE, START, END);
+        HotelRoomOffertDto dto = new HotelRoomOffertDto(hotelId, ROOM_NUMBER * 10, null, PRICE, START, END);
 
         Assertions.assertThrows(Exception.class, () -> {
             mockMvc.perform(post("/hotelroomoffer")
