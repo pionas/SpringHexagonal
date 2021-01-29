@@ -7,6 +7,8 @@ import info.pionas.rental.domain.space.Space;
 import info.pionas.rental.domain.space.SpacesFactory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 import java.util.List;
@@ -61,6 +63,35 @@ public class Apartment {
             return null;
         }
         return id.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Apartment apartment = (Apartment) o;
+
+        return new EqualsBuilder()
+                .append(ownerId, apartment.ownerId)
+                .append(apartmentNumber, apartment.apartmentNumber)
+                .append(address, apartment.address)
+                .isEquals();
+    }
+
+    @SuppressWarnings("checkstyle:MagicNumber")
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(ownerId)
+                .append(apartmentNumber)
+                .append(address)
+                .toHashCode();
     }
 
     public static class Builder {

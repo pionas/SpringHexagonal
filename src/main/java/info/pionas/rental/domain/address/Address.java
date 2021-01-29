@@ -1,9 +1,6 @@
 package info.pionas.rental.domain.address;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Embeddable;
 
@@ -11,6 +8,7 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Embeddable
+@EqualsAndHashCode
 @SuppressWarnings("PMD.UnusedPrivateField")
 public class Address {
 
