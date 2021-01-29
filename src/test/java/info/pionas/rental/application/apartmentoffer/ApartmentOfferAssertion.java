@@ -6,6 +6,7 @@ import org.assertj.core.api.Assertions;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 public
@@ -17,7 +18,7 @@ class ApartmentOfferAssertion {
     }
 
     public ApartmentOfferAssertion hasIdEqualTo(String expected) {
-        Assertions.assertThat(actual.getId().toString()).isEqualTo(expected);
+        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("id", UUID.fromString(expected));
         return this;
     }
 
