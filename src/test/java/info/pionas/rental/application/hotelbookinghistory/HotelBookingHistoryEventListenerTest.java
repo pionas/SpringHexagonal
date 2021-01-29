@@ -3,7 +3,7 @@ package info.pionas.rental.application.hotelbookinghistory;
 import info.pionas.rental.domain.hotelbookinghistory.HotelBookingHistory;
 import info.pionas.rental.domain.hotelbookinghistory.HotelBookingHistoryAssertion;
 import info.pionas.rental.domain.hotelbookinghistory.HotelBookingHistoryRepository;
-import info.pionas.rental.domain.hotelroom.HotelRoomBookedTestFactory;
+import info.pionas.rental.domain.hotel.HotelRoomBookedTestFactory;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 

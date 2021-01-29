@@ -1,4 +1,4 @@
-package info.pionas.rental.domain.hotelroom;
+package info.pionas.rental.domain.hotel;
 
 import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.domain.booking.Booking;

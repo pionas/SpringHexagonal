@@ -1,6 +1,6 @@
 package info.pionas.rental.application.hotelroomoffer;
 
-import info.pionas.rental.domain.hotelroom.HotelRoomRepository;
+import info.pionas.rental.domain.hotel.HotelRoomRepository;
 import info.pionas.rental.domain.hotelroomoffer.HotelRoomNotFoundException;
 import info.pionas.rental.domain.hotelroomoffer.HotelRoomOffer;
 import info.pionas.rental.domain.hotelroomoffer.HotelRoomOfferRepository;

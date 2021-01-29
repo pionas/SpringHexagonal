@@ -2,7 +2,7 @@ package info.pionas.rental.domain.eventchannel;
 
 import info.pionas.rental.domain.apartment.ApartmentBooked;
 import info.pionas.rental.domain.booking.BookingAccepted;
-import info.pionas.rental.domain.hotelroom.HotelRoomBooked;
+import info.pionas.rental.domain.hotel.HotelRoomBooked;
 
 
 public interface EventChannel {

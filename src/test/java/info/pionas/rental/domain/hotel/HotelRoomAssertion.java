@@ -1,4 +1,4 @@
-package info.pionas.rental.domain.hotelroom;
+package info.pionas.rental.domain.hotel;
 
 import info.pionas.rental.domain.space.Space;
 import info.pionas.rental.domain.space.SpacesAssertion;
@@ -8,7 +8,6 @@ import org.assertj.core.api.Assertions;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class HotelRoomAssertion {

@@ -1,7 +1,9 @@
-package info.pionas.rental.domain.hotelroom;
+package info.pionas.rental.domain.hotel;
 
 import info.pionas.rental.domain.event.FakeEventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
+import info.pionas.rental.domain.hotel.HotelRoomBooked;
+import info.pionas.rental.domain.hotel.HotelRoomEventsPublisher;
 import info.pionas.rental.infrastructure.clock.FakeClock;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;

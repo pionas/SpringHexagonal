@@ -1,6 +1,6 @@
 package info.pionas.rental.infrastructure.persistence.jpa.hotelroom;
 
-import info.pionas.rental.domain.hotelroom.HotelRoom;
+import info.pionas.rental.domain.hotel.HotelRoom;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

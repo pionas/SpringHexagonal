@@ -1,10 +1,10 @@
 package info.pionas.rental.infrastructure.persistence.jpa.hotelroom;
 
 import com.google.common.collect.ImmutableMap;
-import info.pionas.rental.domain.hotelroom.HotelRoom;
-import info.pionas.rental.domain.hotelroom.HotelRoomAssertion;
-import info.pionas.rental.domain.hotelroom.HotelRoomFactory;
-import info.pionas.rental.domain.hotelroom.HotelRoomRepository;
+import info.pionas.rental.domain.hotel.HotelRoom;
+import info.pionas.rental.domain.hotel.HotelRoomAssertion;
+import info.pionas.rental.domain.hotel.HotelRoomFactory;
+import info.pionas.rental.domain.hotel.HotelRoomRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;

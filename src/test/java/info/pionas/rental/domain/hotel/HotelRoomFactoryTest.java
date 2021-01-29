@@ -1,6 +1,8 @@
-package info.pionas.rental.domain.hotelroom;
+package info.pionas.rental.domain.hotel;
 
 import com.google.common.collect.ImmutableMap;
+import info.pionas.rental.domain.hotel.HotelRoom;
+import info.pionas.rental.domain.hotel.HotelRoomFactory;
 import info.pionas.rental.domain.space.Space;
 import org.junit.jupiter.api.Test;
 

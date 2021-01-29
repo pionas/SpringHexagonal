@@ -3,12 +3,12 @@ package info.pionas.rental.application.hotelroom;
 import info.pionas.rental.domain.booking.Booking;
 import info.pionas.rental.domain.booking.BookingRepository;
 import info.pionas.rental.domain.hotel.HotelRepository;
-import info.pionas.rental.domain.hotelroom.HotelRoom;
-import info.pionas.rental.domain.hotelroom.HotelRoomEventsPublisher;
-import info.pionas.rental.domain.hotelroom.HotelRoomRepository;
+import info.pionas.rental.domain.hotel.HotelRoom;
+import info.pionas.rental.domain.hotel.HotelRoomEventsPublisher;
+import info.pionas.rental.domain.hotel.HotelRoomRepository;
 import lombok.RequiredArgsConstructor;
 
-import static info.pionas.rental.domain.hotelroom.HotelRoom.Builder.hotelRoom;
+import static info.pionas.rental.domain.hotel.HotelRoom.Builder.hotelRoom;
 
 @RequiredArgsConstructor
 public class HotelRoomApplicationService {

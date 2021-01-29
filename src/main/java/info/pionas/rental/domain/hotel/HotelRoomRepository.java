@@ -1,4 +1,4 @@
-package info.pionas.rental.domain.hotelroom;
+package info.pionas.rental.domain.hotel;
 
 import org.springframework.stereotype.Repository;
 

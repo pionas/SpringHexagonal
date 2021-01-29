@@ -1,6 +1,6 @@
 package info.pionas.rental.application.hotelroomoffer;
 
-import info.pionas.rental.domain.hotelroom.HotelRoomRepository;
+import info.pionas.rental.domain.hotel.HotelRoomRepository;
 import info.pionas.rental.domain.hotelroomoffer.*;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
