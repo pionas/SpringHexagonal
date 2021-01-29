@@ -69,7 +69,7 @@ class HotelBookingHistoryEventListenerIntegrationTest {
         hotelRoomApplicationService.book(hotelRoomBookingDto);
         HotelBookingHistory actual = hotelBookingHistoryRepository.findFor(hotelId);
 
-        HotelBookingHistoryAssertion.assertThat(actual).hasHotelRoomBookingHistoryFor(null, tenantId, days);
+        HotelBookingHistoryAssertion.assertThat(actual).hasHotelRoomBookingHistoryFor(tenantId, days);
     }
 
 }

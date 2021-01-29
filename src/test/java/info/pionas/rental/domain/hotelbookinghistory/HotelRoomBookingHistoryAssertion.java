@@ -65,4 +65,5 @@ class HotelRoomBookingHistoryAssertion {
     private List<HotelRoomBooking> asHotelRoomBookings(Object actualBookings) {
         return (List<HotelRoomBooking>) actualBookings;
     }
+
 }

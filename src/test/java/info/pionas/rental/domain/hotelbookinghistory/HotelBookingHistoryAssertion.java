@@ -36,6 +36,14 @@ public class HotelBookingHistoryAssertion {
         });
     }
 
+
+    public HotelBookingHistoryAssertion hasHotelRoomBookingHistoryFor(String tenantId, List<LocalDate> days) {
+        return hasHotelRoomBookingHistoryFor(hotelRoomBookingHistory -> {
+            HotelRoomBookingHistoryAssertion.assertThat(hotelRoomBookingHistory)
+                    .hasHotelRoomBookingFor(tenantId, days);
+        });
+    }
+
     public HotelBookingHistoryAssertion hasInformationAboutHistoryOfHotelRoom(String hotelRoomId, int size) {
         return hasHotelRoomBookingHistoryFor(hotelRoomBookingHistory -> {
             HotelRoomBookingHistoryAssertion.assertThat(hotelRoomBookingHistory)
