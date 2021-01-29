@@ -5,14 +5,12 @@ import info.pionas.rental.domain.booking.BookingRepository;
 import info.pionas.rental.domain.hotel.Hotel;
 import info.pionas.rental.domain.hotel.HotelRepository;
 import info.pionas.rental.domain.hotel.HotelRoomEventsPublisher;
-import info.pionas.rental.domain.hotel.HotelRoomRepository;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class HotelRoomApplicationService {
 
     private final HotelRepository hotelRepository;
-    private final HotelRoomRepository hotelRoomRepository;
     private final BookingRepository bookingRepository;
     private final HotelRoomEventsPublisher hotelRoomEventsPublisher;
 
