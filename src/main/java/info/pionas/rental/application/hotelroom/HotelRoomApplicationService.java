@@ -2,10 +2,11 @@ package info.pionas.rental.application.hotelroom;
 
 import info.pionas.rental.domain.booking.Booking;
 import info.pionas.rental.domain.booking.BookingRepository;
-import info.pionas.rental.domain.hotel.*;
+import info.pionas.rental.domain.hotel.Hotel;
+import info.pionas.rental.domain.hotel.HotelRepository;
+import info.pionas.rental.domain.hotel.HotelRoomEventsPublisher;
+import info.pionas.rental.domain.hotel.HotelRoomRepository;
 import lombok.RequiredArgsConstructor;
-
-import static info.pionas.rental.domain.hotel.HotelRoom.Builder.hotelRoom;
 
 @RequiredArgsConstructor
 public class HotelRoomApplicationService {
@@ -27,8 +28,8 @@ public class HotelRoomApplicationService {
     }
 
     public String book(HotelRoomBookingDto hotelRoomBookingDto) {
-        HotelRoom hotelRoom = hotelRoomRepository.findById(hotelRoomBookingDto.getHotelRoomId());
-        Booking booking = hotelRoom.book(hotelRoomBookingDto.getTenantId(), hotelRoomBookingDto.getDays(), hotelRoomEventsPublisher);
+        Hotel hotel = hotelRepository.findById(hotelRoomBookingDto.getHotelId());
+        Booking booking = hotel.bookRoom(hotelRoomBookingDto.getNumber(), hotelRoomBookingDto.getTenantId(), hotelRoomBookingDto.getDays(), hotelRoomEventsPublisher);
 
         return bookingRepository.save(booking);
     }

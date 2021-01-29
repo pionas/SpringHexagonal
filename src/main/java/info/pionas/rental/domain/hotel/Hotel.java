@@ -1,10 +1,12 @@
 package info.pionas.rental.domain.hotel;
 
 import info.pionas.rental.domain.address.Address;
+import info.pionas.rental.domain.booking.Booking;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +60,10 @@ public class Hotel {
                 .filter(hotelRoom -> hotelRoom.hasNumberEqualTo(number))
                 .findFirst()
                 .get();
+    }
+
+    public Booking bookRoom(int number, String tenantId, List<LocalDate> days, HotelRoomEventsPublisher hotelRoomEventsPublisher) {
+        return getHotelRooms(number).book(tenantId, days, hotelRoomEventsPublisher);
     }
 
     public static class Builder {
