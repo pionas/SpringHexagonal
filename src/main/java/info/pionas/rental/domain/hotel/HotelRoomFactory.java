@@ -5,12 +5,13 @@ import info.pionas.rental.domain.space.SquareMeter;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
 public class HotelRoomFactory {
 
-    public HotelRoom create(String hotelId, int number, Map<String, Double> spacesDefinition, String description) {
+    public HotelRoom create(UUID hotelId, int number, Map<String, Double> spacesDefinition, String description) {
         List<Space> spaces = spacesDefinition.entrySet().stream()
                 .map(entry -> {
                     SquareMeter squareMeter = new SquareMeter(entry.getValue());

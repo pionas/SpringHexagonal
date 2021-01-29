@@ -28,7 +28,7 @@ import static java.util.Arrays.asList;
 @SpringBootTest
 @Tag("IntegrationTest")
 class HotelBookingHistoryEventListenerIntegrationTest {
-    private static final String HOTEL_ID = UUID.randomUUID().toString();
+    private static final UUID HOTEL_ID = UUID.randomUUID();
     private static final int HOTEL_NUMBER = 13;
     private static final Map<String, Double> SPACES_DEFINITION = ImmutableMap.of("RoomOne", 20.0, "RoomTwo", 20.0);
     private static final String DESCRIPTION = "What a lovely place";
@@ -49,7 +49,7 @@ class HotelBookingHistoryEventListenerIntegrationTest {
     @AfterEach
     void removeHotelRoom() {
         springJpaHotelRoomTestRepository.deleteById(hotelRoomId);
-        springJpaHotelBookingHistoryTestRepository.deleteById(HOTEL_ID);
+        springJpaHotelBookingHistoryTestRepository.deleteById(HOTEL_ID.toString());
     }
 
     @Test
@@ -61,7 +61,7 @@ class HotelBookingHistoryEventListenerIntegrationTest {
         HotelRoomBookingDto hotelRoomBookingDto = new HotelRoomBookingDto(hotelRoomId, tenantId, days);
 
         hotelRoomApplicationService.book(hotelRoomBookingDto);
-        HotelBookingHistory actual = hotelBookingHistoryRepository.findFor(HOTEL_ID);
+        HotelBookingHistory actual = hotelBookingHistoryRepository.findFor(HOTEL_ID.toString());
 
         HotelBookingHistoryAssertion.assertThat(actual).hasHotelRoomBookingHistoryFor(hotelRoomId, tenantId, days);
     }

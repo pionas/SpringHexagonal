@@ -1,13 +1,12 @@
 package info.pionas.rental.domain.hotel;
 
 import com.google.common.collect.ImmutableMap;
-import info.pionas.rental.domain.hotel.HotelRoom;
-import info.pionas.rental.domain.hotel.HotelRoomFactory;
 import info.pionas.rental.domain.space.Space;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -17,7 +16,7 @@ public class HotelRoomFactoryTest {
 
     @Test
     public void shouldCreateHotelRoomWillAllRequiredFields() {
-        String hotelId = "123";
+        UUID hotelId = UUID.randomUUID();
         int number = 20;
         Map<String, Double> spacesDefinition = ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0);
         String description = "Room with jacuzzi";

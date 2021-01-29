@@ -8,6 +8,7 @@ import org.assertj.core.api.Assertions;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class HotelRoomAssertion {
@@ -17,7 +18,7 @@ public class HotelRoomAssertion {
         return new HotelRoomAssertion(actual);
     }
 
-    public HotelRoomAssertion hasHotelIdEqualTo(String expected) {
+    public HotelRoomAssertion hasHotelIdEqualTo(UUID expected) {
         Assertions.assertThat(actual).hasFieldOrPropertyWithValue("hotelId", expected);
         return this;
     }

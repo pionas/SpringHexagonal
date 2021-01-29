@@ -13,13 +13,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
 
+import java.util.UUID;
+
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Tag("IntegrationTest")
 class QueryHotelRoomRepositoryIntegrationTest {
-    private static final String HOTEL_ID = "5678";
+    private static final UUID HOTEL_ID = UUID.randomUUID();
     private static final int ROOM_NUMBER_1 = 42;
     private static final ImmutableMap<String, Double> SPACES_DEFINITION_1 = ImmutableMap.of("Room1", 30.0);
     private static final String DESCRIPTION_1 = "This is very nice place";
@@ -50,14 +52,14 @@ class QueryHotelRoomRepositoryIntegrationTest {
         HotelRoom hotelRoom2 = hotelRoomFactory.create(HOTEL_ID, ROOM_NUMBER_2, SPACES_DEFINITION_2, DESCRIPTION_2);
         hotelRoomId2 = hotelRoomRepository.save(hotelRoom2);
 
-        Iterable<HotelRoomReadModel> actual = queryHotelRoomRepository.findAll(HOTEL_ID);
+        Iterable<HotelRoomReadModel> actual = queryHotelRoomRepository.findAll(HOTEL_ID.toString());
 
         assertThat(actual)
                 .hasSize(2)
                 .anySatisfy(hotelRoomReadModel -> {
                     HotelRoomReadModelAssertion.assertThat(hotelRoomReadModel)
                             .hasHotelRoomIdEqualTo(hotelRoomId1)
-                            .hasHotelIdEqualTo(HOTEL_ID)
+                            .hasHotelIdEqualTo(HOTEL_ID.toString())
                             .hasNumberEqualTo(ROOM_NUMBER_1)
                             .hasSpacesDefinitionEqualTo(SPACES_DEFINITION_1)
                             .hasDescriptionEqualTo(DESCRIPTION_1);
@@ -65,7 +67,7 @@ class QueryHotelRoomRepositoryIntegrationTest {
                 .anySatisfy(hotelRoomReadModel -> {
                     HotelRoomReadModelAssertion.assertThat(hotelRoomReadModel)
                             .hasHotelRoomIdEqualTo(hotelRoomId2)
-                            .hasHotelIdEqualTo(HOTEL_ID)
+                            .hasHotelIdEqualTo(HOTEL_ID.toString())
                             .hasNumberEqualTo(ROOM_NUMBER_2)
                             .hasSpacesDefinitionEqualTo(SPACES_DEFINITION_2)
                             .hasDescriptionEqualTo(DESCRIPTION_2);

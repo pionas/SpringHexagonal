@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 @Tag("DomainRepositoryIntegrationTest")
 class JpaHotelRoomRepositoryIntegrationTest {
-    private static final String HOTEL_ID = "5678";
+    private static final UUID HOTEL_ID = UUID.randomUUID();
     private static final int ROOM_NUMBER = 42;
     private static final ImmutableMap<String, Double> SPACES_DEFINITION = ImmutableMap.of("Room1", 30.0);
     private static final String DESCRIPTION = "This is very nice place";

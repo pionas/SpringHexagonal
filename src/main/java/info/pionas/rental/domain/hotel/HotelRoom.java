@@ -23,14 +23,15 @@ public class HotelRoom {
     @Id
     @GeneratedValue
     private UUID id;
-    private String hotelId;
+    @Column(name = "HOTEL_ID")
+    private UUID hotelId;
     private int number;
     @ElementCollection
     @CollectionTable(name = "HOTEL_ROOM_SPACE", joinColumns = @JoinColumn(name = "HOTEL_ROOM_ID"))
     private List<Space> spaces;
     private String description;
 
-    public HotelRoom(String hotelId, int number, List<Space> spaces, String description) {
+    public HotelRoom(UUID hotelId, int number, List<Space> spaces, String description) {
         this.hotelId = hotelId;
         this.number = number;
         this.spaces = spaces;
@@ -38,7 +39,7 @@ public class HotelRoom {
     }
 
     public Booking book(String tenantId, List<LocalDate> days, HotelRoomEventsPublisher hotelRoomEventsPublisher) {
-        hotelRoomEventsPublisher.publishHotelRoomBooked(id(), hotelId, tenantId, days);
+        hotelRoomEventsPublisher.publishHotelRoomBooked(id(), hotelId.toString(), tenantId, days);
         return Booking.hotelRoom(id(), tenantId, days);
     }
 
@@ -49,8 +50,12 @@ public class HotelRoom {
         return id.toString();
     }
 
+    public boolean hasNumberEqualTo(int number) {
+        return this.number == number;
+    }
+
     public static class Builder {
-        private String hotelId;
+        private UUID hotelId;
         private int number;
         private Map<String, Double> spacesDefinition;
         private String description;
@@ -62,9 +67,13 @@ public class HotelRoom {
             return new Builder();
         }
 
-        public Builder withHotelId(String hotelId) {
+        Builder withHotelId(UUID hotelId) {
             this.hotelId = hotelId;
             return this;
+        }
+
+        public Builder withHotelId(String hotelId) {
+            return withHotelId(UUID.fromString(hotelId));
         }
 
         public Builder withNumber(int number) {
@@ -89,5 +98,6 @@ public class HotelRoom {
         private List<Space> spaces() {
             return SpacesFactory.create(spacesDefinition);
         }
+
     }
 }

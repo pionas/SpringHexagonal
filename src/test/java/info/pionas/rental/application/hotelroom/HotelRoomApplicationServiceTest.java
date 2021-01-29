@@ -26,7 +26,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
 class HotelRoomApplicationServiceTest {
-    private static final String HOTEL_ID = UUID.randomUUID().toString();
+    private static final UUID HOTEL_ID = UUID.randomUUID();
     private static final int ROOM_NUMBER = 13;
     private static final Map<String, Double> SPACES_DEFINITION = ImmutableMap.of("RoomOne", 20.0, "RoomTwo", 20.0);
     private static final String DESCRIPTION = "What a lovely place";
@@ -44,7 +44,7 @@ class HotelRoomApplicationServiceTest {
     @Test
     void shouldCreateHotelRoom() {
         ArgumentCaptor<HotelRoom> captor = ArgumentCaptor.forClass(HotelRoom.class);
-        given(hotelRepository.save(any())).willReturn(HOTEL_ID);
+        given(hotelRepository.save(any())).willReturn(HOTEL_ID.toString());
 
         service.add(createHotelRoomDto());
 
@@ -58,7 +58,7 @@ class HotelRoomApplicationServiceTest {
 
     @Test
     void shouldReturnIdOfNewHotelRoom() {
-        given(hotelRepository.save(any())).willReturn(HOTEL_ID);
+        given(hotelRepository.save(any())).willReturn(HOTEL_ID.toString());
         given(hotelRoomRepository.save(any())).willReturn(HOTEL_ROOM_ID);
 
         String actual = service.add(createHotelRoomDto());
@@ -88,7 +88,7 @@ class HotelRoomApplicationServiceTest {
         HotelRoomBooked actual = captor.getValue();
         assertThat(actual.getEventId()).isEqualTo(FakeEventIdFactory.UUID);
         assertThat(actual.getEventCreationDateTime()).isEqualTo(FakeClock.NOW);
-        assertThat(actual.getHotelId()).isEqualTo(HOTEL_ID);
+        assertThat(actual.getHotelId()).isEqualTo(HOTEL_ID.toString());
         assertThat(actual.getTenantId()).isEqualTo(TENANT_ID);
         assertThat(actual.getDays()).containsExactlyElementsOf(DAYS);
     }
@@ -113,7 +113,7 @@ class HotelRoomApplicationServiceTest {
     }
 
     private HotelRoomDto createHotelRoomDto() {
-        return new HotelRoomDto(HOTEL_ID, ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
+        return new HotelRoomDto(HOTEL_ID.toString(), ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
     }
 
     private HotelRoomBookingDto givenHotelRoomBookingDto(String hotelRoomId) {
