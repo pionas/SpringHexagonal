@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
 
+import java.util.UUID;
 import java.util.function.Consumer;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -16,13 +17,8 @@ class HotelRoomReadModelAssertion {
         return new HotelRoomReadModelAssertion(actual);
     }
 
-    HotelRoomReadModelAssertion hasHotelRoomIdEqualTo(String expected) {
-        Assertions.assertThat(actual.getId().toString()).isEqualTo(expected);
-        return this;
-    }
-
     HotelRoomReadModelAssertion hasHotelIdEqualTo(String expected) {
-        Assertions.assertThat(actual.getHotelId()).isEqualTo(expected);
+        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("hotelId", UUID.fromString(expected));
         return this;
     }
 
