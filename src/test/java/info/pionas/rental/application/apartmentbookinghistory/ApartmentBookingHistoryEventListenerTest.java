@@ -73,9 +73,7 @@ class ApartmentBookingHistoryEventListenerTest {
 
     private ApartmentBookingHistory getApartmentBookingHistory() {
         ApartmentBookingHistory apartmentBookingHistory = new ApartmentBookingHistory(APARTMENT_ID);
-        ApartmentBooking apartmentBooking = ApartmentBooking.start(
-                LocalDateTime.now(), OWNER_ID, "9807", new Period(LocalDate.now(), LocalDate.now().plusDays(1)));
-        apartmentBookingHistory.add(apartmentBooking);
+        apartmentBookingHistory.addBookingStart(LocalDateTime.now(), OWNER_ID, "9807", new Period(LocalDate.now(), LocalDate.now().plusDays(1)));
         return apartmentBookingHistory;
     }
 
