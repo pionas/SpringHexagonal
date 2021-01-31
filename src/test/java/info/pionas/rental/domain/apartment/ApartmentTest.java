@@ -3,6 +3,7 @@ package info.pionas.rental.domain.apartment;
 import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.domain.booking.Booking;
 import info.pionas.rental.domain.booking.BookingAssertion;
+import info.pionas.rental.domain.hotel.Hotel;
 import info.pionas.rental.domain.period.Period;
 import info.pionas.rental.domain.space.NotEnoughSpacesGivenException;
 import org.assertj.core.api.Assertions;
@@ -96,6 +97,20 @@ class ApartmentTest {
         Apartment actual = createApartment1();
         Assertions.assertThat(actual.equals(apartment2)).isTrue();
         Assertions.assertThat(actual.hashCode()).isEqualTo(apartment2.hashCode());
+    }
+
+    @Test
+    void shouldRecognizeTheSameInstanceAsTheSameAggregate() {
+        Apartment actual = createApartment1();
+
+        Assertions.assertThat(actual.equals(actual)).isTrue();
+    }
+
+    @Test
+    void shouldRecognizeTwoInstancesOfApartmentRepresentsNotTheSameAggregate() {
+        Apartment actual = createApartment1();
+        Assertions.assertThat(actual.equals(null)).isFalse();
+        Assertions.assertThat(actual.equals(new Hotel())).isFalse();
     }
 
     @ParameterizedTest
