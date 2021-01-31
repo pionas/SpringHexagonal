@@ -90,6 +90,7 @@ public class Hotel {
                 .isEquals();
     }
 
+    @SuppressWarnings("checkstyle:MagicNumber")
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
