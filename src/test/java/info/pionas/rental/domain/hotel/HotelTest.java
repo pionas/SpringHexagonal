@@ -34,11 +34,26 @@ class HotelTest {
     }
 
     @Test
-    void shouldRecognizTwoHotelInstancesRepresentTheSameAgregate() {
+    void shouldRecognizeTheSameInstanceAsTheSameAggregate() {
+        Hotel actual = givenHotel();
+
+        assertThat(actual.equals(actual)).isTrue();
+        assertThat(actual.hashCode()).isEqualTo(actual.hashCode());
+    }
+
+    @Test
+    void shouldRecognizeTwoHotelInstancesRepresentTheSameAggregate() {
         Hotel toCompare = givenHotel();
         Hotel actual = givenHotel();
         assertThat(actual.equals(toCompare)).isTrue();
         assertThat(actual.hashCode()).isEqualTo(toCompare.hashCode());
+    }
+
+    @Test
+    void shouldRecognizeNullIsNotTheSameAsHotel() {
+        Hotel actual = givenHotel();
+
+        assertThat(actual.equals(null)).isFalse();
     }
 
     @ParameterizedTest
