@@ -52,6 +52,7 @@ class QueryHotelRoomRepositoryIntegrationTest {
                 .hasSize(2)
                 .anySatisfy(hotelRoomReadModel -> {
                     HotelRoomReadModelAssertion.assertThat(hotelRoomReadModel)
+                            .hasHotelRoomIdThatIsUUID()
                             .hasHotelIdEqualTo(hotelId)
                             .hasNumberEqualTo(ROOM_NUMBER_1)
                             .hasSpacesDefinitionEqualTo(SPACES_DEFINITION_1)
@@ -59,6 +60,7 @@ class QueryHotelRoomRepositoryIntegrationTest {
                 })
                 .anySatisfy(hotelRoomReadModel -> {
                     HotelRoomReadModelAssertion.assertThat(hotelRoomReadModel)
+                            .hasHotelRoomIdThatIsUUID()
                             .hasHotelIdEqualTo(hotelId)
                             .hasNumberEqualTo(ROOM_NUMBER_2)
                             .hasSpacesDefinitionEqualTo(SPACES_DEFINITION_2)

@@ -8,6 +8,7 @@ import org.assertj.core.api.Assertions;
 
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.regex.Pattern;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 class HotelRoomReadModelAssertion {
@@ -15,6 +16,11 @@ class HotelRoomReadModelAssertion {
 
     static HotelRoomReadModelAssertion assertThat(HotelRoomReadModel actual) {
         return new HotelRoomReadModelAssertion(actual);
+    }
+
+    HotelRoomReadModelAssertion hasHotelRoomIdThatIsUUID() {
+        Assertions.assertThat(actual.getId().toString()).matches(Pattern.compile("[0-9a-z\\-]{36}"));
+        return this;
     }
 
     HotelRoomReadModelAssertion hasHotelIdEqualTo(String expected) {
