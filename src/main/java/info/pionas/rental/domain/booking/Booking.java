@@ -48,17 +48,11 @@ public class Booking {
     }
 
     public void reject() {
-        if (bookingStatus.equals(ACCEPTED)) {
-            throw new NotAllowedBookingStatusTransitionException(bookingStatus, REJECTED);
-        }
-        bookingStatus = REJECTED;
+        bookingStatus = bookingStatus.moveTo(REJECTED);
     }
 
     public void accept(BookingEventsPublisher bookingEventsPublisher) {
-        if (bookingStatus.equals(REJECTED)) {
-            throw new NotAllowedBookingStatusTransitionException(bookingStatus, ACCEPTED);
-        }
-        bookingStatus = ACCEPTED;
+        bookingStatus = bookingStatus.moveTo(ACCEPTED);
         bookingEventsPublisher.bookingAccepted(rentalType, rentalPlaceId, tenantId, days);
     }
 
