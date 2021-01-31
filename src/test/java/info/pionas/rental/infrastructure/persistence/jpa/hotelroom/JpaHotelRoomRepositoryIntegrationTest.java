@@ -3,7 +3,6 @@ package info.pionas.rental.infrastructure.persistence.jpa.hotelroom;
 import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.domain.hotel.HotelRoom;
 import info.pionas.rental.domain.hotel.HotelRoomAssertion;
-import info.pionas.rental.domain.hotel.HotelRoomFactory;
 import info.pionas.rental.domain.hotel.HotelRoomRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Tag;
@@ -14,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.transaction.Transactional;
 import java.util.UUID;
 
+import static info.pionas.rental.domain.hotel.HotelRoom.Builder.hotelRoom;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -50,7 +50,12 @@ class JpaHotelRoomRepositoryIntegrationTest {
     @Test
     @Transactional
     void shouldFindExistingHotelRoom() {
-        HotelRoom hotelRoom = createHotelRoom();
+        HotelRoom hotelRoom = hotelRoom()
+                .withHotelId(HOTEL_ID)
+                .withNumber(ROOM_NUMBER)
+                .withSpacesDefinition(SPACES_DEFINITION)
+                .withDescription(DESCRIPTION)
+                .build();
         hotelRoomId = hotelRoomRepository.save(hotelRoom);
 
         HotelRoom actual = hotelRoomRepository.findById(hotelRoomId);
@@ -67,9 +72,5 @@ class JpaHotelRoomRepositoryIntegrationTest {
         String id = UUID.randomUUID().toString();
 
         assertThat(hotelRoomRepository.existById(id)).isFalse();
-    }
-
-    private HotelRoom createHotelRoom() {
-        return new HotelRoomFactory().create(HOTEL_ID, ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
     }
 }
