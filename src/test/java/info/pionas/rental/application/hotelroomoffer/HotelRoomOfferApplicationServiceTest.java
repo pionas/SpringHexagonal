@@ -96,7 +96,7 @@ public class HotelRoomOfferApplicationServiceTest {
         HotelRoomAvailabilityException actual = assertThrows(HotelRoomAvailabilityException.class, () -> {
             service.add(dto);
         });
-        assertThat(actual).hasMessage("Start date: 2020-10-10 is past date.");
+        assertThat(actual).hasMessage("Start date: 2020-10-10 is past date");
     }
 
     @Test
@@ -108,7 +108,7 @@ public class HotelRoomOfferApplicationServiceTest {
         HotelRoomAvailabilityException actual = assertThrows(HotelRoomAvailabilityException.class, () -> {
             service.add(dto);
         });
-        assertThat(actual).hasMessage("Start date: 2020-10-10 is past date.");
+        assertThat(actual).hasMessage("Start date: 2020-10-10 is past date");
     }
 
     @Test
