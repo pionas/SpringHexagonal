@@ -4,6 +4,8 @@ import info.pionas.rental.domain.address.Address;
 import info.pionas.rental.domain.booking.Booking;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -68,6 +70,32 @@ public class Hotel {
 
     public boolean hasRoomWithNumber(int number) {
         return hotelRooms.stream().anyMatch(hotelRoom -> hotelRoom.hasNumberEqualTo(number));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Hotel hotel = (Hotel) o;
+
+        return new EqualsBuilder()
+                .append(name, hotel.name)
+                .append(address, hotel.address)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(name)
+                .append(address)
+                .toHashCode();
     }
 
     public static class Builder {
