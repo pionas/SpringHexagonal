@@ -11,6 +11,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -103,7 +104,7 @@ public class Apartment {
         private String city;
         private String country;
         private String description;
-        private Map<String, Double> spacesDefinition;
+        private Map<String, Double> spacesDefinition = new HashMap<>();
 
         private Builder() {
         }

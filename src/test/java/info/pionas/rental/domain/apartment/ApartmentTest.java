@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.domain.booking.Booking;
 import info.pionas.rental.domain.booking.BookingAssertion;
 import info.pionas.rental.domain.period.Period;
+import info.pionas.rental.domain.space.NotEnoughSpacesGivenException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,6 +17,8 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import static info.pionas.rental.domain.apartment.Apartment.Builder.apartment;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
@@ -102,6 +105,22 @@ class ApartmentTest {
 
         Assertions.assertThat(actual.equals(notTheSame)).isFalse();
         Assertions.assertThat(actual.hashCode()).isNotEqualTo(notTheSame.hashCode());
+    }
+
+    @Test
+    void shouldNotBeAbleToCreateApartmentWithoutSpaces() {
+        Apartment.Builder apartment = apartment()
+                .withOwnerId(OWNER_ID_1)
+                .withStreet(STREET_1)
+                .withPostalCode(POSTAL_CODE_1)
+                .withHouseNumber(HOUSE_NUMBER_1)
+                .withApartmentNumber(APARTMENT_NUMBER_1)
+                .withCity(CITY_1)
+                .withCountry(COUNTRY_1)
+                .withDescription(DESCRIPTION_1);
+
+        NotEnoughSpacesGivenException actual = assertThrows(NotEnoughSpacesGivenException.class, apartment::build);
+        assertThat(actual).hasMessage("No spaces given");
     }
 
     private static Stream<Apartment> notTheSameApartments() {

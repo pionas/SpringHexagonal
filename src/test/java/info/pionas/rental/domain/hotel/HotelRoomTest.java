@@ -3,6 +3,7 @@ package info.pionas.rental.domain.hotel;
 import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.domain.booking.Booking;
 import info.pionas.rental.domain.booking.BookingAssertion;
+import info.pionas.rental.domain.space.NotEnoughSpacesGivenException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,6 +17,8 @@ import java.util.stream.Stream;
 
 import static info.pionas.rental.domain.hotel.HotelRoom.Builder.hotelRoom;
 import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -122,6 +125,17 @@ class HotelRoomTest {
 
         Assertions.assertThat(actual.equals(toCompare)).isFalse();
         Assertions.assertThat(actual.hashCode()).isNotEqualTo(toCompare.hashCode());
+    }
+
+    @Test
+    void shouldNotBeAbleToCreateHotelRoomWithoutSpaces() {
+        HotelRoom.Builder hotelRoom = hotelRoom()
+                .withHotelId(HOTEL_ID_1)
+                .withNumber(ROOM_NUMBER_1)
+                .withDescription(DESCRIPTION_1);
+
+        NotEnoughSpacesGivenException actual = assertThrows(NotEnoughSpacesGivenException.class, hotelRoom::build);
+        assertThat(actual).hasMessage("No spaces given");
     }
 
     private HotelRoom givenHotelRoom() {
