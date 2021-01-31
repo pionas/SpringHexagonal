@@ -37,7 +37,7 @@ public class HotelRoomOfferApplicationServiceTest {
     private static final LocalDate START_YEAR_LATER = LocalDate.of(2041, 12, 10);
     private final HotelRepository hotelRepository = mock(HotelRepository.class);
     private final HotelRoomOfferRepository repository = mock(HotelRoomOfferRepository.class);
-    private final HotelRoomOfferApplicationService service = new HotelRoomOfferApplicationService(repository, hotelRepository);
+    private final HotelRoomOfferApplicationService service = new HotelRoomOfferApplicationServiceFactory().create(repository, hotelRepository);
 
     @Test
     void shouldCreateHotelRoomOffer() {
