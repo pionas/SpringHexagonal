@@ -6,6 +6,8 @@ import info.pionas.rental.domain.space.SpacesFactory;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -63,6 +65,33 @@ public class HotelRoom {
         return this.number == number;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        HotelRoom hotelRoom = (HotelRoom) o;
+
+        return new EqualsBuilder()
+                .append(number, hotelRoom.number)
+                .append(hotelId, hotelRoom.hotelId)
+                .isEquals();
+    }
+
+    @SuppressWarnings("checkstyle:MagicNumber")
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(hotelId)
+                .append(number)
+                .toHashCode();
+    }
+
     public static class Builder {
         private UUID hotelId;
         private int number;
@@ -76,13 +105,9 @@ public class HotelRoom {
             return new Builder();
         }
 
-        Builder withHotelId(UUID hotelId) {
+        public Builder withHotelId(UUID hotelId) {
             this.hotelId = hotelId;
             return this;
-        }
-
-        public Builder withHotelId(String hotelId) {
-            return withHotelId(UUID.fromString(hotelId));
         }
 
         public Builder withNumber(int number) {
