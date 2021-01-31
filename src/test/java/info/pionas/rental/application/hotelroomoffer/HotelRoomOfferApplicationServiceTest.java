@@ -44,7 +44,7 @@ public class HotelRoomOfferApplicationServiceTest {
         ArgumentCaptor<HotelRoomOffer> captor = ArgumentCaptor.forClass(HotelRoomOffer.class);
         Hotel hotel = givenExistingHotel();
         hotel.addRoom(ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
-        service.add(new HotelRoomOffertDto(HOTEL_ID, ROOM_NUMBER, HOTEL_ROOM_ID, PRICE, START, END));
+        service.add(new HotelRoomOfferDto(HOTEL_ID, ROOM_NUMBER, HOTEL_ROOM_ID, PRICE, START, END));
 
         then(repository).should().save(captor.capture());
         HotelRoomOfferAssertion.assertThat(captor.getValue())
@@ -58,7 +58,7 @@ public class HotelRoomOfferApplicationServiceTest {
         Hotel hotel = givenExistingHotel();
         hotel.addRoom(ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
         HotelRoomNotFoundException actual = assertThrows(HotelRoomNotFoundException.class, () -> {
-            service.add(new HotelRoomOffertDto(HOTEL_ID, (ROOM_NUMBER * 100), HOTEL_ROOM_ID, PRICE, START, END));
+            service.add(new HotelRoomOfferDto(HOTEL_ID, (ROOM_NUMBER * 100), HOTEL_ROOM_ID, PRICE, START, END));
         });
         assertThat(actual).hasMessage("Hotel room with id " + HOTEL_ROOM_ID + " does not exist");
     }
@@ -68,7 +68,7 @@ public class HotelRoomOfferApplicationServiceTest {
         Hotel hotel = givenExistingHotel();
         hotel.addRoom(ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
 
-        HotelRoomOffertDto dto = new HotelRoomOffertDto(HOTEL_ID, ROOM_NUMBER, HOTEL_ROOM_ID, BigDecimal.ZERO, START, END);
+        HotelRoomOfferDto dto = new HotelRoomOfferDto(HOTEL_ID, ROOM_NUMBER, HOTEL_ROOM_ID, BigDecimal.ZERO, START, END);
         NotAllowedMoneyValueException actual = assertThrows(NotAllowedMoneyValueException.class, () -> {
             service.add(dto);
         });
@@ -80,7 +80,7 @@ public class HotelRoomOfferApplicationServiceTest {
         Hotel hotel = givenExistingHotel();
         hotel.addRoom(ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
 
-        HotelRoomOffertDto dto = new HotelRoomOffertDto(HOTEL_ID, ROOM_NUMBER, HOTEL_ROOM_ID, PRICE, END, START);
+        HotelRoomOfferDto dto = new HotelRoomOfferDto(HOTEL_ID, ROOM_NUMBER, HOTEL_ROOM_ID, PRICE, END, START);
         HotelRoomAvailabilityException actual = assertThrows(HotelRoomAvailabilityException.class, () -> {
             service.add(dto);
         });
@@ -92,7 +92,7 @@ public class HotelRoomOfferApplicationServiceTest {
         Hotel hotel = givenExistingHotel();
         hotel.addRoom(ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
 
-        HotelRoomOffertDto dto = new HotelRoomOffertDto(HOTEL_ID, ROOM_NUMBER, HOTEL_ROOM_ID, PRICE, LocalDate.of(2020, 10, 10), END);
+        HotelRoomOfferDto dto = new HotelRoomOfferDto(HOTEL_ID, ROOM_NUMBER, HOTEL_ROOM_ID, PRICE, LocalDate.of(2020, 10, 10), END);
         HotelRoomAvailabilityException actual = assertThrows(HotelRoomAvailabilityException.class, () -> {
             service.add(dto);
         });
@@ -104,7 +104,7 @@ public class HotelRoomOfferApplicationServiceTest {
         Hotel hotel = givenExistingHotel();
         hotel.addRoom(ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
 
-        HotelRoomOffertDto dto = new HotelRoomOffertDto(HOTEL_ID, ROOM_NUMBER, HOTEL_ROOM_ID, PRICE, LocalDate.of(2020, 10, 10), NO_DATE);
+        HotelRoomOfferDto dto = new HotelRoomOfferDto(HOTEL_ID, ROOM_NUMBER, HOTEL_ROOM_ID, PRICE, LocalDate.of(2020, 10, 10), NO_DATE);
         HotelRoomAvailabilityException actual = assertThrows(HotelRoomAvailabilityException.class, () -> {
             service.add(dto);
         });
@@ -117,7 +117,7 @@ public class HotelRoomOfferApplicationServiceTest {
         Hotel hotel = givenExistingHotel();
         hotel.addRoom(ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
 
-        HotelRoomOffertDto dto = new HotelRoomOffertDto(HOTEL_ID, ROOM_NUMBER, HOTEL_ROOM_ID, PRICE, START, NO_DATE);
+        HotelRoomOfferDto dto = new HotelRoomOfferDto(HOTEL_ID, ROOM_NUMBER, HOTEL_ROOM_ID, PRICE, START, NO_DATE);
         service.add(dto);
 
         then(repository).should().save(captor.capture());

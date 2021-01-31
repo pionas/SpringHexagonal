@@ -3,7 +3,7 @@ package info.pionas.rental.infrastructure.rest.api.hotelroomoffer;
 import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.application.hotel.HotelDto;
 import info.pionas.rental.application.hotelroom.HotelRoomDto;
-import info.pionas.rental.application.hotelroomoffer.HotelRoomOffertDto;
+import info.pionas.rental.application.hotelroomoffer.HotelRoomOfferDto;
 import info.pionas.rental.infrastructure.json.JsonFactory;
 import info.pionas.rental.infrastructure.persistence.jpa.hotel.SpringJpaHotelTestRepository;
 import org.junit.jupiter.api.*;
@@ -64,7 +64,7 @@ class HotelRoomOfferRestControllerSystemTest {
 
     @Test
     void shouldCreateHotelRoomOfferForExistingHotelRoom() throws Exception {
-        HotelRoomOffertDto dto = new HotelRoomOffertDto(hotelId, ROOM_NUMBER, hotelRoomId, PRICE, START, END);
+        HotelRoomOfferDto dto = new HotelRoomOfferDto(hotelId, ROOM_NUMBER, hotelRoomId, PRICE, START, END);
         mockMvc.perform(post("/hotelroomoffer")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonFactory.create(dto)))
@@ -73,7 +73,7 @@ class HotelRoomOfferRestControllerSystemTest {
 
     @Test
     void shouldThrowExceptionWhenHotelRoomNotFound() {
-        HotelRoomOffertDto dto = new HotelRoomOffertDto(hotelId, ROOM_NUMBER * 10, null, PRICE, START, END);
+        HotelRoomOfferDto dto = new HotelRoomOfferDto(hotelId, ROOM_NUMBER * 10, null, PRICE, START, END);
 
         Assertions.assertThrows(Exception.class, () -> {
             mockMvc.perform(post("/hotelroomoffer")

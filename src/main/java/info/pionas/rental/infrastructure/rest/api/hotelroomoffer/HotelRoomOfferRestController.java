@@ -1,7 +1,7 @@
 package info.pionas.rental.infrastructure.rest.api.hotelroomoffer;
 
 import info.pionas.rental.application.hotelroomoffer.HotelRoomOfferApplicationService;
-import info.pionas.rental.application.hotelroomoffer.HotelRoomOffertDto;
+import info.pionas.rental.application.hotelroomoffer.HotelRoomOfferDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,8 +18,8 @@ public class HotelRoomOfferRestController {
     private final HotelRoomOfferApplicationService hotelRoomOfferApplicationService;
 
     @PostMapping
-    public ResponseEntity<String> add(@RequestBody HotelRoomOffertDto hotelRoomOffertDto) {
-        String hotelRoomOfferId = hotelRoomOfferApplicationService.add(hotelRoomOffertDto);
+    public ResponseEntity<String> add(@RequestBody HotelRoomOfferDto hotelRoomOfferDto) {
+        String hotelRoomOfferId = hotelRoomOfferApplicationService.add(hotelRoomOfferDto);
         return ResponseEntity.created(URI.create("/hotelroomoffer/" + hotelRoomOfferId)).build();
     }
 }

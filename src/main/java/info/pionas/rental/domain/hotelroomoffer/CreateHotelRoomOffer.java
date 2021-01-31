@@ -1,4 +1,4 @@
-package info.pionas.rental.application.hotelroomoffer;
+package info.pionas.rental.domain.hotelroomoffer;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -8,8 +8,7 @@ import java.time.LocalDate;
 
 @RequiredArgsConstructor
 @Getter
-public class HotelRoomOffertDto {
-    private final String hotelId;
+public class CreateHotelRoomOffer {
     private final int number;
     private final String hotelRoomId;
     private final BigDecimal price;
