@@ -9,6 +9,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import static info.pionas.rental.domain.booking.BookingStatus.ACCEPTED;
+import static info.pionas.rental.domain.booking.BookingStatus.REJECTED;
+
 @NoArgsConstructor
 @Getter
 @Entity
@@ -45,11 +48,14 @@ public class Booking {
     }
 
     public void reject() {
-        bookingStatus = BookingStatus.REJECTED;
+        if (bookingStatus.equals(ACCEPTED)) {
+            throw new NotAllowedBookingStatusTransitionException(bookingStatus, REJECTED);
+        }
+        bookingStatus = REJECTED;
     }
 
     public void accept(BookingEventsPublisher bookingEventsPublisher) {
-        bookingStatus = BookingStatus.ACCEPTED;
+        bookingStatus = ACCEPTED;
         bookingEventsPublisher.bookingAccepted(rentalType, rentalPlaceId, tenantId, days);
     }
 
