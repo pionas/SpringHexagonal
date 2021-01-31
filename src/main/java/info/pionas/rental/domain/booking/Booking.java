@@ -55,6 +55,9 @@ public class Booking {
     }
 
     public void accept(BookingEventsPublisher bookingEventsPublisher) {
+        if (bookingStatus.equals(REJECTED)) {
+            throw new NotAllowedBookingStatusTransitionException(bookingStatus, ACCEPTED);
+        }
         bookingStatus = ACCEPTED;
         bookingEventsPublisher.bookingAccepted(rentalType, rentalPlaceId, tenantId, days);
     }
