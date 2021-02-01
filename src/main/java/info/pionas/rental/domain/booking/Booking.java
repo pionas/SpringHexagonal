@@ -60,4 +60,8 @@ public class Booking {
     public String id() {
         return id.toString();
     }
+
+    public boolean hasCollisionWith(Booking booking) {
+        return days.stream().anyMatch(day -> booking.days.contains(day));
+    }
 }
