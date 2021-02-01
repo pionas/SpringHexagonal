@@ -37,4 +37,23 @@ class BookingEventsPublisherTest {
         assertThat(actual.getTenantId()).isEqualTo(tenantId);
         assertThat(actual.getDays()).containsExactlyElementsOf(days);
     }
+
+    @Test
+    void shouldCreateBookingRejected() {
+        ArgumentCaptor<BookingRejected> captor = ArgumentCaptor.forClass(BookingRejected.class);
+        String rentalPlaceId = "1234";
+        String tenantId = "7890";
+        List<LocalDate> days = ImmutableList.of(
+                LocalDate.of(2020, 10, 10), LocalDate.of(2020, 10, 11), LocalDate.of(2020, 10, 12));
+
+        publisher.bookingRejected(APARTMENT, rentalPlaceId, tenantId, days);
+        then(eventChannel).should().publish(captor.capture());
+        BookingRejected actual = captor.getValue();
+        assertThat(actual.getEventId()).isEqualTo(FakeEventIdFactory.UUID);
+        assertThat(actual.getEventCreationDateTime()).isEqualTo(FakeClock.NOW);
+        assertThat(actual.getRentalType()).isEqualTo("APARTMENT");
+        assertThat(actual.getRentalPlaceId()).isEqualTo(rentalPlaceId);
+        assertThat(actual.getTenantId()).isEqualTo(tenantId);
+        assertThat(actual.getDays()).containsExactlyElementsOf(days);
+    }
 }
