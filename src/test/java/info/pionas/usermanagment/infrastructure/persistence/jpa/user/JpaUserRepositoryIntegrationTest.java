@@ -4,10 +4,15 @@ import info.pionas.usermanagment.domain.user.Name;
 import info.pionas.usermanagment.domain.user.User;
 import info.pionas.usermanagment.domain.user.UserAssertion;
 import info.pionas.usermanagment.domain.user.UserRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Tag("DomainRepositoryIntegrationTest")
@@ -18,6 +23,15 @@ class JpaUserRepositoryIntegrationTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Test
+    void shouldThrowExceptionWhenUserDoesNotExist() {
+        String id = UUID.randomUUID().toString();
+
+        UserDoesNotExistException actual = assertThrows(UserDoesNotExistException.class, () -> userRepository.findById(id));
+
+        Assertions.assertThat(actual).hasMessage("User with id " + id + " does not exist");
+    }
 
     @Test
     void shouldCreateUser() {
