@@ -62,6 +62,10 @@ public class Booking {
     }
 
     public boolean hasCollisionWith(Booking booking) {
+        return bookingStatus.equals(ACCEPTED) && hasDaysCollisionsWith(booking);
+    }
+
+    private boolean hasDaysCollisionsWith(Booking booking) {
         return days.stream().anyMatch(day -> booking.days.contains(day));
     }
 }

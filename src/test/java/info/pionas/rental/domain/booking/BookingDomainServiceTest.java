@@ -83,9 +83,17 @@ class BookingDomainServiceTest {
     }
 
     @Test
-    void shouldAcceptBookingWhenOtherWithoutDaysCollision() {
+    void shouldAcceptBookingWhenOtherWithoutDaysCollisionFound() {
         Booking booking = givenBooking();
         service.accept(booking, asList(givenAcceptedBookingWithoutDaysCollision()));
+
+        BookingAssertion.assertThat(booking).isAccepted();
+    }
+
+    @Test
+    void shouldAcceptBookingWhenOtherWithDaysCollisionButNotAcceptedFound() {
+        Booking booking = givenBooking();
+        service.accept(booking, asList(givenOpenBookingWithDaysCollision()));
 
         BookingAssertion.assertThat(booking).isAccepted();
     }

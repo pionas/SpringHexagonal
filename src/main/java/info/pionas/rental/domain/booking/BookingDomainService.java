@@ -14,7 +14,6 @@ public class BookingDomainService {
         } else {
             booking.reject(bookingEventsPublisher);
         }
-
     }
 
     private boolean hasNoCollisions(Booking bookingToAccept, List<Booking> bookings) {
