@@ -70,7 +70,7 @@ class BookingTest {
     void shouldChangeStatusOfBookingOnceRejected() {
         Booking booking = givenBooking(DAYS);
 
-        booking.reject();
+        booking.reject(bookingEventsPublisher);
 
         assertThat(booking).isRejected();
     }
@@ -80,8 +80,9 @@ class BookingTest {
         Booking booking = givenBooking(DAYS);
         booking.accept(bookingEventsPublisher);
 
-        NotAllowedBookingStatusTransitionException actual = assertThrows(NotAllowedBookingStatusTransitionException.class, booking::reject);
-
+        NotAllowedBookingStatusTransitionException actual = assertThrows(NotAllowedBookingStatusTransitionException.class, () -> {
+            booking.reject(bookingEventsPublisher);
+        });
         Assertions.assertThat(actual).hasMessage("Not allowed transition from ACCEPTED to REJECTED booking");
         assertThat(booking).isAccepted();
     }
@@ -90,7 +91,7 @@ class BookingTest {
     @Test
     void shouldNotAllowedToAcceptAlreadyRejectBooking() {
         Booking booking = givenBooking(DAYS);
-        booking.reject();
+        booking.reject(bookingEventsPublisher);
 
         NotAllowedBookingStatusTransitionException actual = assertThrows(NotAllowedBookingStatusTransitionException.class, () -> {
             booking.accept(bookingEventsPublisher);
