@@ -9,8 +9,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Getter
-public
-class BookingRejected {
+public class BookingRejected {
     private final String eventId;
     private final LocalDateTime eventCreationDateTime;
     private final String rentalType;
