@@ -2,6 +2,7 @@ package info.pionas.rental.infrastructure.eventchannel.spring;
 
 import info.pionas.rental.domain.apartment.ApartmentBooked;
 import info.pionas.rental.domain.booking.BookingAccepted;
+import info.pionas.rental.domain.booking.BookingRejected;
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import info.pionas.rental.domain.hotel.HotelRoomBooked;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,11 @@ public class SpringEventChannel implements EventChannel {
     @Override
     public void publish(BookingAccepted bookingAccepted) {
         publisher.publishEvent(bookingAccepted);
+    }
+
+    @Override
+    public void publish(BookingRejected bookingRejected) {
+        publisher.publishEvent(bookingRejected);
     }
 
 }

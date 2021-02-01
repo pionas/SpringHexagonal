@@ -51,6 +51,11 @@ public class Booking {
         bookingStatus = bookingStatus.moveTo(REJECTED);
     }
 
+    public void reject(BookingEventsPublisher bookingEventsPublisher) {
+        reject();
+        bookingEventsPublisher.bookingRejected(rentalType, rentalPlaceId, tenantId, days);
+    }
+
     public void accept(BookingEventsPublisher bookingEventsPublisher) {
         bookingStatus = bookingStatus.moveTo(ACCEPTED);
         bookingEventsPublisher.bookingAccepted(rentalType, rentalPlaceId, tenantId, days);

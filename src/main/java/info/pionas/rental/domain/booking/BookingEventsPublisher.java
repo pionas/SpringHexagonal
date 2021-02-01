@@ -19,4 +19,9 @@ public class BookingEventsPublisher {
         BookingAccepted bookingAccepted = new BookingAccepted(eventIdFactory.create(), clock.now(), rentalType.name(), rentalPlaceId, tenantId, days);
         eventChannel.publish(bookingAccepted);
     }
+
+    void bookingRejected(RentalType rentalType, String rentalPlaceId, String tenantId, List<LocalDate> days) {
+        BookingRejected bookingRejected = new BookingRejected(eventIdFactory.create(), clock.now(), rentalType.name(), rentalPlaceId, tenantId, days);
+        eventChannel.publish(bookingRejected);
+    }
 }

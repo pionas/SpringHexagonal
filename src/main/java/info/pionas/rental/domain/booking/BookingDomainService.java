@@ -12,7 +12,7 @@ public class BookingDomainService {
         if (bookings.isEmpty()) {
             booking.accept(bookingEventsPublisher);
         } else {
-            booking.reject();
+            booking.reject(bookingEventsPublisher);
         }
 
     }

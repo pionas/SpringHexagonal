@@ -1,5 +1,6 @@
 package info.pionas.rental.domain.booking;
 
+import info.pionas.rental.application.booking.BookingReject;
 import info.pionas.rental.domain.event.FakeEventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import info.pionas.rental.infrastructure.clock.FakeClock;
@@ -58,6 +59,21 @@ class BookingDomainServiceTest {
         BookingAssertion.assertThat(booking).isRejected();
     }
 
+    @Test
+    void shouldPublishBookingRejectedEventWhenBookingIsRejected() {
+        ArgumentCaptor<BookingRejected> captor = ArgumentCaptor.forClass(BookingRejected.class);
+        Booking booking = givenBooking();
+        List<Booking> bookings = asList(givenBookingWithDaysCollision());
+        service.accept(booking, bookings);
+
+        then(eventChannel).should().publish(captor.capture());
+        BookingRejected actual = captor.getValue();
+        assertThat(actual.getRentalType()).isEqualTo("HOTEL_ROOM");
+        assertThat(actual.getEventCreationDateTime()).isEqualTo(FakeClock.NOW);
+        assertThat(actual.getRentalPlaceId()).isEqualTo(RENTAL_PLACE_ID);
+        assertThat(actual.getTenantId()).isEqualTo(TENANT_ID_1);
+        assertThat(actual.getDays()).containsExactlyElementsOf(DAYS);
+    }
     private Booking givenBookingWithDaysCollision() {
         return Booking.hotelRoom(RENTAL_PLACE_ID, TENANT_ID_2, DAYS_WITH_COLLISION);
     }
