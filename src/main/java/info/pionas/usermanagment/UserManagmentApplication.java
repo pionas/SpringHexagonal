@@ -5,9 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @SuppressWarnings("checkstyle:HideUtilityClassConstructor")
-public class UserApplication {
+public class UserManagmentApplication {
     public static void main(String[] args) {
-        SpringApplication.run(UserApplication.class, args);
+        SpringApplication.run(UserManagmentApplication.class, args);
     }
 
 }
