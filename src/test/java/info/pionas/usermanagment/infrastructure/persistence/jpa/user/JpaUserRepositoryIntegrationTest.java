@@ -1,11 +1,11 @@
 package info.pionas.usermanagment.infrastructure.persistence.jpa.user;
 
-import info.pionas.usermanagment.domain.user.Name;
+import info.pionas.rental.domain.hotelbookinghistory.HotelBookingHistory;
 import info.pionas.usermanagment.domain.user.User;
 import info.pionas.usermanagment.domain.user.UserAssertion;
 import info.pionas.usermanagment.domain.user.UserRepository;
 import org.assertj.core.api.Assertions;
- import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static info.pionas.usermanagment.domain.user.User.Builder.user;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
@@ -56,19 +58,30 @@ class JpaUserRepositoryIntegrationTest {
     @Test
     @Transactional
     void shouldReturnExistingUserWeWant() {
-        User user1 = new User("john.doe", new Name("John", "Doe"));
+        User user1 = user().withLogin("john.doe").withName("John", "Doe").build();
         givenExistingUser(user1);
         String existingId = givenExistingUser(createUser());
-        User user2 = new User("john.doe2", new Name("John", "Doe"));
+        User user2 = user().withLogin("john.doe2").withName("John", "Doe").build();
         givenExistingUser(user2);
-        User user3 = new User("john.doe3", new Name("John", "Doe"));
+        User user3 = user().withLogin("john.doe3").withName("John", "Doe").build();
         givenExistingUser(user3);
 
         UserAssertion.assertThat(findBy(existingId)).represents(LOGIN, NAME, LAST_NAME);
     }
 
+    @Test
+    void shouldRecognizeUserDoesNotExist() {
+        assertThat(userRepository.existWithLogin("JOHN")).isFalse();
+    }
+
+    @Test
+    void shouldRecognizeUserExists() {
+        givenExistingUser(createUser());
+        assertThat(userRepository.existWithLogin(LOGIN)).isTrue();
+    }
+
     private User createUser() {
-        return new User(LOGIN, new Name(NAME, LAST_NAME));
+        return user().withLogin(LOGIN).withName(NAME, LAST_NAME).build();
     }
 
     private String givenExistingUser(User user) {
