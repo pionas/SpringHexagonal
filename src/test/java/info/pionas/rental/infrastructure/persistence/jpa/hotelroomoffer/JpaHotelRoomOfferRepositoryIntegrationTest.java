@@ -3,6 +3,7 @@ package info.pionas.rental.infrastructure.persistence.jpa.hotelroomoffer;
 import info.pionas.rental.application.hotelroomoffer.HotelRoomOfferAssertion;
 import info.pionas.rental.domain.hotelroomoffer.HotelRoomOffer;
 import info.pionas.rental.domain.hotelroomoffer.HotelRoomOfferRepository;
+import info.pionas.rental.domain.hotelroomoffer.HotelRoomOfferTestFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static info.pionas.rental.domain.hotelroomoffer.HotelRoomOffer.Builder.hotelRoomOffer;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -68,24 +68,12 @@ class JpaHotelRoomOfferRepositoryIntegrationTest {
     @Test
     @Transactional
     void shouldReturnExistingHotelRoomOfferWeWant() {
-        HotelRoomOffer hotelRoomOffer1 = hotelRoomOffer()
-                .withHotelRoomId(HOTEL_ROOM_ID)
-                .withPrice(BigDecimal.valueOf(190))
-                .withAvailability(START, END)
-                .build();
+        HotelRoomOffer hotelRoomOffer1 = HotelRoomOfferTestFactory.create(HOTEL_ROOM_ID, BigDecimal.valueOf(190), START, END);
         givenExistingHotelRoomOffer(hotelRoomOffer1);
         String existingId = givenExistingHotelRoomOffer(createHotelRoomOffer());
-        HotelRoomOffer hotelRoom2 = hotelRoomOffer()
-                .withHotelRoomId(HOTEL_ROOM_ID)
-                .withPrice(BigDecimal.valueOf(190))
-                .withAvailability(START, END)
-                .build();
+        HotelRoomOffer hotelRoom2 = HotelRoomOfferTestFactory.create(HOTEL_ROOM_ID, BigDecimal.valueOf(190), START, END);
         givenExistingHotelRoomOffer(hotelRoom2);
-        HotelRoomOffer hotelRoom3 = hotelRoomOffer()
-                .withHotelRoomId(HOTEL_ROOM_ID)
-                .withPrice(BigDecimal.valueOf(190))
-                .withAvailability(START, END)
-                .build();
+        HotelRoomOffer hotelRoom3 = HotelRoomOfferTestFactory.create(HOTEL_ROOM_ID, BigDecimal.valueOf(190), START, END);
         givenExistingHotelRoomOffer(hotelRoom3);
 
         HotelRoomOffer actual = hotelRoomOfferRepository.findById(existingId);
@@ -105,10 +93,6 @@ class JpaHotelRoomOfferRepositoryIntegrationTest {
     }
 
     private HotelRoomOffer createHotelRoomOffer() {
-        return hotelRoomOffer()
-                .withHotelRoomId(HOTEL_ROOM_ID)
-                .withPrice(PRICE)
-                .withAvailability(START, END)
-                .build();
+        return HotelRoomOfferTestFactory.create(HOTEL_ROOM_ID, PRICE, START, END);
     }
 }

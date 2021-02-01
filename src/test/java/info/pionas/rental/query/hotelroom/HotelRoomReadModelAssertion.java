@@ -6,7 +6,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
 
+import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.regex.Pattern;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 class HotelRoomReadModelAssertion {
@@ -16,13 +18,13 @@ class HotelRoomReadModelAssertion {
         return new HotelRoomReadModelAssertion(actual);
     }
 
-    HotelRoomReadModelAssertion hasHotelRoomIdEqualTo(String expected) {
-        Assertions.assertThat(actual.getId().toString()).isEqualTo(expected);
+    HotelRoomReadModelAssertion hasHotelRoomIdThatIsUUID() {
+        Assertions.assertThat(actual.getId().toString()).matches(Pattern.compile("[0-9a-z\\-]{36}"));
         return this;
     }
 
     HotelRoomReadModelAssertion hasHotelIdEqualTo(String expected) {
-        Assertions.assertThat(actual.getHotelId()).isEqualTo(expected);
+        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("hotelId", UUID.fromString(expected));
         return this;
     }
 

@@ -13,6 +13,6 @@ public class HotelRoomAvailabilityException extends RuntimeException {
     }
 
     static RuntimeException startFromPast(LocalDate start) {
-        return new HotelRoomAvailabilityException("Start date: " + start + " is past date.");
+        return new HotelRoomAvailabilityException("Start date: " + start + " is past date");
     }
 }

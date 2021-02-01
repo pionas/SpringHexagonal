@@ -15,7 +15,7 @@ public class BookingCommandHandler {
     @EventListener
     public void reject(BookingReject bookingReject) {
         Booking booking = bookingRepository.findById(bookingReject.getBookingId());
-        booking.reject();
+        booking.reject(bookingEventsPublisher);
 
         bookingRepository.save(booking);
 

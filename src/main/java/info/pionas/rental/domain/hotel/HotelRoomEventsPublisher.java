@@ -1,4 +1,4 @@
-package info.pionas.rental.domain.hotelroom;
+package info.pionas.rental.domain.hotel;
 
 import info.pionas.rental.domain.clock.Clock;
 import info.pionas.rental.domain.event.EventIdFactory;

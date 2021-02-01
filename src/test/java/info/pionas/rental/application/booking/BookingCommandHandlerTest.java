@@ -9,7 +9,6 @@ import info.pionas.rental.domain.eventchannel.EventChannel;
 import info.pionas.rental.infrastructure.clock.FakeClock;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.BDDMockito;
 
 import java.time.LocalDate;
 import java.util.List;

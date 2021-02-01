@@ -58,8 +58,8 @@ public final class ApartmentBooked {
         }
 
         public Builder withPeriod(Period period) {
-            this.periodStart = period.getStart();
-            this.periodEnd = period.getEnd();
+            this.periodStart = period.getPeriodStart();
+            this.periodEnd = period.getPeriodEnd();
             return this;
         }
 

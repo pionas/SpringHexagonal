@@ -9,6 +9,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import static info.pionas.rental.domain.booking.BookingStatus.ACCEPTED;
+import static info.pionas.rental.domain.booking.BookingStatus.REJECTED;
+
 @NoArgsConstructor
 @Getter
 @Entity
@@ -44,12 +47,13 @@ public class Booking {
         return new Booking(RentalType.HOTEL_ROOM, rentalPlaceId, tenantId, days);
     }
 
-    public void reject() {
-        bookingStatus = BookingStatus.REJECTED;
+    public void reject(BookingEventsPublisher bookingEventsPublisher) {
+        bookingStatus = bookingStatus.moveTo(REJECTED);
+        bookingEventsPublisher.bookingRejected(rentalType, rentalPlaceId, tenantId, days);
     }
 
     public void accept(BookingEventsPublisher bookingEventsPublisher) {
-        bookingStatus = BookingStatus.ACCEPTED;
+        bookingStatus = bookingStatus.moveTo(ACCEPTED);
         bookingEventsPublisher.bookingAccepted(rentalType, rentalPlaceId, tenantId, days);
     }
 

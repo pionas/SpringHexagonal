@@ -30,7 +30,7 @@ public class HotelRoomOffer {
     }
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class Builder {
+    static class Builder {
         private static final LocalDate NO_END_DATE = null;
         private String hotelRoomId;
         private BigDecimal price;

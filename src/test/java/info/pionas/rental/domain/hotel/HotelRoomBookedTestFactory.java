@@ -1,4 +1,6 @@
-package info.pionas.rental.domain.hotelroom;
+package info.pionas.rental.domain.hotel;
+
+import info.pionas.rental.domain.hotel.HotelRoomBooked;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

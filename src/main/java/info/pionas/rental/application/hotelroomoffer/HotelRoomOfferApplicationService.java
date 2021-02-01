@@ -1,27 +1,21 @@
 package info.pionas.rental.application.hotelroomoffer;
 
-import info.pionas.rental.domain.hotelroom.HotelRoomRepository;
-import info.pionas.rental.domain.hotelroomoffer.HotelRoomNotFoundException;
+import info.pionas.rental.domain.hotel.Hotel;
+import info.pionas.rental.domain.hotel.HotelRepository;
 import info.pionas.rental.domain.hotelroomoffer.HotelRoomOffer;
+import info.pionas.rental.domain.hotelroomoffer.HotelRoomOfferDomainService;
 import info.pionas.rental.domain.hotelroomoffer.HotelRoomOfferRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
-@Service
 public class HotelRoomOfferApplicationService {
     private final HotelRoomOfferRepository hotelRoomOfferRepository;
-    private final HotelRoomRepository hotelRoomRepository;
+    private final HotelRepository hotelRepository;
+    private final HotelRoomOfferDomainService hotelRoomOfferDomainService;
 
-    public String add(HotelRoomOffertDto dto) {
-        if (!hotelRoomRepository.existById(dto.getHotelRoomId())) {
-            throw new HotelRoomNotFoundException(dto.getHotelRoomId());
-        }
-        HotelRoomOffer hotelRoomOffer = HotelRoomOffer.Builder.hotelRoomOffer()
-                .withHotelRoomId(dto.getHotelRoomId())
-                .withPrice(dto.getPrice())
-                .withAvailability(dto.getStart(), dto.getEnd())
-                .build();
+    public String add(HotelRoomOfferDto dto) {
+        Hotel hotel = hotelRepository.findById(dto.getHotelId());
+        HotelRoomOffer hotelRoomOffer = hotelRoomOfferDomainService.createOfferForHotelRoom(hotel, dto.asDto());
         return hotelRoomOfferRepository.save(hotelRoomOffer);
     }
 }

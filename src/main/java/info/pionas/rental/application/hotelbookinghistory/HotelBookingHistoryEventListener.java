@@ -2,7 +2,7 @@ package info.pionas.rental.application.hotelbookinghistory;
 
 import info.pionas.rental.domain.hotelbookinghistory.HotelBookingHistory;
 import info.pionas.rental.domain.hotelbookinghistory.HotelBookingHistoryRepository;
-import info.pionas.rental.domain.hotelroom.HotelRoomBooked;
+import info.pionas.rental.domain.hotel.HotelRoomBooked;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;

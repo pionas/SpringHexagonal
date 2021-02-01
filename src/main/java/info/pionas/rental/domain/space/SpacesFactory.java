@@ -10,6 +10,10 @@ public class SpacesFactory {
     }
 
     public static List<Space> create(Map<String, Double> definition) {
+        if (definition.isEmpty()) {
+            throw NotEnoughSpacesGivenException.noSpaces();
+        }
+
         return definition.entrySet().stream()
                 .map(SpacesFactory::asSpace)
                 .collect(toList());

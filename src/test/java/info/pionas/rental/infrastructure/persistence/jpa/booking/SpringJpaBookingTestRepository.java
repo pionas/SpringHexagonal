@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
@@ -15,4 +16,7 @@ public class SpringJpaBookingTestRepository {
         repository.deleteById(UUID.fromString(apartmentId));
     }
 
+    public void deleteAll(List<String> bookingIds) {
+        bookingIds.forEach(this::deleteById);
+    }
 }
