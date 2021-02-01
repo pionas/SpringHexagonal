@@ -12,7 +12,7 @@ public class HotelRoomOfferDomainService {
                     .build();
 
         }
-        throw new HotelRoomNotFoundException(createHotelRoomOffer.getHotelRoomId());
+        throw HotelRoomNotFoundException.ofHotelRoomId(createHotelRoomOffer.getHotelRoomId());
 
     }
 }

@@ -7,8 +7,10 @@ import info.pionas.rental.domain.booking.BookingRepository;
 import info.pionas.rental.domain.event.FakeEventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import info.pionas.rental.domain.hotel.*;
+import info.pionas.rental.domain.hotelroomoffer.HotelRoomNotFoundException;
 import info.pionas.rental.infrastructure.clock.FakeClock;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.ArgumentCaptor;
 import org.mockito.BDDMockito;
 
@@ -19,6 +21,7 @@ import java.util.Map;
 import static info.pionas.rental.domain.hotel.Hotel.Builder.hotel;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
@@ -94,6 +97,18 @@ class HotelRoomApplicationServiceTest {
         assertThat(actual.getEventCreationDateTime()).isEqualTo(FakeClock.NOW);
         assertThat(actual.getTenantId()).isEqualTo(TENANT_ID);
         assertThat(actual.getDays()).containsExactlyElementsOf(DAYS);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenHotelRoomNumberNotFound() {
+        Hotel hotel = givenExistingHotel();
+        hotel.addRoom(ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
+        Executable executable = () -> service.book(new HotelRoomBookingDto(HOTEL_ID, ROOM_NUMBER * 100, TENANT_ID, DAYS));
+
+        HotelRoomNotFoundException actual = assertThrows(HotelRoomNotFoundException.class, executable);
+
+        assertThat(actual).hasMessage("Hotel room with number 1300 does not exist");
+
     }
 
     private void thenBookingShouldBeCreated() {
