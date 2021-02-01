@@ -26,10 +26,13 @@ class BookingCommandHandlerTest {
 
     private final BookingRepository bookingRepository = mock(BookingRepository.class);
     private final EventChannel eventChannel = mock(EventChannel.class);
-    private final BookingCommandHandler commandHandler = new BookingCommandHandlerFactory().bookingCommandHandler(bookingRepository, new FakeEventIdFactory(), new FakeClock(), eventChannel);
+    private final FakeEventIdFactory eventIdFactory = new FakeEventIdFactory();
+    private final FakeClock clock = new FakeClock();
+    private final BookingCommandHandler commandHandler = new BookingCommandHandlerFactory().bookingCommandHandler(
+            bookingRepository, eventIdFactory, clock, eventChannel);
 
     @Test
-    void shouldAcceptBookingWhenBookingsWithCollisionsNotFound() {
+    void shouldAcceptBookingWhenBookingsWithCollisionNotFound() {
         givenBookingsWithoutCollision();
         givenOpenBooking();
 
@@ -50,10 +53,37 @@ class BookingCommandHandlerTest {
         then(eventChannel).should().publish(captor.capture());
         BookingAccepted actual = captor.getValue();
         assertThat(actual.getRentalType()).isEqualTo("HOTEL_ROOM");
-        assertThat(actual.getEventCreationDateTime()).isEqualTo(FakeClock.NOW);
         assertThat(actual.getRentalPlaceId()).isEqualTo(RENTAL_PLACE_ID);
         assertThat(actual.getTenantId()).isEqualTo(TENANT_ID);
         assertThat(actual.getDays()).containsExactlyElementsOf(DAYS);
+    }
+
+    private void givenBookingsWithoutCollision() {
+        givenBookings(asList(
+                Booking.hotelRoom(RENTAL_PLACE_ID, TENANT_ID, DAYS),
+                Booking.hotelRoom(RENTAL_PLACE_ID, TENANT_ID, DAYS)));
+    }
+
+    @Test
+    void shouldRejectBookingWhenBookingsWithCollisionFound() {
+        givenBookingsWithCollision();
+        givenOpenBooking();
+
+        commandHandler.accept(new BookingAccept(BOOKING_ID));
+
+        then(bookingRepository).should().save(captor.capture());
+        BookingAssertion.assertThat(captor.getValue()).isRejected();
+    }
+
+    private void givenBookingsWithCollision() {
+        Booking booking = Booking.hotelRoom(RENTAL_PLACE_ID, TENANT_ID, DAYS);
+        booking.accept(new BookingEventsPublisher(eventIdFactory, clock, eventChannel));
+        givenBookings(asList(booking, Booking.hotelRoom(RENTAL_PLACE_ID, TENANT_ID, DAYS)));
+    }
+
+    private void givenBookings(List<Booking> bookings) {
+        RentalPlaceIdentifier identifier = RentalPlaceIdentifierTestFactory.hotelRoom(RENTAL_PLACE_ID);
+        given(bookingRepository.findAllBy(identifier)).willReturn(bookings);
     }
 
     @Test
@@ -64,16 +94,6 @@ class BookingCommandHandlerTest {
 
         then(bookingRepository).should().save(captor.capture());
         BookingAssertion.assertThat(captor.getValue()).isRejected();
-    }
-
-
-    private void givenBookingsWithoutCollision() {
-        RentalPlaceIdentifier identifier = RentalPlaceIdentifierTestFactory.hotelRoom(RENTAL_PLACE_ID);
-        List<Booking> bookings = asList(
-                Booking.hotelRoom(RENTAL_PLACE_ID, TENANT_ID, DAYS),
-                Booking.hotelRoom(RENTAL_PLACE_ID, TENANT_ID, DAYS)
-        );
-        given(bookingRepository.findAllBy(identifier)).willReturn(bookings);
     }
 
     private void givenOpenBooking() {

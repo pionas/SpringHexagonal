@@ -7,6 +7,8 @@ import info.pionas.rental.domain.booking.BookingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 public class BookingCommandHandler {
 
@@ -18,13 +20,16 @@ public class BookingCommandHandler {
     public void reject(BookingReject bookingReject) {
         Booking booking = bookingRepository.findById(bookingReject.getBookingId());
         booking.reject(bookingEventsPublisher);
+
         bookingRepository.save(booking);
     }
 
     @EventListener
     public void accept(BookingAccept bookingAccept) {
         Booking booking = bookingRepository.findById(bookingAccept.getBookingId());
-        booking.accept(bookingEventsPublisher);
+        List<Booking> bookings = bookingRepository.findAllBy(booking.rentalPlaceIdentifier());
+
+        bookingDomainService.accept(booking, bookings);
         bookingRepository.save(booking);
     }
 }

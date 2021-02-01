@@ -14,14 +14,14 @@ enum BookingStatus {
     REJECTED,
     ACCEPTED;
 
-    private static final Map<BookingStatus, List<BookingStatus>> ALLOWED_TRANSATION = ImmutableMap.of(
+    private static final Map<BookingStatus, List<BookingStatus>> ALLOWED_TRANSITIONS = ImmutableMap.of(
             REJECTED, emptyList(),
             ACCEPTED, emptyList(),
             OPEN, asList(REJECTED, ACCEPTED)
     );
 
     BookingStatus moveTo(BookingStatus bookingStatus) {
-        if (ALLOWED_TRANSATION.get(this).contains(bookingStatus)) {
+        if (ALLOWED_TRANSITIONS.get(this).contains(bookingStatus)) {
             return bookingStatus;
         }
         throw new NotAllowedBookingStatusTransitionException(this, bookingStatus);
