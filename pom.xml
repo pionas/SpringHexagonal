@@ -247,6 +247,9 @@
                                         <include>info/pionas/rental/domain/**/*</include>
                                         <include>info/pionas/rental/application/**/*</include>
                                         <include>info/pionas/rental/infrastructure/persistence/jpa/**/*</include>
+                                        <include>info/pionas/usermanagment/domain/**/*</include>
+                                        <include>info/pionas/usermanagment/application/**/*</include>
+                                        <include>info/pionas/usermanagment/infrastructure/persistence/jpa/**/*</include>
                                     </includes>
                                     <rules>
                                         <rule>
@@ -324,11 +327,18 @@
                                         <exclude>info/pionas/rental/application/**/*</exclude>
                                         <exclude>info/pionas/rental/infrastructure/persistence/jpa/**/*</exclude>
                                         <exclude>info/pionas/rental/infrastructure/rest/api/**/*</exclude>
+                                        <exclude>info/pionas/usermanagment/UserManagmentApplication.class</exclude>
+                                        <exclude>info/pionas/usermanagment/domain/**/*</exclude>
+                                        <exclude>info/pionas/usermanagment/application/**/*</exclude>
+                                        <exclude>info/pionas/usermanagment/infrastructure/persistence/jpa/**/*</exclude>
+                                        <exclude>info/pionas/usermanagment/infrastructure/rest/api/**/*</exclude>
                                     </excludes>
 
                                     <includes>
                                         <include>info/pionas/rental/infrastructure/**/*</include>
                                         <include>info/pionas/rental/query/**/*</include>
+                                        <include>info/pionas/usermanagment/infrastructure/**/*</include>
+                                        <include>info/pionas/usermanagment/query/**/*</include>
                                     </includes>
                                     <rules>
                                         <rule>
