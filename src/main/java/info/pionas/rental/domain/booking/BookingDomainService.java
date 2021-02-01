@@ -9,11 +9,14 @@ public class BookingDomainService {
     private final BookingEventsPublisher bookingEventsPublisher;
 
     public void accept(Booking booking, List<Booking> bookings) {
-        if (bookings.isEmpty()) {
+        if (hasNoCollisions(booking, bookings)) {
             booking.accept(bookingEventsPublisher);
         } else {
             booking.reject(bookingEventsPublisher);
         }
+    }
 
+    private boolean hasNoCollisions(Booking bookingToAccept, List<Booking> bookings) {
+        return bookings == null || bookings.stream().noneMatch(booking -> booking.hasCollisionWith(bookingToAccept));
     }
 }

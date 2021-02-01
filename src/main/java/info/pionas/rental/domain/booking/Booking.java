@@ -60,4 +60,16 @@ public class Booking {
     public String id() {
         return id.toString();
     }
+
+    public boolean hasCollisionWith(Booking booking) {
+        return bookingStatus.equals(ACCEPTED) && hasDaysCollisionsWith(booking);
+    }
+
+    private boolean hasDaysCollisionsWith(Booking booking) {
+        return days.stream().anyMatch(day -> booking.days.contains(day));
+    }
+
+    public RentalPlaceIdentifier rentalPlaceIdentifier() {
+        return new RentalPlaceIdentifier(rentalType, rentalPlaceId);
+    }
 }

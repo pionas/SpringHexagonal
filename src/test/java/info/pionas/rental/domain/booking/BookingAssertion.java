@@ -5,6 +5,7 @@ import org.assertj.core.api.Assertions;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import static java.util.Arrays.asList;
 
@@ -27,6 +28,11 @@ public class BookingAssertion {
 
     public BookingAssertion isRejected() {
         return hasBookingStatusEqualTo(BookingStatus.REJECTED);
+    }
+
+    public BookingAssertion hasIdEqualTo(String expected) {
+        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("id", UUID.fromString(expected));
+        return this;
     }
 
     private BookingAssertion hasBookingStatusEqualTo(BookingStatus expected) {

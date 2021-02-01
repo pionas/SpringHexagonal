@@ -2,9 +2,11 @@ package info.pionas.rental.infrastructure.persistence.jpa.booking;
 
 import info.pionas.rental.domain.booking.Booking;
 import info.pionas.rental.domain.booking.BookingRepository;
+import info.pionas.rental.domain.booking.RentalPlaceIdentifier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -23,6 +25,11 @@ public class JpaBookingRepository implements BookingRepository {
     public Booking findById(String id) {
         return springJpaBookingRepository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new BookingDoesNotExistException(id));
+    }
+
+    @Override
+    public List<Booking> findAllBy(RentalPlaceIdentifier identifier) {
+        return springJpaBookingRepository.findAllByRentalTypeAndRentalPlaceId(identifier.getRentalType(), identifier.getRentalPlaceId());
     }
 
 }
