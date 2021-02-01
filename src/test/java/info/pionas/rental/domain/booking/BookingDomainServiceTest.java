@@ -17,8 +17,11 @@ import static org.mockito.Mockito.mock;
 
 class BookingDomainServiceTest {
     private static final String RENTAL_PLACE_ID = "1234";
-    private static final String TENANT_ID = "5678";
-    private static final List<LocalDate> DAYS = asList(LocalDate.now(), LocalDate.now().plusDays(1));
+    private static final String TENANT_ID_1 = "5678";
+    private static final String TENANT_ID_2 = "1234";
+    public static final LocalDate TODAY = LocalDate.now();
+    private static final List<LocalDate> DAYS = asList(TODAY, TODAY.plusDays(1));
+    private static final List<LocalDate> DAYS_WITH_COLLISION = asList(TODAY, TODAY.minusDays(13), TODAY.plusDays(13));
     private static final List<Booking> NO_BOOKINGS_FOUND = emptyList();
     private final EventChannel eventChannel = mock(EventChannel.class);
     private final BookingDomainService service = new BookingDomainServiceFactory().create(new FakeEventIdFactory(), new FakeClock(), eventChannel);
@@ -42,11 +45,24 @@ class BookingDomainServiceTest {
         assertThat(actual.getRentalType()).isEqualTo("HOTEL_ROOM");
         assertThat(actual.getEventCreationDateTime()).isEqualTo(FakeClock.NOW);
         assertThat(actual.getRentalPlaceId()).isEqualTo(RENTAL_PLACE_ID);
-        assertThat(actual.getTenantId()).isEqualTo(TENANT_ID);
+        assertThat(actual.getTenantId()).isEqualTo(TENANT_ID_1);
         assertThat(actual.getDays()).containsExactlyElementsOf(DAYS);
     }
 
+    @Test
+    void shouldRejectBookingWHenOtherWithDaysCollisionFound() {
+        Booking booking = givenBooking();
+        List<Booking> bookings = asList(givenBookingWithDaysCollision());
+        service.accept(booking, bookings);
+
+        BookingAssertion.assertThat(booking).isRejected();
+    }
+
+    private Booking givenBookingWithDaysCollision() {
+        return Booking.hotelRoom(RENTAL_PLACE_ID, TENANT_ID_2, DAYS_WITH_COLLISION);
+    }
+
     private Booking givenBooking() {
-        return Booking.hotelRoom(RENTAL_PLACE_ID, TENANT_ID, DAYS);
+        return Booking.hotelRoom(RENTAL_PLACE_ID, TENANT_ID_1, DAYS);
     }
 }

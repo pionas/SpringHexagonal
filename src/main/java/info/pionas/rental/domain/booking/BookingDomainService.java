@@ -9,6 +9,11 @@ public class BookingDomainService {
     private final BookingEventsPublisher bookingEventsPublisher;
 
     public void accept(Booking booking, List<Booking> bookings) {
-        booking.accept(bookingEventsPublisher);
+        if (bookings.isEmpty()) {
+            booking.accept(bookingEventsPublisher);
+        } else {
+            booking.reject();
+        }
+
     }
 }
