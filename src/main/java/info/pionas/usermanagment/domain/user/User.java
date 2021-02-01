@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class User {
     private final String login;
     private final Name name;
@@ -31,26 +31,4 @@ public class User {
         return new HashCodeBuilder(17, 37).append(login).append(name).toHashCode();
     }
 
-    public static class Builder {
-        private String login;
-        private Name name;
-
-        public static Builder user() {
-            return new Builder();
-        }
-
-        public Builder withLogin(String login) {
-            this.login = login;
-            return this;
-        }
-
-        public Builder withName(String name, String lastName) {
-            this.name = new Name(name, lastName);
-            return this;
-        }
-
-        public User build() {
-            return new User(login, name);
-        }
-    }
 }

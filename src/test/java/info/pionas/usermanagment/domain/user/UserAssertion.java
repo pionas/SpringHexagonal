@@ -3,8 +3,6 @@ package info.pionas.usermanagment.domain.user;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
 
-import static info.pionas.usermanagment.domain.user.User.Builder.user;
-
 @RequiredArgsConstructor
 public class UserAssertion {
     private final User actual;
@@ -14,9 +12,7 @@ public class UserAssertion {
     }
 
     public UserAssertion represents(String login, String name, String lastName) {
-        User expected = user().withLogin(login)
-                .withName(name, lastName)
-                .build();
+        User expected = new User(login, new Name(name, lastName));
         Assertions.assertThat(actual).isEqualTo(expected);
         return this;
     }

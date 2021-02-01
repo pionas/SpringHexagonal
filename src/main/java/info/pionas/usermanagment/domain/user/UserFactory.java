@@ -11,9 +11,6 @@ public class UserFactory {
         if (userRepository.existWithLogin(login)) {
             throw new UserExistingException(login);
         }
-        return User.Builder.user()
-                .withLogin(login)
-                .withName(name, lastName)
-                .build();
+        return new User(login, new Name(name, lastName));
     }
 }
