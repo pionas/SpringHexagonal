@@ -8,7 +8,7 @@ import java.util.List;
 public class BookingDomainService {
     private final BookingEventsPublisher bookingEventsPublisher;
 
-    public void accept(Booking booking, List<Object> bookings) {
+    public void accept(Booking booking, List<Booking> bookings) {
         booking.accept(bookingEventsPublisher);
     }
 }
