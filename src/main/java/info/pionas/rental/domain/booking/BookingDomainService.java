@@ -17,6 +17,6 @@ public class BookingDomainService {
     }
 
     private boolean hasNoCollisions(Booking bookingToAccept, List<Booking> bookings) {
-        return bookings.stream().noneMatch(booking -> booking.hasCollisionWith(bookingToAccept));
+        return bookings == null || bookings.stream().noneMatch(booking -> booking.hasCollisionWith(bookingToAccept));
     }
 }
