@@ -20,7 +20,7 @@ public class UserApplicationServiceTest {
     private static final String NAME = "Adrian";
     private static final String LAST_NAME = "Pionka";
     private final UserRepository userRepository = mock(UserRepository.class);
-    private final UserApplicationService service = new UserApplicationService(userRepository);
+    private final UserApplicationService service = new UserApplicationServiceFactory().userApplicationService(userRepository);
 
     @Test
     void shouldRegisterUser() {
