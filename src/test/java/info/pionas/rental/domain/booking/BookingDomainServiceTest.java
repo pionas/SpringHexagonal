@@ -112,6 +112,15 @@ class BookingDomainServiceTest {
     }
 
     @Test
+    void shouldAcceptBookingWhenFoundOnlyItself() {
+        Booking booking = givenBooking();
+
+        service.accept(booking, asList(booking));
+
+        BookingAssertion.assertThat(booking).isAccepted();
+    }
+
+    @Test
     void shouldRejectBookingWhenAtLeastOneWithCollisionFound() {
         Booking booking = givenBooking();
         List<Booking> bookings = asList(

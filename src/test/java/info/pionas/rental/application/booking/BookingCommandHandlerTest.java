@@ -1,9 +1,6 @@
 package info.pionas.rental.application.booking;
 
-import info.pionas.rental.domain.booking.Booking;
-import info.pionas.rental.domain.booking.BookingAccepted;
-import info.pionas.rental.domain.booking.BookingAssertion;
-import info.pionas.rental.domain.booking.BookingRepository;
+import info.pionas.rental.domain.booking.*;
 import info.pionas.rental.domain.event.FakeEventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import info.pionas.rental.infrastructure.clock.FakeClock;
@@ -32,7 +29,8 @@ class BookingCommandHandlerTest {
     private final BookingCommandHandler commandHandler = new BookingCommandHandlerFactory().bookingCommandHandler(bookingRepository, new FakeEventIdFactory(), new FakeClock(), eventChannel);
 
     @Test
-    void shouldAcceptBooking() {
+    void shouldAcceptBookingWhenBookingsWithCollisionsNotFound() {
+        givenBookingsWithoutCollision();
         givenOpenBooking();
 
         commandHandler.accept(new BookingAccept(BOOKING_ID));
@@ -43,6 +41,7 @@ class BookingCommandHandlerTest {
 
     @Test
     void shouldPublishBookingAcceptedOnceAccepted() {
+        givenBookingsWithoutCollision();
         ArgumentCaptor<BookingAccepted> captor = ArgumentCaptor.forClass(BookingAccepted.class);
         givenOpenBooking();
 
@@ -65,6 +64,16 @@ class BookingCommandHandlerTest {
 
         then(bookingRepository).should().save(captor.capture());
         BookingAssertion.assertThat(captor.getValue()).isRejected();
+    }
+
+
+    private void givenBookingsWithoutCollision() {
+        RentalPlaceIdentifier identifier = RentalPlaceIdentifierTestFactory.hotelRoom(RENTAL_PLACE_ID);
+        List<Booking> bookings = asList(
+                Booking.hotelRoom(RENTAL_PLACE_ID, TENANT_ID, DAYS),
+                Booking.hotelRoom(RENTAL_PLACE_ID, TENANT_ID, DAYS)
+        );
+        given(bookingRepository.findAllBy(identifier)).willReturn(bookings);
     }
 
     private void givenOpenBooking() {
