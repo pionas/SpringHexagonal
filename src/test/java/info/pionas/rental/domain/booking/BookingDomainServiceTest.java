@@ -2,9 +2,7 @@ package info.pionas.rental.domain.booking;
 
 import info.pionas.rental.domain.clock.Clock;
 import info.pionas.rental.domain.event.EventIdFactory;
-import info.pionas.rental.domain.event.FakeEventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
-import info.pionas.rental.infrastructure.clock.FakeClock;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -27,8 +25,8 @@ class BookingDomainServiceTest {
     private static final List<LocalDate> DAYS_WITHOUT_COLLISION = asList(LocalDate.now().minusDays(13), LocalDate.now().plusDays(13));
     private static final List<Booking> NO_BOOKINGS_FOUND = emptyList();
 
-    private final EventIdFactory eventIdFactory = new FakeEventIdFactory();
-    private final Clock clock = new FakeClock();
+    private final EventIdFactory eventIdFactory = mock(EventIdFactory.class);
+    private final Clock clock = mock(Clock.class);
     private final EventChannel eventChannel = mock(EventChannel.class);
     private final BookingDomainService service = new BookingDomainServiceFactory().create(eventIdFactory, clock, eventChannel);
     private final BookingEventsPublisher bookingEventsPublisher = new BookingEventsPublisher(eventIdFactory, clock, eventChannel);
@@ -51,14 +49,13 @@ class BookingDomainServiceTest {
         then(eventChannel).should().publish(captor.capture());
         BookingAccepted actual = captor.getValue();
         assertThat(actual.getRentalType()).isEqualTo("HOTEL_ROOM");
-        assertThat(actual.getEventCreationDateTime()).isEqualTo(FakeClock.NOW);
         assertThat(actual.getRentalPlaceId()).isEqualTo(RENTAL_PLACE_ID);
         assertThat(actual.getTenantId()).isEqualTo(TENANT_ID_1);
         assertThat(actual.getDays()).containsExactlyElementsOf(DAYS);
     }
 
     @Test
-    void shouldRejectBookingWHenOtherWithDaysCollisionFound() {
+    void shouldRejectBookingWhenOtherWithDaysCollisionFound() {
         Booking booking = givenBooking();
 
         service.accept(booking, asList(givenAcceptedBookingWithDaysCollision()));
@@ -76,7 +73,6 @@ class BookingDomainServiceTest {
         then(eventChannel).should().publish(captor.capture());
         BookingRejected actual = captor.getValue();
         assertThat(actual.getRentalType()).isEqualTo("HOTEL_ROOM");
-        assertThat(actual.getEventCreationDateTime()).isEqualTo(FakeClock.NOW);
         assertThat(actual.getRentalPlaceId()).isEqualTo(RENTAL_PLACE_ID);
         assertThat(actual.getTenantId()).isEqualTo(TENANT_ID_1);
         assertThat(actual.getDays()).containsExactlyElementsOf(DAYS);
@@ -85,6 +81,7 @@ class BookingDomainServiceTest {
     @Test
     void shouldAcceptBookingWhenOtherWithoutDaysCollisionFound() {
         Booking booking = givenBooking();
+
         service.accept(booking, asList(givenAcceptedBookingWithoutDaysCollision()));
 
         BookingAssertion.assertThat(booking).isAccepted();
@@ -93,14 +90,50 @@ class BookingDomainServiceTest {
     @Test
     void shouldAcceptBookingWhenOtherWithDaysCollisionButNotAcceptedFound() {
         Booking booking = givenBooking();
+
         service.accept(booking, asList(givenOpenBookingWithDaysCollision()));
 
         BookingAssertion.assertThat(booking).isAccepted();
     }
 
+
+    @Test
+    void shouldAcceptBookingWhenOthersWithoutCollisionFound() {
+        Booking booking = givenBooking();
+        List<Booking> bookings = asList(
+                givenOpenBookingWithDaysCollision(),
+                givenRejectedBookingWithDaysCollision(),
+                givenAcceptedBookingWithoutDaysCollision()
+        );
+
+        service.accept(booking, bookings);
+
+        BookingAssertion.assertThat(booking).isAccepted();
+    }
+
+    @Test
+    void shouldRejectBookingWhenAtLeastOneWithCollisionFound() {
+        Booking booking = givenBooking();
+        List<Booking> bookings = asList(
+                givenOpenBookingWithDaysCollision(), givenRejectedBookingWithDaysCollision(),
+                givenAcceptedBookingWithoutDaysCollision(), givenAcceptedBookingWithDaysCollision());
+
+        service.accept(booking, bookings);
+
+        BookingAssertion.assertThat(booking).isRejected();
+    }
+
+    private Booking givenRejectedBookingWithDaysCollision() {
+        Booking booking = Booking.hotelRoom(RENTAL_PLACE_ID, TENANT_ID_2, DAYS_WITHOUT_COLLISION);
+        booking.reject(bookingEventsPublisher);
+
+        return booking;
+    }
+
     private Booking givenAcceptedBookingWithoutDaysCollision() {
         Booking booking = Booking.hotelRoom(RENTAL_PLACE_ID, TENANT_ID_2, DAYS_WITHOUT_COLLISION);
         booking.accept(bookingEventsPublisher);
+
         return booking;
     }
 
