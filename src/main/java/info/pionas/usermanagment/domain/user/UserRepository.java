@@ -4,7 +4,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository {
-    void save(User user);
+    String save(User user);
 
     boolean existWithLogin(String login);
+
+    User findById(String id);
 }

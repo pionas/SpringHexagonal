@@ -21,6 +21,11 @@ public class User {
     @Embedded
     private Name name;
 
+    public User(String login, Name name) {
+        this.login = login;
+        this.name = name;
+    }
+
     public String id() {
         if (id == null) {
             return null;

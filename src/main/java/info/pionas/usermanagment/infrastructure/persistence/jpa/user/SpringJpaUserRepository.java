@@ -8,6 +8,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface SpringJpaUserRepository extends CrudRepository<User, UUID> {
+interface SpringJpaUserRepository extends CrudRepository<User, UUID> {
     Optional<User> findByLogin(String login);
 }
