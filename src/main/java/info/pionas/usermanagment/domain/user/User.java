@@ -11,7 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Entity
-@Table(name = "APARTMENT")
+@Table(name = "USER")
 public class User {
     @Id
     @GeneratedValue
@@ -27,9 +27,6 @@ public class User {
     }
 
     public String id() {
-        if (id == null) {
-            return null;
-        }
         return id.toString();
     }
 
@@ -58,6 +55,31 @@ public class User {
                 .append(login)
                 .append(name)
                 .toHashCode();
+    }
+
+    @NoArgsConstructor
+    public static class Builder {
+        private String login;
+        private Name name;
+
+        public static Builder user() {
+            return new Builder();
+        }
+
+        public Builder withLogin(String login) {
+            this.login = login;
+            return this;
+        }
+
+        public Builder withName(String name, String lastName) {
+            this.name = new Name(name, lastName);
+            return this;
+        }
+
+        public User build() {
+            return new User(login, name);
+        }
+
     }
 
 }
