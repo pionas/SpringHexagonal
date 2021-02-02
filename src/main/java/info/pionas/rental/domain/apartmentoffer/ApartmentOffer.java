@@ -1,5 +1,6 @@
 package info.pionas.rental.domain.apartmentoffer;
 
+import info.pionas.rental.domain.money.Money;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
