@@ -10,6 +10,8 @@ import info.pionas.rental.domain.booking.BookingAssertion;
 import info.pionas.rental.domain.booking.BookingRepository;
 import info.pionas.rental.domain.event.FakeEventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
+import info.pionas.rental.domain.owner.OwnerDoesNotExistException;
+import info.pionas.rental.domain.owner.OwnerRepository;
 import info.pionas.rental.infrastructure.clock.FakeClock;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,10 +22,12 @@ import java.util.Map;
 
 import static info.pionas.rental.domain.apartment.Apartment.Builder.apartment;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 
 class ApartmentApplicationServiceTest {
     private static final String APARTMENT_ID = "2178231";
@@ -42,13 +46,15 @@ class ApartmentApplicationServiceTest {
     private static final LocalDate END = LocalDate.of(2020, 3, 6);
     private static final String BOOKING_ID = "8394234";
 
+    private final OwnerRepository ownerRepository = mock(OwnerRepository.class);
     private final ApartmentRepository apartmentRepository = mock(ApartmentRepository.class);
     private final EventChannel eventChannel = mock(EventChannel.class);
     private final BookingRepository bookingRepository = mock(BookingRepository.class);
-    private final ApartmentApplicationService service = new ApartmentApplicationServiceFactory().apartmentApplicationService(apartmentRepository, bookingRepository, new FakeEventIdFactory(), new FakeClock(), eventChannel);
+    private final ApartmentApplicationService service = new ApartmentApplicationServiceFactory().apartmentApplicationService(apartmentRepository, bookingRepository, ownerRepository, new FakeEventIdFactory(), new FakeClock(), eventChannel);
 
     @Test
     void shouldAddNewApartment() {
+        givenOwnerExist();
         ArgumentCaptor<Apartment> captor = ArgumentCaptor.forClass(Apartment.class);
 
         ApartmentDto apartmentDto = givenApartmentDto();
@@ -63,7 +69,17 @@ class ApartmentApplicationServiceTest {
     }
 
     @Test
+    void shouldRecognizeOwnerDoesNotExist() {
+        givenOwnerDoesNotExist();
+
+        OwnerDoesNotExistException actual = assertThrows(OwnerDoesNotExistException.class, () -> service.add(givenApartmentDto()));
+        assertThat(actual).hasMessage("Owner with id " + OWNER_ID + " does not exist");
+        then(apartmentRepository).should(never()).save(any());
+    }
+
+    @Test
     void shouldReturnIdOfNewApartment() {
+        givenOwnerExist();
         given(apartmentRepository.save(any())).willReturn(APARTMENT_ID);
 
         ApartmentDto apartmentDto = givenApartmentDto();
@@ -74,6 +90,7 @@ class ApartmentApplicationServiceTest {
 
     @Test
     void shouldCreateBookingForApartment() {
+        givenOwnerExist();
         givenApartment();
         ArgumentCaptor<Booking> captor = ArgumentCaptor.forClass(Booking.class);
 
@@ -88,6 +105,7 @@ class ApartmentApplicationServiceTest {
 
     @Test
     void shouldReturnIdOfBooking() {
+        givenOwnerExist();
         givenApartment();
         ArgumentCaptor<ApartmentBooked> captor = ArgumentCaptor.forClass(ApartmentBooked.class);
 
@@ -105,12 +123,21 @@ class ApartmentApplicationServiceTest {
 
     @Test
     void shouldPublishApartmentBookedEvent() {
+        givenOwnerExist();
         givenApartment();
         given(bookingRepository.save(any())).willReturn(BOOKING_ID);
 
         String actual = service.book(getApartmentBookingDto());
 
         Assertions.assertThat(actual).isEqualTo(BOOKING_ID);
+    }
+
+    private void givenOwnerDoesNotExist() {
+        given(ownerRepository.exists(OWNER_ID)).willReturn(false);
+    }
+
+    private void givenOwnerExist() {
+        given(ownerRepository.exists(OWNER_ID)).willReturn(true);
     }
 
     private ApartmentBookingDto getApartmentBookingDto() {

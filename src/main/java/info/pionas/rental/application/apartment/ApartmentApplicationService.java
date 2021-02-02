@@ -2,13 +2,12 @@ package info.pionas.rental.application.apartment;
 
 import info.pionas.rental.domain.apartment.Apartment;
 import info.pionas.rental.domain.apartment.ApartmentEventsPublisher;
+import info.pionas.rental.domain.apartment.ApartmentFactory;
 import info.pionas.rental.domain.apartment.ApartmentRepository;
 import info.pionas.rental.domain.booking.Booking;
 import info.pionas.rental.domain.booking.BookingRepository;
 import info.pionas.rental.domain.period.Period;
 import lombok.RequiredArgsConstructor;
-
-import static info.pionas.rental.domain.apartment.Apartment.Builder.apartment;
 
 @RequiredArgsConstructor
 public class ApartmentApplicationService {
@@ -16,19 +15,10 @@ public class ApartmentApplicationService {
     private final ApartmentRepository apartmentRepository;
     private final BookingRepository bookingRepository;
     private final ApartmentEventsPublisher apartmentEventsPublisher;
+    private final ApartmentFactory apartmentFactory;
 
     public String add(ApartmentDto apartmentDto) {
-        Apartment apartment = apartment()
-                .withOwnerId(apartmentDto.getOwnerId())
-                .withStreet(apartmentDto.getStreet())
-                .withPostalCode(apartmentDto.getPostalCode())
-                .withHouseNumber(apartmentDto.getHouseNumber())
-                .withApartmentNumber(apartmentDto.getApartmentNumber())
-                .withCity(apartmentDto.getCity())
-                .withCountry(apartmentDto.getCountry())
-                .withDescription(apartmentDto.getDescription())
-                .withSpacesDefinition(apartmentDto.getSpacesDefinition())
-                .build();
+        Apartment apartment = apartmentFactory.create(apartmentDto.asNewApartmentDto());
 
         return apartmentRepository.save(apartment);
     }
