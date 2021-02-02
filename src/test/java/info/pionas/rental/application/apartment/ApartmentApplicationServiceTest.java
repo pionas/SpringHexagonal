@@ -1,10 +1,7 @@
 package info.pionas.rental.application.apartment;
 
 import com.google.common.collect.ImmutableMap;
-import info.pionas.rental.domain.apartment.Apartment;
-import info.pionas.rental.domain.apartment.ApartmentAssertion;
-import info.pionas.rental.domain.apartment.ApartmentBooked;
-import info.pionas.rental.domain.apartment.ApartmentRepository;
+import info.pionas.rental.domain.apartment.*;
 import info.pionas.rental.domain.booking.Booking;
 import info.pionas.rental.domain.booking.BookingAssertion;
 import info.pionas.rental.domain.booking.BookingRepository;
@@ -20,7 +17,6 @@ import org.mockito.ArgumentCaptor;
 import java.time.LocalDate;
 import java.util.Map;
 
-import static info.pionas.rental.domain.apartment.Apartment.Builder.apartment;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -51,6 +47,7 @@ class ApartmentApplicationServiceTest {
     private final EventChannel eventChannel = mock(EventChannel.class);
     private final BookingRepository bookingRepository = mock(BookingRepository.class);
     private final ApartmentApplicationService service = new ApartmentApplicationServiceFactory().apartmentApplicationService(apartmentRepository, bookingRepository, ownerRepository, new FakeEventIdFactory(), new FakeClock(), eventChannel);
+    private final ApartmentFactory apartmentFactory = new ApartmentFactory(ownerRepository);
 
     @Test
     void shouldAddNewApartment() {
@@ -145,17 +142,8 @@ class ApartmentApplicationServiceTest {
     }
 
     private void givenApartment() {
-        Apartment apartment = apartment()
-                .withOwnerId(OWNER_ID)
-                .withStreet(STREET)
-                .withPostalCode(POSTAL_CODE)
-                .withHouseNumber(HOUSE_NUMBER)
-                .withApartmentNumber(APARTMENT_NUMBER)
-                .withCity(CITY)
-                .withCountry(COUNTRY)
-                .withDescription(DESCRIPTION)
-                .withSpacesDefinition(SPACES_DEFINITION)
-                .build();
+        ApartmentDto apartmentDto = new ApartmentDto(OWNER_ID, STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY, DESCRIPTION, SPACES_DEFINITION);
+        Apartment apartment = apartmentFactory.create(apartmentDto.asNewApartmentDto());
         given(apartmentRepository.findById(APARTMENT_ID)).willReturn(apartment);
     }
 
