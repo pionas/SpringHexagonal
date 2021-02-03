@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.application.hotelroomoffer.HotelRoomOfferAssertion;
 import info.pionas.rental.domain.hotel.Hotel;
 import info.pionas.rental.domain.money.NotAllowedMoneyValueException;
+import info.pionas.rental.domain.offeravailability.OfferAvailabilityException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
@@ -61,7 +62,7 @@ class HotelRoomOfferDomainServiceTest {
         CreateHotelRoomOffer createHotelRoomOffer = new CreateHotelRoomOffer(ROOM_NUMBER, HOTEL_ROOM_ID, PRICE, END, START);
         Executable executable = () -> service.createOfferForHotelRoom(givenHotelWithRoom(), createHotelRoomOffer);
 
-        HotelRoomAvailabilityException actual = assertThrows(HotelRoomAvailabilityException.class, executable);
+        OfferAvailabilityException actual = assertThrows(OfferAvailabilityException.class, executable);
 
         assertThat(actual).hasMessage("Start date: 2041-12-20 of availability is after end date: 2040-12-10");
     }
@@ -71,7 +72,7 @@ class HotelRoomOfferDomainServiceTest {
         CreateHotelRoomOffer createHotelRoomOffer = new CreateHotelRoomOffer(ROOM_NUMBER, HOTEL_ROOM_ID, PRICE, LocalDate.of(2020, 10, 10), END);
         Executable executable = () -> service.createOfferForHotelRoom(givenHotelWithRoom(), createHotelRoomOffer);
 
-        HotelRoomAvailabilityException actual = assertThrows(HotelRoomAvailabilityException.class, executable);
+        OfferAvailabilityException actual = assertThrows(OfferAvailabilityException.class, executable);
 
         assertThat(actual).hasMessage("Start date: 2020-10-10 is past date");
     }
@@ -81,7 +82,7 @@ class HotelRoomOfferDomainServiceTest {
         CreateHotelRoomOffer createHotelRoomOffer = new CreateHotelRoomOffer(ROOM_NUMBER, HOTEL_ROOM_ID, PRICE, LocalDate.of(2020, 10, 10), NO_DATE);
         Executable executable = () -> service.createOfferForHotelRoom(givenHotelWithRoom(), createHotelRoomOffer);
 
-        HotelRoomAvailabilityException actual = assertThrows(HotelRoomAvailabilityException.class, executable);
+        OfferAvailabilityException actual = assertThrows(OfferAvailabilityException.class, executable);
 
         assertThat(actual).hasMessage("Start date: 2020-10-10 is past date");
     }

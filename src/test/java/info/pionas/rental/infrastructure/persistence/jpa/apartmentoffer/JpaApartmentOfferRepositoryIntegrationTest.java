@@ -25,8 +25,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class JpaApartmentOfferRepositoryIntegrationTest {
     private static final String APARTMENT_ID = "1234";
     private static final BigDecimal PRICE = BigDecimal.valueOf(123);
-    private static final LocalDate START = LocalDate.of(2020, 10, 11);
-    private static final LocalDate END = LocalDate.of(2020, 10, 20);
+    private static final LocalDate START = LocalDate.of(2040, 10, 11);
+    private static final LocalDate END = LocalDate.of(2040, 10, 20);
 
     @Autowired
     private ApartmentOfferRepository apartmentOfferRepository;
