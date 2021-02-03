@@ -23,15 +23,15 @@ public class ApartmentDto {
 
     public NewApartmentDto asNewApartmentDto() {
         return NewApartmentDto.builder()
-                .ownerId(ownerId)
-                .street(street)
-                .postalCode(postalCode)
-                .houseNumber(houseNumber)
-                .apartmentNumber(apartmentNumber)
-                .city(city)
-                .country(country)
-                .description(description)
-                .spacesDefinition(spacesDefinition)
+                .ownerId(getOwnerId())
+                .street(getStreet())
+                .postalCode(getPostalCode())
+                .houseNumber(getHouseNumber())
+                .apartmentNumber(getApartmentNumber())
+                .city(getCity())
+                .country(getCountry())
+                .description(getDescription())
+                .spacesDefinition(getSpacesDefinition())
                 .build();
     }
 }
