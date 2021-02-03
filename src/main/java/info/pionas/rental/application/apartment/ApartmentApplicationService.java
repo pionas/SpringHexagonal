@@ -1,9 +1,6 @@
 package info.pionas.rental.application.apartment;
 
-import info.pionas.rental.domain.apartment.Apartment;
-import info.pionas.rental.domain.apartment.ApartmentEventsPublisher;
-import info.pionas.rental.domain.apartment.ApartmentFactory;
-import info.pionas.rental.domain.apartment.ApartmentRepository;
+import info.pionas.rental.domain.apartment.*;
 import info.pionas.rental.domain.booking.Booking;
 import info.pionas.rental.domain.booking.BookingRepository;
 import info.pionas.rental.domain.period.Period;
@@ -24,10 +21,7 @@ public class ApartmentApplicationService {
     }
 
     public String book(ApartmentBookingDto apartmentBookingDto) {
-        Apartment apartment = apartmentRepository.findById(apartmentBookingDto.getApartmentId());
-        Period period = new Period(apartmentBookingDto.getStart(), apartmentBookingDto.getEnd());
-
-        Booking booking = apartment.book(apartmentBookingDto.getTenantId(), period, apartmentEventsPublisher);
+        Booking booking = new ApartmentDomainService(apartmentRepository, apartmentEventsPublisher).book(apartmentBookingDto.asNewApartmentBookingDto());
 
         return bookingRepository.save(booking);
     }
