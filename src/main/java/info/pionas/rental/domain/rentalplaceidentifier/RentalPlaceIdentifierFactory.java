@@ -6,6 +6,7 @@ import static info.pionas.rental.domain.rentalplaceidentifier.RentalType.HOTEL_R
 public class RentalPlaceIdentifierFactory {
     private RentalPlaceIdentifierFactory() {
     }
+
     public static RentalPlaceIdentifier apartment(String apartmentID) {
         return new RentalPlaceIdentifier(APARTMENT, apartmentID);
     }
