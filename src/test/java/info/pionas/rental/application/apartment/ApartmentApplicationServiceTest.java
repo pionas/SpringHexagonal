@@ -253,6 +253,20 @@ class ApartmentApplicationServiceTest {
         thenBookingWasNotCreated();
     }
 
+    @Test
+    void shouldRecognizeWhenEndDateIsBeforeStartDateWhenBooking() {
+        givenExistingOwner();
+        givenExistingTenantAndApartmentWithNoBookings();
+        givenAcceptedBookingsInGivenPeriod();
+        ApartmentBookingDto apartmentBookingDto = new ApartmentBookingDto(APARTMENT_ID, TENANT_ID, END, START);
+        PeriodException actual = assertThrows(PeriodException.class, () -> {
+            service.book(apartmentBookingDto);
+        });
+
+        assertThat(actual).hasMessage("Start date: 2040-03-06 of availability is after end date: 2040-03-04");
+        thenBookingWasNotCreated();
+    }
+
     private void givenAcceptedBookingsInGivenPeriod() {
         givenAcceptedBookingItPeriod(BEFORE_START, AFTER_START);
     }
