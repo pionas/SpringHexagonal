@@ -3,6 +3,7 @@ package info.pionas.rental.application.apartment;
 import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.domain.apartment.*;
 import info.pionas.rental.domain.booking.Booking;
+import info.pionas.rental.domain.booking.BookingAccepted;
 import info.pionas.rental.domain.booking.BookingAssertion;
 import info.pionas.rental.domain.booking.BookingRepository;
 import info.pionas.rental.domain.event.FakeEventIdFactory;
@@ -47,7 +48,8 @@ class ApartmentApplicationServiceTest {
     private final ApartmentRepository apartmentRepository = mock(ApartmentRepository.class);
     private final EventChannel eventChannel = mock(EventChannel.class);
     private final BookingRepository bookingRepository = mock(BookingRepository.class);
-    private final ApartmentApplicationService service = new ApartmentApplicationServiceFactory().apartmentApplicationService(apartmentRepository, bookingRepository, ownerRepository, new FakeEventIdFactory(), new FakeClock(), eventChannel);
+    private final ApartmentApplicationService service = new ApartmentApplicationServiceFactory()
+            .apartmentApplicationService(apartmentRepository, bookingRepository, ownerRepository, new FakeEventIdFactory(), new FakeClock(), eventChannel);
     private final ApartmentFactory apartmentFactory = new ApartmentFactory(ownerRepository);
 
     @Test
@@ -107,7 +109,7 @@ class ApartmentApplicationServiceTest {
     @Test
     void shouldCreateBookingForApartment() {
         givenOwnerExist();
-        givenApartment();
+        givenExistingApartment();
         ArgumentCaptor<Booking> captor = ArgumentCaptor.forClass(Booking.class);
 
         service.book(getApartmentBookingDto());
@@ -122,7 +124,7 @@ class ApartmentApplicationServiceTest {
     @Test
     void shouldReturnIdOfBooking() {
         givenOwnerExist();
-        givenApartment();
+        givenExistingApartment();
         ArgumentCaptor<ApartmentBooked> captor = ArgumentCaptor.forClass(ApartmentBooked.class);
 
         service.book(getApartmentBookingDto());
@@ -140,12 +142,26 @@ class ApartmentApplicationServiceTest {
     @Test
     void shouldPublishApartmentBookedEvent() {
         givenOwnerExist();
-        givenApartment();
+        givenExistingApartment();
         given(bookingRepository.save(any())).willReturn(BOOKING_ID);
 
         String actual = service.book(getApartmentBookingDto());
 
         Assertions.assertThat(actual).isEqualTo(BOOKING_ID);
+    }
+
+    @Test
+    void shouldRecognizeApartmentDoesNotExistWhenBooking() {
+        givenOwnerExist();
+        givenNonExistingApartment();
+
+        ApartmentNotFoundException actual = assertThrows(ApartmentNotFoundException.class, () -> {
+            service.book(getApartmentBookingDto());
+        });
+
+        assertThat(actual).hasMessage("Apartment with id " + APARTMENT_ID + " does not exist");
+        then(bookingRepository).should(never()).save(any());
+        then(eventChannel).should(never()).publish(any(BookingAccepted.class));
     }
 
     private void givenOwnerDoesNotExist() {
@@ -160,11 +176,18 @@ class ApartmentApplicationServiceTest {
         return new ApartmentBookingDto(APARTMENT_ID, TENANT_ID, START, END);
     }
 
-    private void givenApartment() {
+    private void givenExistingApartment() {
         ApartmentDto apartmentDto = getApartmentDtoWith(SPACES_DEFINITION);
         Apartment apartment = apartmentFactory.create(apartmentDto.asNewApartmentDto());
+        given(apartmentRepository.existById(APARTMENT_ID)).willReturn(true);
         given(apartmentRepository.findById(APARTMENT_ID)).willReturn(apartment);
     }
+
+    private void givenNonExistingApartment() {
+        given(apartmentRepository.existById(APARTMENT_ID)).willReturn(false);
+        given(apartmentRepository.findById(APARTMENT_ID)).willThrow(new ApartmentNotFoundException(APARTMENT_ID));
+    }
+
 
     private ApartmentDto givenApartmentDto() {
         return getApartmentDtoWith(SPACES_DEFINITION);

@@ -10,6 +10,9 @@ public class ApartmentDomainService {
     private final ApartmentEventsPublisher apartmentEventsPublisher;
 
     public Booking book(NewApartmentBookingDto newApartmentBookingDto) {
+        if (!apartmentRepository.existById(newApartmentBookingDto.getApartmentId())) {
+            throw new ApartmentNotFoundException(newApartmentBookingDto.getApartmentId());
+        }
         Apartment apartment = apartmentRepository.findById(newApartmentBookingDto.getApartmentId());
         Period period = new Period(newApartmentBookingDto.getStart(), newApartmentBookingDto.getEnd());
 
