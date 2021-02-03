@@ -8,4 +8,7 @@ import java.util.UUID;
 
 @Repository
 interface SpringJpaApartmentOfferRepository extends CrudRepository<ApartmentOffer, UUID> {
+    boolean existsByApartmentId(String apartmentId);
+
+    ApartmentOffer findByApartmentId(String apartmentId);
 }

@@ -1,5 +1,7 @@
 package info.pionas.rental.domain.booking;
 
+import info.pionas.rental.domain.money.Money;
+import info.pionas.rental.domain.period.Period;
 import info.pionas.rental.domain.rentalplaceidentifier.RentalType;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
@@ -73,6 +75,17 @@ public class BookingAssertion {
             List<LocalDate> actualDays = (List<LocalDate>) days;
             Assertions.assertThat(actualDays).containsExactlyElementsOf(expected);
         });
+        return this;
+    }
+
+    @Deprecated
+    public BookingAssertion isEqualToBookingApartment(String rentalPlaceId, String tenantId, Period period) {
+        Assertions.assertThat(actual).isEqualTo(Booking.apartment(rentalPlaceId, tenantId, period));
+        return this;
+    }
+
+    public BookingAssertion isEqualToBookingApartment(String rentalPlaceId, String tenantId, String ownerId, Money price, Period period) {
+        Assertions.assertThat(actual).isEqualTo(Booking.apartment(rentalPlaceId, tenantId, ownerId, price, period));
         return this;
     }
 }

@@ -9,7 +9,7 @@ public class PeriodException extends RuntimeException {
     }
 
     static RuntimeException startAfterEnd(LocalDate start, LocalDate end) {
-        return new PeriodException("Start date: " + start + " of availability is after end date: " + end);
+        return new PeriodException("Start date: " + start + " of period is after end date: " + end);
     }
 
     static RuntimeException startFromPast(LocalDate start) {

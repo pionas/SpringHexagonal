@@ -63,7 +63,7 @@ class HotelRoomOfferDomainServiceTest {
 
         PeriodException actual = assertThrows(PeriodException.class, executable);
 
-        assertThat(actual).hasMessage("Start date: 2041-12-20 of availability is after end date: 2040-12-10");
+        assertThat(actual).hasMessage("Start date: 2041-12-20 of period is after end date: 2040-12-10");
     }
 
     @Test

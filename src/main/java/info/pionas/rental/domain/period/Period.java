@@ -41,6 +41,10 @@ public class Period {
         return from(start, start.plusYears(1));
     }
 
+    public boolean coversAllDaysWithin(Period period) {
+        return !period.getPeriodStart().isBefore(periodStart) && !period.getPeriodEnd().isAfter(periodEnd);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

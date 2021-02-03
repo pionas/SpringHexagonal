@@ -22,4 +22,15 @@ public class JpaApartmentOfferRepository implements ApartmentOfferRepository {
         return springJpaApartmentOfferRepository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new ApartmentOfferDoesNotExistException(id));
     }
+
+    @Override
+    public boolean existByApartmentId(String apartmentId) {
+        return springJpaApartmentOfferRepository.existsByApartmentId(apartmentId);
+    }
+
+
+    @Override
+    public ApartmentOffer findByApartmentId(String apartmentId) {
+        return springJpaApartmentOfferRepository.findByApartmentId(apartmentId);
+    }
 }

@@ -7,4 +7,8 @@ public interface ApartmentOfferRepository {
     String save(ApartmentOffer apartmentOffer);
 
     ApartmentOffer findById(String id);
+
+    boolean existByApartmentId(String apartmentId);
+
+    ApartmentOffer findByApartmentId(String apartmentId);
 }

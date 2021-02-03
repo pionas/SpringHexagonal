@@ -2,12 +2,14 @@ package info.pionas.rental.application.apartment;
 
 import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.domain.apartment.*;
+import info.pionas.rental.domain.apartmentoffer.ApartmentOffer;
+import info.pionas.rental.domain.apartmentoffer.ApartmentOfferRepository;
 import info.pionas.rental.domain.booking.Booking;
-import info.pionas.rental.domain.booking.BookingAccepted;
 import info.pionas.rental.domain.booking.BookingAssertion;
 import info.pionas.rental.domain.booking.BookingRepository;
 import info.pionas.rental.domain.event.FakeEventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
+import info.pionas.rental.domain.money.Money;
 import info.pionas.rental.domain.owner.OwnerDoesNotExistException;
 import info.pionas.rental.domain.owner.OwnerRepository;
 import info.pionas.rental.domain.period.Period;
@@ -22,10 +24,11 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Map;
 
+import static info.pionas.rental.domain.apartment.Apartment.Builder.apartment;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -49,35 +52,82 @@ class ApartmentApplicationServiceTest {
     private static final Map<String, Double> SPACES_DEFINITION = ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0);
     private static final String TENANT_ID = "137";
     private static final LocalDate START = LocalDate.of(2040, 3, 4);
-    private static final LocalDate MIDDLE = LocalDate.of(2040, 3, 5);
     private static final LocalDate END = LocalDate.of(2040, 3, 6);
     private static final String BOOKING_ID = "8394234";
+    private static final String NO_ID = null;
     private static final LocalDate BEFORE_START = START.minusDays(1);
     private static final LocalDate AFTER_START = START.plusDays(1);
+    private static final BigDecimal PRICE = BigDecimal.valueOf(42);
 
     private final OwnerRepository ownerRepository = mock(OwnerRepository.class);
     private final TenantRepository tenantRepository = mock(TenantRepository.class);
     private final ApartmentRepository apartmentRepository = mock(ApartmentRepository.class);
+    private final ApartmentOfferRepository apartmentOfferRepository = mock(ApartmentOfferRepository.class);
     private final EventChannel eventChannel = mock(EventChannel.class);
     private final BookingRepository bookingRepository = mock(BookingRepository.class);
     private final ApartmentApplicationService service = new ApartmentApplicationServiceFactory()
-            .apartmentApplicationService(apartmentRepository, bookingRepository, ownerRepository, tenantRepository, new FakeEventIdFactory(), new FakeClock(), eventChannel);
-    private final ApartmentFactory apartmentFactory = new ApartmentFactory(ownerRepository);
+            .apartmentApplicationService(apartmentRepository, bookingRepository, ownerRepository, tenantRepository, apartmentOfferRepository, new FakeEventIdFactory(), new FakeClock(), eventChannel);
 
     @Test
     void shouldAddNewApartment() {
-        givenExistingOwner();
+        givenOwnerExists();
         ArgumentCaptor<Apartment> captor = ArgumentCaptor.forClass(Apartment.class);
 
-        ApartmentDto apartmentDto = givenApartmentDto();
-        service.add(apartmentDto);
+        service.add(givenApartmentDto());
 
         then(apartmentRepository).should().save(captor.capture());
         ApartmentAssertion.assertThat(captor.getValue())
-                .hasOwnerIdEqualsTo(OWNER_ID)
+                .isEqualTo(ApartmentRequirements.apartment()
+                        .withOwnerId(OWNER_ID)
+                        .withApartmentNumber(APARTMENT_NUMBER)
+                        .withAddress(STREET, POSTAL_CODE, HOUSE_NUMBER, CITY, COUNTRY)
+                )
                 .hasDescriptionEqualsTo(DESCRIPTION)
-                .hasAddressEqualsTo(STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY)
                 .hasSpacesEqualsTo(SPACES_DEFINITION);
+    }
+
+    @Test
+    void shouldReturnIdOfNewApartment() {
+        givenOwnerExists();
+        given(apartmentRepository.save(any())).willReturn(APARTMENT_ID);
+
+        String actual = service.add(givenApartmentDto());
+
+        Assertions.assertThat(actual).isEqualTo(APARTMENT_ID);
+    }
+
+    private ApartmentDto givenApartmentDto() {
+        return givenApartmentDtoWith(SPACES_DEFINITION);
+    }
+
+    @Test
+    void shouldNotAllowToCreateApartmentWithAtLeastOneSpaceThatHaveSquareMeterEqualZero() {
+        givenOwnerExists();
+        ApartmentDto apartmentDto = givenApartmentDtoWith(ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0, "Room", 0.0));
+
+        SquareMeterException actual = assertThrows(SquareMeterException.class, () -> service.add(apartmentDto));
+
+        assertThat(actual).hasMessage("Square meter lower or equal zero");
+        then(apartmentRepository).should(never()).save(any());
+    }
+
+    @Test
+    void shouldNotAllowToCreateApartmentWithAtLeastOneSpaceThatHaveSquareMeterLowerThanZero() {
+        givenOwnerExists();
+        ApartmentDto apartmentDto = givenApartmentDtoWith(ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0, "Room", -13.0));
+
+        SquareMeterException actual = assertThrows(SquareMeterException.class, () -> service.add(apartmentDto));
+
+        assertThat(actual).hasMessage("Square meter lower or equal zero");
+        then(apartmentRepository).should(never()).save(any());
+    }
+
+    private ApartmentDto givenApartmentDtoWith(Map<String, Double> spacesDefinition) {
+        return new ApartmentDto(OWNER_ID, STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY, DESCRIPTION, spacesDefinition);
+    }
+
+    private void givenOwnerExists() {
+        given(ownerRepository.exists(OWNER_ID)).willReturn(true);
     }
 
     @Test
@@ -85,190 +135,115 @@ class ApartmentApplicationServiceTest {
         givenOwnerDoesNotExist();
 
         OwnerDoesNotExistException actual = assertThrows(OwnerDoesNotExistException.class, () -> service.add(givenApartmentDto()));
+
         assertThat(actual).hasMessage("Owner with id " + OWNER_ID + " does not exist");
         then(apartmentRepository).should(never()).save(any());
     }
 
-    @Test
-    void shouldReturnIdOfNewApartment() {
-        givenExistingOwner();
-        given(apartmentRepository.save(any())).willReturn(APARTMENT_ID);
-
-        ApartmentDto apartmentDto = givenApartmentDto();
-        String actual = service.add(apartmentDto);
-
-        Assertions.assertThat(actual).isEqualTo(APARTMENT_ID);
-    }
-
-    @Test
-    void shouldNotAllowToCreateApartmentWithAtLeastOneSpaceThatHaveSquareMaterEqualZero() {
-        givenExistingOwner();
-        ApartmentDto apartmentDto = getApartmentDtoWith(ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0, "Room", 0.0));
-        SquareMeterException actual = assertThrows(SquareMeterException.class, () -> service.add(apartmentDto));
-        assertThat(actual).hasMessage("Square meter lower or equal zero");
-        then(apartmentRepository).should(never()).save(any());
-    }
-
-    @Test
-    void shouldNotAllowToCreateApartmentWithAtLeastOneSpaceThatHaveSquareMaterLowerThanZero() {
-        givenExistingOwner();
-        ApartmentDto apartmentDto = getApartmentDtoWith(ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0, "Room", -13.0));
-        SquareMeterException actual = assertThrows(SquareMeterException.class, () -> service.add(apartmentDto));
-        assertThat(actual).hasMessage("Square meter lower or equal zero");
-        then(apartmentRepository).should(never()).save(any());
+    private void givenOwnerDoesNotExist() {
+        given(ownerRepository.exists(OWNER_ID)).willReturn(false);
     }
 
     @Test
     void shouldCreateBookingForApartment() {
-        givenExistingOwner();
         givenExistingTenantAndApartmentWithNoBookings();
         ArgumentCaptor<Booking> captor = ArgumentCaptor.forClass(Booking.class);
 
-        service.book(getApartmentBookingDto());
+        service.book(givenBookApartmentDto());
 
         then(bookingRepository).should().save(captor.capture());
         BookingAssertion.assertThat(captor.getValue())
-                .isApartment()
-                .hasTenantIdEqualTo(TENANT_ID)
-                .containsAllDays(START, MIDDLE, END);
+                .isEqualToBookingApartment(NO_ID, TENANT_ID, OWNER_ID, Money.of(PRICE), new Period(START, END));
     }
 
     @Test
     void shouldAllowToBookApartmentWhenFoundAcceptedBookingsInDifferentPeriod() {
-        givenExistingOwner();
-        givenExistingTenantAndApartmentWithNoBookings();
+        givenExistingApartment();
+        givenExistingTenant();
         givenAcceptedBookingsInDifferentPeriod();
+        givenExistingApartmentOffer();
+        ArgumentCaptor<Booking> captor = ArgumentCaptor.forClass(Booking.class);
 
-        ArgumentCaptor<ApartmentBooked> captor = ArgumentCaptor.forClass(ApartmentBooked.class);
+        service.book(givenBookApartmentDto());
 
-        service.book(getApartmentBookingDto());
-
-        then(eventChannel).should().publish(captor.capture());
-        ApartmentBooked actual = captor.getValue();
-        assertThat(actual.getEventId()).isEqualTo(FakeEventIdFactory.UUID);
-        assertThat(actual.getEventCreationDateTime()).isEqualTo(FakeClock.NOW);
-        assertThat(actual.getOwnerId()).isEqualTo(OWNER_ID);
-        assertThat(actual.getTenantId()).isEqualTo(TENANT_ID);
-        assertThat(actual.getPeriodStart()).isEqualTo(START);
-        assertThat(actual.getPeriodEnd()).isEqualTo(END);
+        then(bookingRepository).should().save(captor.capture());
+        BookingAssertion.assertThat(captor.getValue())
+                .isEqualToBookingApartment(NO_ID, TENANT_ID, OWNER_ID, Money.of(PRICE), new Period(START, END));
     }
 
-    @Test
-    void shouldAllowToBookApartmentWheBookingsIsEmpty() {
-        givenExistingOwner();
-        givenExistingTenantAndApartmentWithNoBookings();
-        given(bookingRepository.findAllAcceptedBy(getRentalPlaceIdentifier())).willReturn(null);
-
-        ArgumentCaptor<ApartmentBooked> captor = ArgumentCaptor.forClass(ApartmentBooked.class);
-
-        service.book(getApartmentBookingDto());
-
-        then(eventChannel).should().publish(captor.capture());
-        ApartmentBooked actual = captor.getValue();
-        assertThat(actual.getEventId()).isEqualTo(FakeEventIdFactory.UUID);
-        assertThat(actual.getEventCreationDateTime()).isEqualTo(FakeClock.NOW);
-        assertThat(actual.getOwnerId()).isEqualTo(OWNER_ID);
-        assertThat(actual.getTenantId()).isEqualTo(TENANT_ID);
-        assertThat(actual.getPeriodStart()).isEqualTo(START);
-        assertThat(actual.getPeriodEnd()).isEqualTo(END);
+    private void givenAcceptedBookingsInDifferentPeriod() {
+        givenAcceptedBookingItPeriod(BEFORE_START.minusDays(10), BEFORE_START);
     }
 
     @Test
     void shouldReturnIdOfBooking() {
-        givenExistingOwner();
-        givenExistingTenantAndApartmentWithNoBookings();
-        ArgumentCaptor<ApartmentBooked> captor = ArgumentCaptor.forClass(ApartmentBooked.class);
-
-        service.book(getApartmentBookingDto());
-
-        then(eventChannel).should().publish(captor.capture());
-        ApartmentBooked actual = captor.getValue();
-        assertThat(actual.getEventId()).isEqualTo(FakeEventIdFactory.UUID);
-        assertThat(actual.getEventCreationDateTime()).isEqualTo(FakeClock.NOW);
-        assertThat(actual.getOwnerId()).isEqualTo(OWNER_ID);
-        assertThat(actual.getTenantId()).isEqualTo(TENANT_ID);
-        assertThat(actual.getPeriodStart()).isEqualTo(START);
-        assertThat(actual.getPeriodEnd()).isEqualTo(END);
-    }
-
-    @Test
-    void shouldPublishApartmentBookedEvent() {
-        givenExistingOwner();
         givenExistingTenantAndApartmentWithNoBookings();
         given(bookingRepository.save(any())).willReturn(BOOKING_ID);
 
-        String actual = service.book(getApartmentBookingDto());
+        String actual = service.book(givenBookApartmentDto());
 
         Assertions.assertThat(actual).isEqualTo(BOOKING_ID);
     }
 
     @Test
-    void shouldRecognizeApartmentDoesNotExistWhenBooking() {
-        givenExistingOwner();
-        givenNonExistingApartment();
+    void shouldPublishApartmentBookedEvent() {
+        givenExistingTenantAndApartmentWithNoBookings();
+        ArgumentCaptor<ApartmentBooked> captor = ArgumentCaptor.forClass(ApartmentBooked.class);
 
-        ApartmentNotFoundException actual = assertThrows(ApartmentNotFoundException.class, () -> {
-            service.book(getApartmentBookingDto());
-        });
+        service.book(givenBookApartmentDto());
+
+        then(eventChannel).should().publish(captor.capture());
+        ApartmentBooked actual = captor.getValue();
+        assertThat(actual.getEventId()).isEqualTo(FakeEventIdFactory.UUID);
+        assertThat(actual.getEventCreationDateTime()).isEqualTo(FakeClock.NOW);
+        assertThat(actual.getOwnerId()).isEqualTo(OWNER_ID);
+        assertThat(actual.getTenantId()).isEqualTo(TENANT_ID);
+        assertThat(actual.getPeriodStart()).isEqualTo(START);
+        assertThat(actual.getPeriodEnd()).isEqualTo(END);
+    }
+
+    @Test
+    void shouldRecognizeApartmentDoesNotExistWhenBooking() {
+        givenNonExistingApartment();
+        givenExistingTenant();
+        givenNoBookings();
+
+        ApartmentNotFoundException actual = assertThrows(ApartmentNotFoundException.class, () -> service.book(givenBookApartmentDto()));
 
         assertThat(actual).hasMessage("Apartment with id " + APARTMENT_ID + " does not exist");
         thenBookingWasNotCreated();
     }
 
+    private void givenNonExistingApartment() {
+        given(apartmentRepository.existById(APARTMENT_ID)).willReturn(false);
+    }
+
     @Test
     void shouldRecognizeTenantDoesNotExistWhenBooking() {
-        givenExistingOwner();
         givenExistingApartment();
         givenNonExistingTenant();
         givenNoBookings();
 
-        TenantNotFoundException actual = assertThrows(TenantNotFoundException.class, () -> {
-            service.book(getApartmentBookingDto());
-        });
+        TenantNotFoundException actual = assertThrows(TenantNotFoundException.class, () -> service.book(givenBookApartmentDto()));
 
-        assertThat(actual).hasMessage("Tenant with id " + TENANT_ID + " does not exist");
+        assertThat(actual).hasMessage("Tenant with id: " + TENANT_ID + " does not exist");
         thenBookingWasNotCreated();
+    }
+
+    private void givenNonExistingTenant() {
+        given(tenantRepository.existById(TENANT_ID)).willReturn(false);
     }
 
     @Test
     void shouldRecognizeWhenHaveBookingsWithinGivenPeriodWhenBooking() {
-        givenExistingOwner();
-        givenExistingTenantAndApartmentWithNoBookings();
+        givenExistingApartment();
+        givenExistingTenant();
         givenAcceptedBookingsInGivenPeriod();
+        givenExistingApartmentOffer();
 
-        ApartmentBookingException actual = assertThrows(ApartmentBookingException.class, () -> {
-            service.book(getApartmentBookingDto());
-        });
+        ApartmentBookingException actual = assertThrows(ApartmentBookingException.class, () -> service.book(givenBookApartmentDto()));
 
         assertThat(actual).hasMessage("There are accepted bookings in given period");
-        thenBookingWasNotCreated();
-    }
-
-    @Test
-    void shouldRecognizeWhenStartDateIsFromPastWhenBooking() {
-        givenExistingOwner();
-        givenExistingTenantAndApartmentWithNoBookings();
-        givenAcceptedBookingsInGivenPeriod();
-        ApartmentBookingDto apartmentBookingDto = new ApartmentBookingDto(APARTMENT_ID, TENANT_ID, LocalDate.of(2020, 10, 10), END);
-        PeriodException actual = assertThrows(PeriodException.class, () -> {
-            service.book(apartmentBookingDto);
-        });
-
-        assertThat(actual).hasMessage("Start date: 2020-10-10 is past date");
-        thenBookingWasNotCreated();
-    }
-
-    @Test
-    void shouldRecognizeWhenEndDateIsBeforeStartDateWhenBooking() {
-        givenExistingOwner();
-        givenExistingTenantAndApartmentWithNoBookings();
-        givenAcceptedBookingsInGivenPeriod();
-        ApartmentBookingDto apartmentBookingDto = new ApartmentBookingDto(APARTMENT_ID, TENANT_ID, END, START);
-        PeriodException actual = assertThrows(PeriodException.class, () -> {
-            service.book(apartmentBookingDto);
-        });
-
-        assertThat(actual).hasMessage("Start date: 2040-03-06 of availability is after end date: 2040-03-04");
         thenBookingWasNotCreated();
     }
 
@@ -276,37 +251,47 @@ class ApartmentApplicationServiceTest {
         givenAcceptedBookingItPeriod(BEFORE_START, AFTER_START);
     }
 
-    private void givenAcceptedBookingsInDifferentPeriod() {
-        givenAcceptedBookingItPeriod(BEFORE_START.minusDays(10), BEFORE_START);
+    private void givenAcceptedBookingItPeriod(LocalDate periodStart, LocalDate periodEnd) {
+        Booking acceptedBooking = Booking.apartment(APARTMENT_ID, TENANT_ID, new Period(periodStart, periodEnd));
+        given(bookingRepository.findAllAcceptedBy(getRentalPlaceIdentifier())).willReturn(asList(acceptedBooking));
     }
 
-    private void givenAcceptedBookingItPeriod(LocalDate beforeStart, LocalDate afterStart) {
-        Booking acceptedBooking = Booking.apartment(APARTMENT_ID, TENANT_ID, new Period(beforeStart, afterStart));
-        List<Booking> bookings = asList(acceptedBooking);
-        given(bookingRepository.findAllAcceptedBy(getRentalPlaceIdentifier())).willReturn(bookings);
+    @Test
+    void shouldRecognizeWhenStartDateIsFromPastWhenBooking() {
+        givenExistingTenantAndApartmentWithNoBookings();
+        ApartmentBookingDto apartmentBookingDto = new ApartmentBookingDto(APARTMENT_ID, TENANT_ID, LocalDate.of(2020, 10, 10), END);
+
+        PeriodException actual = assertThrows(PeriodException.class, () -> service.book(apartmentBookingDto));
+
+        assertThat(actual).hasMessage("Start date: 2020-10-10 is past date");
+        thenBookingWasNotCreated();
     }
 
-    private void thenBookingWasNotCreated() {
-        then(bookingRepository).should(never()).save(any());
-        then(eventChannel).should(never()).publish(any(BookingAccepted.class));
-    }
+    @Test
+    void shouldRecognizeWhenEndDateIsBeforeStartDateWhenBooking() {
+        givenExistingTenantAndApartmentWithNoBookings();
+        ApartmentBookingDto apartmentBookingDto = new ApartmentBookingDto(APARTMENT_ID, TENANT_ID, END, START);
 
-    private void givenOwnerDoesNotExist() {
-        given(ownerRepository.exists(OWNER_ID)).willReturn(false);
-    }
+        PeriodException actual = assertThrows(PeriodException.class, () -> service.book(apartmentBookingDto));
 
-    private void givenExistingOwner() {
-        given(ownerRepository.exists(OWNER_ID)).willReturn(true);
-    }
-
-    private ApartmentBookingDto getApartmentBookingDto() {
-        return new ApartmentBookingDto(APARTMENT_ID, TENANT_ID, START, END);
+        assertThat(actual).hasMessage("Start date: 2040-03-06 of period is after end date: 2040-03-04");
+        thenBookingWasNotCreated();
     }
 
     private void givenExistingTenantAndApartmentWithNoBookings() {
         givenExistingApartment();
         givenExistingTenant();
         givenNoBookings();
+        givenExistingApartmentOffer();
+    }
+
+    private void givenExistingApartmentOffer() {
+        given(apartmentOfferRepository.existByApartmentId(APARTMENT_ID)).willReturn(true);
+        ApartmentOffer apartmentOffer = ApartmentOffer.Builder.apartmentOffer()
+                .withApartmentId(APARTMENT_ID)
+                .withPrice(PRICE)
+                .withAvailability(BEFORE_START, END.plusDays(10)).build();
+        given(apartmentOfferRepository.findByApartmentId(APARTMENT_ID)).willReturn(apartmentOffer);
     }
 
     private void givenNoBookings() {
@@ -314,36 +299,36 @@ class ApartmentApplicationServiceTest {
     }
 
     private RentalPlaceIdentifier getRentalPlaceIdentifier() {
-        return RentalPlaceIdentifierFactory.apartment(null);
+        return RentalPlaceIdentifierFactory.apartment(NO_ID);
     }
 
-    private void givenExistingApartment() {
-        ApartmentDto apartmentDto = getApartmentDtoWith(SPACES_DEFINITION);
-        Apartment apartment = apartmentFactory.create(apartmentDto.asNewApartmentDto());
-        given(apartmentRepository.existById(APARTMENT_ID)).willReturn(true);
-        given(apartmentRepository.findById(APARTMENT_ID)).willReturn(apartment);
+    private void thenBookingWasNotCreated() {
+        then(bookingRepository).should(never()).save(any());
+        then(eventChannel).should(never()).publish(any(ApartmentBooked.class));
     }
 
-    private void givenNonExistingApartment() {
-        given(apartmentRepository.existById(APARTMENT_ID)).willReturn(false);
-        given(apartmentRepository.findById(APARTMENT_ID)).willThrow(new ApartmentNotFoundException(APARTMENT_ID));
+    private ApartmentBookingDto givenBookApartmentDto() {
+        return new ApartmentBookingDto(APARTMENT_ID, TENANT_ID, START, END);
     }
-
 
     private void givenExistingTenant() {
         given(tenantRepository.existById(TENANT_ID)).willReturn(true);
     }
 
-    private void givenNonExistingTenant() {
-        given(tenantRepository.existById(TENANT_ID)).willReturn(false);
-    }
+    private void givenExistingApartment() {
+        Apartment apartment = apartment()
+                .withOwnerId(OWNER_ID)
+                .withStreet(STREET)
+                .withPostalCode(POSTAL_CODE)
+                .withHouseNumber(HOUSE_NUMBER)
+                .withApartmentNumber(APARTMENT_NUMBER)
+                .withCity(CITY)
+                .withCountry(COUNTRY)
+                .withDescription(DESCRIPTION)
+                .withSpacesDefinition(SPACES_DEFINITION)
+                .build();
 
-    private ApartmentDto givenApartmentDto() {
-        return getApartmentDtoWith(SPACES_DEFINITION);
+        given(apartmentRepository.existById(APARTMENT_ID)).willReturn(true);
+        given(apartmentRepository.findById(APARTMENT_ID)).willReturn(apartment);
     }
-
-    private ApartmentDto getApartmentDtoWith(Map<String, Double> spacesDefinition) {
-        return new ApartmentDto(OWNER_ID, STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY, DESCRIPTION, spacesDefinition);
-    }
-
 }
