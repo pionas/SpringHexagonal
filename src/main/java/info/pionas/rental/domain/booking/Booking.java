@@ -1,6 +1,9 @@
 package info.pionas.rental.domain.booking;
 
 import info.pionas.rental.domain.period.Period;
+import info.pionas.rental.domain.rentalplaceidentifier.RentalPlaceIdentifier;
+import info.pionas.rental.domain.rentalplaceidentifier.RentalPlaceIdentifierFactory;
+import info.pionas.rental.domain.rentalplaceidentifier.RentalType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -70,7 +73,7 @@ public class Booking {
     }
 
     public RentalPlaceIdentifier rentalPlaceIdentifier() {
-        return new RentalPlaceIdentifier(rentalType, rentalPlaceId);
+        return RentalPlaceIdentifierFactory.create(rentalType, rentalPlaceId);
     }
 
     public boolean isFor(Period period) {

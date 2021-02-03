@@ -1,4 +1,4 @@
-package info.pionas.rental.domain.booking;
+package info.pionas.rental.domain.rentalplaceidentifier;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

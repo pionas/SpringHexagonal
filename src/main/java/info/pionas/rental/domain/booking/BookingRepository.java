@@ -1,5 +1,6 @@
 package info.pionas.rental.domain.booking;
 
+import info.pionas.rental.domain.rentalplaceidentifier.RentalPlaceIdentifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

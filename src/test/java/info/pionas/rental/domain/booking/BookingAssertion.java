@@ -1,5 +1,6 @@
 package info.pionas.rental.domain.booking;
 
+import info.pionas.rental.domain.rentalplaceidentifier.RentalType;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
 

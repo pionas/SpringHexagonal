@@ -2,13 +2,18 @@ package info.pionas.rental.application.apartment;
 
 import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.domain.apartment.*;
-import info.pionas.rental.domain.booking.*;
+import info.pionas.rental.domain.booking.Booking;
+import info.pionas.rental.domain.booking.BookingAccepted;
+import info.pionas.rental.domain.booking.BookingAssertion;
+import info.pionas.rental.domain.booking.BookingRepository;
 import info.pionas.rental.domain.event.FakeEventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import info.pionas.rental.domain.owner.OwnerDoesNotExistException;
 import info.pionas.rental.domain.owner.OwnerRepository;
 import info.pionas.rental.domain.period.Period;
 import info.pionas.rental.domain.period.PeriodException;
+import info.pionas.rental.domain.rentalplaceidentifier.RentalPlaceIdentifier;
+import info.pionas.rental.domain.rentalplaceidentifier.RentalPlaceIdentifierFactory;
 import info.pionas.rental.domain.space.SquareMeterException;
 import info.pionas.rental.domain.tenant.TenantNotFoundException;
 import info.pionas.rental.domain.tenant.TenantRepository;
@@ -244,7 +249,7 @@ class ApartmentApplicationServiceTest {
         givenExistingOwner();
         givenExistingTenantAndApartmentWithNoBookings();
         givenAcceptedBookingsInGivenPeriod();
-        ApartmentBookingDto apartmentBookingDto = new ApartmentBookingDto(APARTMENT_ID, TENANT_ID, LocalDate.of(2020, 10,10), END);
+        ApartmentBookingDto apartmentBookingDto = new ApartmentBookingDto(APARTMENT_ID, TENANT_ID, LocalDate.of(2020, 10, 10), END);
         PeriodException actual = assertThrows(PeriodException.class, () -> {
             service.book(apartmentBookingDto);
         });
@@ -309,7 +314,7 @@ class ApartmentApplicationServiceTest {
     }
 
     private RentalPlaceIdentifier getRentalPlaceIdentifier() {
-        return RentalPlaceIdentifierTestFactory.apartment(null);
+        return RentalPlaceIdentifierFactory.apartment(null);
     }
 
     private void givenExistingApartment() {

@@ -2,7 +2,7 @@ package info.pionas.rental.infrastructure.persistence.jpa.booking;
 
 import info.pionas.rental.domain.booking.Booking;
 import info.pionas.rental.domain.booking.BookingRepository;
-import info.pionas.rental.domain.booking.RentalPlaceIdentifier;
+import info.pionas.rental.domain.rentalplaceidentifier.RentalPlaceIdentifier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

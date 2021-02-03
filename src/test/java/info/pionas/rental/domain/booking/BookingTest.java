@@ -1,6 +1,7 @@
 package info.pionas.rental.domain.booking;
 
 import info.pionas.rental.domain.period.Period;
+import info.pionas.rental.domain.rentalplaceidentifier.RentalType;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

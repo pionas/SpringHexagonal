@@ -2,8 +2,9 @@ package info.pionas.rental.domain.apartment;
 
 import info.pionas.rental.domain.address.Address;
 import info.pionas.rental.domain.booking.Booking;
-import info.pionas.rental.domain.booking.RentalPlaceIdentifier;
 import info.pionas.rental.domain.period.Period;
+import info.pionas.rental.domain.rentalplaceidentifier.RentalPlaceIdentifier;
+import info.pionas.rental.domain.rentalplaceidentifier.RentalPlaceIdentifierFactory;
 import info.pionas.rental.domain.space.Space;
 import info.pionas.rental.domain.space.SpacesFactory;
 import lombok.Getter;
@@ -104,7 +105,7 @@ public class Apartment {
     }
 
     public RentalPlaceIdentifier rentalPlaceIdentifier() {
-        return RentalPlaceIdentifier.apartment(id());
+        return RentalPlaceIdentifierFactory.apartment(id());
     }
 
     public static class Builder {
