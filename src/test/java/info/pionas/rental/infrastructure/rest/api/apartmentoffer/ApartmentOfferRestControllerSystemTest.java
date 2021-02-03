@@ -27,8 +27,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Tag("SystemTest")
 class ApartmentOfferRestControllerSystemTest {
     private static final BigDecimal PRICE = BigDecimal.valueOf(123);
-    private static final LocalDate START = LocalDate.of(2020, 10, 11);
-    private static final LocalDate END = LocalDate.of(2020, 10, 20);
+    private static final LocalDate START = LocalDate.of(2040, 10, 11);
+    private static final LocalDate END = LocalDate.of(2040, 10, 20);
 
     private final JsonFactory jsonFactory = new JsonFactory();
     private String apartmentId;

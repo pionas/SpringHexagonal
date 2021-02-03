@@ -5,6 +5,7 @@ import info.pionas.rental.domain.hotel.Hotel;
 import info.pionas.rental.domain.hotel.HotelRepository;
 import info.pionas.rental.domain.hotelroomoffer.*;
 import info.pionas.rental.domain.money.NotAllowedMoneyValueException;
+import info.pionas.rental.domain.offeravailability.OfferAvailabilityException;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -82,7 +83,7 @@ public class HotelRoomOfferApplicationServiceTest {
         hotel.addRoom(ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
 
         HotelRoomOfferDto dto = new HotelRoomOfferDto(HOTEL_ID, ROOM_NUMBER, HOTEL_ROOM_ID, PRICE, END, START);
-        HotelRoomAvailabilityException actual = assertThrows(HotelRoomAvailabilityException.class, () -> {
+        OfferAvailabilityException actual = assertThrows(OfferAvailabilityException.class, () -> {
             service.add(dto);
         });
         assertThat(actual).hasMessage("Start date: 2041-12-20 of availability is after end date: 2040-12-10");
@@ -94,7 +95,7 @@ public class HotelRoomOfferApplicationServiceTest {
         hotel.addRoom(ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
 
         HotelRoomOfferDto dto = new HotelRoomOfferDto(HOTEL_ID, ROOM_NUMBER, HOTEL_ROOM_ID, PRICE, LocalDate.of(2020, 10, 10), END);
-        HotelRoomAvailabilityException actual = assertThrows(HotelRoomAvailabilityException.class, () -> {
+        OfferAvailabilityException actual = assertThrows(OfferAvailabilityException.class, () -> {
             service.add(dto);
         });
         assertThat(actual).hasMessage("Start date: 2020-10-10 is past date");
@@ -106,7 +107,7 @@ public class HotelRoomOfferApplicationServiceTest {
         hotel.addRoom(ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
 
         HotelRoomOfferDto dto = new HotelRoomOfferDto(HOTEL_ID, ROOM_NUMBER, HOTEL_ROOM_ID, PRICE, LocalDate.of(2020, 10, 10), NO_DATE);
-        HotelRoomAvailabilityException actual = assertThrows(HotelRoomAvailabilityException.class, () -> {
+        OfferAvailabilityException actual = assertThrows(OfferAvailabilityException.class, () -> {
             service.add(dto);
         });
         assertThat(actual).hasMessage("Start date: 2020-10-10 is past date");

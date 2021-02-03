@@ -1,6 +1,7 @@
 package info.pionas.rental.domain.hotelroomoffer;
 
 import info.pionas.rental.domain.money.Money;
+import info.pionas.rental.domain.offeravailability.OfferAvailability;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,7 +25,7 @@ public class HotelRoomOffer {
     @Embedded
     private Money money;
     @Embedded
-    private HotelRoomAvailability availability;
+    private OfferAvailability availability;
 
     public String id() {
         return id.toString();
@@ -66,11 +67,11 @@ public class HotelRoomOffer {
             return Money.of(price);
         }
 
-        private HotelRoomAvailability hotelRoomAvailability() {
+        private OfferAvailability hotelRoomAvailability() {
             if (end == NO_END_DATE) {
-                return HotelRoomAvailability.fromStart(start);
+                return OfferAvailability.fromStart(start);
             }
-            return HotelRoomAvailability.from(start, end);
+            return OfferAvailability.from(start, end);
         }
     }
 }

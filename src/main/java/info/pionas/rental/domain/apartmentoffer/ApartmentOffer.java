@@ -1,6 +1,7 @@
 package info.pionas.rental.domain.apartmentoffer;
 
 import info.pionas.rental.domain.money.Money;
+import info.pionas.rental.domain.offeravailability.OfferAvailability;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,7 @@ public class ApartmentOffer {
     @Embedded
     private Money money;
     @Embedded
-    private ApartmentAvailability availability;
+    private OfferAvailability availability;
 
     public String id() {
         return id.toString();
@@ -64,8 +65,8 @@ public class ApartmentOffer {
             return Money.of(price);
         }
 
-        private ApartmentAvailability availability() {
-            return ApartmentAvailability.of(start, end);
+        private OfferAvailability availability() {
+            return OfferAvailability.from(start, end);
         }
 
     }
