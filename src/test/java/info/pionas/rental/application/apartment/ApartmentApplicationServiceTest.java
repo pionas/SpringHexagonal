@@ -8,6 +8,7 @@ import info.pionas.rental.domain.eventchannel.EventChannel;
 import info.pionas.rental.domain.owner.OwnerDoesNotExistException;
 import info.pionas.rental.domain.owner.OwnerRepository;
 import info.pionas.rental.domain.period.Period;
+import info.pionas.rental.domain.period.PeriodException;
 import info.pionas.rental.domain.space.SquareMeterException;
 import info.pionas.rental.domain.tenant.TenantNotFoundException;
 import info.pionas.rental.domain.tenant.TenantRepository;
@@ -42,9 +43,9 @@ class ApartmentApplicationServiceTest {
     private static final String DESCRIPTION = "Nice place to stay";
     private static final Map<String, Double> SPACES_DEFINITION = ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0);
     private static final String TENANT_ID = "137";
-    private static final LocalDate START = LocalDate.of(2020, 3, 4);
-    private static final LocalDate MIDDLE = LocalDate.of(2020, 3, 5);
-    private static final LocalDate END = LocalDate.of(2020, 3, 6);
+    private static final LocalDate START = LocalDate.of(2040, 3, 4);
+    private static final LocalDate MIDDLE = LocalDate.of(2040, 3, 5);
+    private static final LocalDate END = LocalDate.of(2040, 3, 6);
     private static final String BOOKING_ID = "8394234";
     private static final LocalDate BEFORE_START = START.minusDays(1);
     private static final LocalDate AFTER_START = START.plusDays(1);
@@ -225,7 +226,7 @@ class ApartmentApplicationServiceTest {
     }
 
     @Test
-    void shouldRecognizeWhenHaveBookingsWithinGivenPeriod() {
+    void shouldRecognizeWhenHaveBookingsWithinGivenPeriodWhenBooking() {
         givenExistingOwner();
         givenExistingTenantAndApartmentWithNoBookings();
         givenAcceptedBookingsInGivenPeriod();
@@ -235,6 +236,20 @@ class ApartmentApplicationServiceTest {
         });
 
         assertThat(actual).hasMessage("There are accepted bookings in given period");
+        thenBookingWasNotCreated();
+    }
+
+    @Test
+    void shouldRecognizeWhenStartDateIsFromPastWhenBooking() {
+        givenExistingOwner();
+        givenExistingTenantAndApartmentWithNoBookings();
+        givenAcceptedBookingsInGivenPeriod();
+        ApartmentBookingDto apartmentBookingDto = new ApartmentBookingDto(APARTMENT_ID, TENANT_ID, LocalDate.of(2020, 10,10), END);
+        PeriodException actual = assertThrows(PeriodException.class, () -> {
+            service.book(apartmentBookingDto);
+        });
+
+        assertThat(actual).hasMessage("Start date: 2020-10-10 is past date");
         thenBookingWasNotCreated();
     }
 
