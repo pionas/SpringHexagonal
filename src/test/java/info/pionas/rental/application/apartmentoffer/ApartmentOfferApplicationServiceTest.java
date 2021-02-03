@@ -2,7 +2,10 @@ package info.pionas.rental.application.apartmentoffer;
 
 import info.pionas.rental.domain.apartment.ApartmentNotFoundException;
 import info.pionas.rental.domain.apartment.ApartmentRepository;
-import info.pionas.rental.domain.apartmentoffer.*;
+import info.pionas.rental.domain.apartmentoffer.ApartmentAvailabilityException;
+import info.pionas.rental.domain.apartmentoffer.ApartmentOffer;
+import info.pionas.rental.domain.apartmentoffer.ApartmentOfferRepository;
+import info.pionas.rental.domain.money.NotAllowedMoneyValueException;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -51,28 +54,14 @@ class ApartmentOfferApplicationServiceTest {
     }
 
     @Test
-    void shouldRecognizePriceLowerThanZero() {
+    void shouldRecognizePriseIsNotGreaterThanZero() {
         givenExistingApartment();
-        ApartmentOfferDto dto = new ApartmentOfferDto(APARTMENT_ID, BigDecimal.valueOf(-13), START, END);
+        ApartmentOfferDto dto = new ApartmentOfferDto(APARTMENT_ID, BigDecimal.ZERO, START, END);
+
         NotAllowedMoneyValueException actual = assertThrows(NotAllowedMoneyValueException.class, () -> {
             service.add(dto);
         });
-        assertThat(actual).hasMessage("Price -13 is lower than zero");
-    }
-
-    @Test
-    void shouldCreateApartmenOfferWithZeroPrice() {
-        ArgumentCaptor<ApartmentOffer> captor = ArgumentCaptor.forClass(ApartmentOffer.class);
-        givenExistingApartment();
-
-        service.add(new ApartmentOfferDto(APARTMENT_ID, BigDecimal.ZERO, START, END));
-
-        then(apartmentOfferRepository).should().save(captor.capture());
-        ApartmentOffer actual = captor.getValue();
-        ApartmentOfferAssertion.assertThat(actual)
-                .hasApartmentIdEqualTo(APARTMENT_ID)
-                .hasPriceEqualTo(BigDecimal.ZERO)
-                .hasAvailabilityEqualTo(START, END);
+        assertThat(actual).hasMessage("Price 0 is not greater than zero");
     }
 
     @Test

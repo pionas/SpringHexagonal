@@ -20,7 +20,7 @@ public class SpacesFactory {
     }
 
     private static Space asSpace(Map.Entry<String, Double> entry) {
-        SquareMeter squareMeter = new SquareMeter(entry.getValue());
+        SquareMeter squareMeter = SquareMeter.of(entry.getValue());
 
         return new Space(entry.getKey(), squareMeter);
     }

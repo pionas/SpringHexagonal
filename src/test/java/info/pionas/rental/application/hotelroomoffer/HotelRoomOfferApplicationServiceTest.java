@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.domain.hotel.Hotel;
 import info.pionas.rental.domain.hotel.HotelRepository;
 import info.pionas.rental.domain.hotelroomoffer.*;
+import info.pionas.rental.domain.money.NotAllowedMoneyValueException;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 

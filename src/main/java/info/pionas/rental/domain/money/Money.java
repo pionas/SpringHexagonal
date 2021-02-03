@@ -1,4 +1,4 @@
-package info.pionas.rental.domain.apartmentoffer;
+package info.pionas.rental.domain.money;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -9,10 +9,10 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-class Money {
+public class Money {
     private BigDecimal value;
 
-    static Money of(BigDecimal price) {
+    public static Money of(BigDecimal price) {
         if (isHigherThanZero(price)) {
             return new Money(price);
         } else {
@@ -21,6 +21,6 @@ class Money {
     }
 
     private static boolean isHigherThanZero(BigDecimal price) {
-        return price.compareTo(BigDecimal.ZERO) >= 0;
+        return price.compareTo(BigDecimal.ZERO) > 0;
     }
 }

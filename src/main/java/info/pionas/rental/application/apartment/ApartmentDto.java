@@ -1,5 +1,6 @@
 package info.pionas.rental.application.apartment;
 
+import info.pionas.rental.domain.apartment.NewApartmentDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -19,4 +20,18 @@ public class ApartmentDto {
     private final String country;
     private final String description;
     private final Map<String, Double> spacesDefinition;
+
+    public NewApartmentDto asNewApartmentDto() {
+        return NewApartmentDto.builder()
+                .ownerId(getOwnerId())
+                .street(getStreet())
+                .postalCode(getPostalCode())
+                .houseNumber(getHouseNumber())
+                .apartmentNumber(getApartmentNumber())
+                .city(getCity())
+                .country(getCountry())
+                .description(getDescription())
+                .spacesDefinition(getSpacesDefinition())
+                .build();
+    }
 }

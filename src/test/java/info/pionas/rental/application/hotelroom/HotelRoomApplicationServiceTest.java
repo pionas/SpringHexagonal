@@ -8,7 +8,9 @@ import info.pionas.rental.domain.event.FakeEventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import info.pionas.rental.domain.hotel.*;
 import info.pionas.rental.domain.hotelroomoffer.HotelRoomNotFoundException;
+import info.pionas.rental.domain.space.SquareMeterException;
 import info.pionas.rental.infrastructure.clock.FakeClock;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.ArgumentCaptor;
@@ -111,6 +113,31 @@ class HotelRoomApplicationServiceTest {
 
     }
 
+
+    @Test
+    void shouldNotAllowToCreateApartmentWithAtLeastOneSpaceThatHaveSquareMaterEqualZero() {
+        givenExistingHotel();
+
+        HotelRoomDto hotelRoomDtoWith = getHotelRoomDtoWith(ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0, "Room", 0.0));
+
+        Executable executable = () -> service.add(hotelRoomDtoWith);
+
+        SquareMeterException actual = assertThrows(SquareMeterException.class, executable);
+        assertThat(actual).hasMessage("Square meter lower or equal zero");
+    }
+
+    @Test
+    void shouldNotAllowToCreateApartmentWithAtLeastOneSpaceThatHaveSquareMaterLowerThanZero() {
+        givenExistingHotel();
+
+        HotelRoomDto hotelRoomDtoWith = getHotelRoomDtoWith(ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0, "Room", -13.0));
+
+        Executable executable = () -> service.add(hotelRoomDtoWith);
+
+        SquareMeterException actual = assertThrows(SquareMeterException.class, executable);
+        assertThat(actual).hasMessage("Square meter lower or equal zero");
+    }
+
     private void thenBookingShouldBeCreated() {
         ArgumentCaptor<Booking> captor = ArgumentCaptor.forClass(Booking.class);
         BDDMockito.then(bookingRepository).should().save(captor.capture());
@@ -136,7 +163,11 @@ class HotelRoomApplicationServiceTest {
     }
 
     private HotelRoomDto givenHotelRoomDto() {
-        return new HotelRoomDto(HOTEL_ID, ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
+        return getHotelRoomDtoWith(SPACES_DEFINITION);
+    }
+
+    private HotelRoomDto getHotelRoomDtoWith(Map<String, Double> spacesDefinition) {
+        return new HotelRoomDto(HOTEL_ID, ROOM_NUMBER, spacesDefinition, DESCRIPTION);
     }
 
     private HotelRoomBookingDto givenHotelRoomBookingDto() {

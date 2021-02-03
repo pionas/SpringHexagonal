@@ -3,6 +3,7 @@ package info.pionas.rental.domain.hotelroomoffer;
 import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.application.hotelroomoffer.HotelRoomOfferAssertion;
 import info.pionas.rental.domain.hotel.Hotel;
+import info.pionas.rental.domain.money.NotAllowedMoneyValueException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
