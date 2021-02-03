@@ -76,6 +76,21 @@ class JpaBookingRepositoryIntegrationTest {
     }
 
     @Test
+    void shouldFindAcceptedBookingsByRentalPlaceIdentifier() {
+        String rentalPlaceId1 = randomId();
+        String rentalPlaceId2 = randomId();
+        Booking booking = Booking.hotelRoom(rentalPlaceId1, TENANT_ID, DAYS);
+        save(Booking.hotelRoom(rentalPlaceId2, TENANT_ID, DAYS));
+        save(Booking.apartment(rentalPlaceId2, TENANT_ID, PERIOD));
+        save(Booking.apartment(rentalPlaceId1, TENANT_ID, PERIOD));
+
+        List<Booking> actual = repository.findAllAcceptedBy(booking.rentalPlaceIdentifier());
+
+        Assertions.assertThat(actual)
+                .hasSize(0);
+    }
+
+    @Test
     void shouldThrowExceptionWhenBookingDoesNotExist() {
         String id = randomId();
 

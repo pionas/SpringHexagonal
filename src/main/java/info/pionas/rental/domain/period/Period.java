@@ -27,6 +27,20 @@ public class Period {
         return asDays().contains(day);
     }
 
+    public static Period from(LocalDate start, LocalDate end) {
+        if (start.isAfter(end)) {
+            throw PeriodException.startAfterEnd(start, end);
+        }
+        if (start.isBefore(LocalDate.now())) {
+            throw PeriodException.startFromPast(start);
+        }
+        return new Period(start, end);
+    }
+
+    public static Period fromStart(LocalDate start) {
+        return from(start, start.plusYears(1));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

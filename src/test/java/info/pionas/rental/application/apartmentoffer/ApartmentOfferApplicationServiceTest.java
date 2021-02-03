@@ -5,7 +5,7 @@ import info.pionas.rental.domain.apartment.ApartmentRepository;
 import info.pionas.rental.domain.apartmentoffer.ApartmentOffer;
 import info.pionas.rental.domain.apartmentoffer.ApartmentOfferRepository;
 import info.pionas.rental.domain.money.NotAllowedMoneyValueException;
-import info.pionas.rental.domain.offeravailability.OfferAvailabilityException;
+import info.pionas.rental.domain.period.PeriodException;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -68,7 +68,7 @@ class ApartmentOfferApplicationServiceTest {
     void shouldRecognizeThanSartIsAfterEnd() {
         givenExistingApartment();
         ApartmentOfferDto dto = new ApartmentOfferDto(APARTMENT_ID, PRICE, END, START);
-        OfferAvailabilityException actual = assertThrows(OfferAvailabilityException.class, () -> {
+        PeriodException actual = assertThrows(PeriodException.class, () -> {
             service.add(dto);
         });
         assertThat(actual).hasMessage("Start date: 2041-12-20 of availability is after end date: 2040-12-10");
@@ -78,7 +78,7 @@ class ApartmentOfferApplicationServiceTest {
     void shouldRecognizeAvailabilityStartDateIsFromPast() {
         givenExistingApartment();
         ApartmentOfferDto dto = new ApartmentOfferDto(APARTMENT_ID, PRICE, LocalDate.of(2020, 10, 10), END);
-        OfferAvailabilityException actual = assertThrows(OfferAvailabilityException.class, () -> {
+        PeriodException actual = assertThrows(PeriodException.class, () -> {
             service.add(dto);
         });
         assertThat(actual).hasMessage("Start date: 2020-10-10 is past date");

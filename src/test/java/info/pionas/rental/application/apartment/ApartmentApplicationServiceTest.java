@@ -148,6 +148,26 @@ class ApartmentApplicationServiceTest {
     }
 
     @Test
+    void shouldAllowToBookApartmentWheBookingsIsEmpty() {
+        givenExistingOwner();
+        givenExistingTenantAndApartmentWithNoBookings();
+        given(bookingRepository.findAllAcceptedBy(getRentalPlaceIdentifier())).willReturn(null);
+
+        ArgumentCaptor<ApartmentBooked> captor = ArgumentCaptor.forClass(ApartmentBooked.class);
+
+        service.book(getApartmentBookingDto());
+
+        then(eventChannel).should().publish(captor.capture());
+        ApartmentBooked actual = captor.getValue();
+        assertThat(actual.getEventId()).isEqualTo(FakeEventIdFactory.UUID);
+        assertThat(actual.getEventCreationDateTime()).isEqualTo(FakeClock.NOW);
+        assertThat(actual.getOwnerId()).isEqualTo(OWNER_ID);
+        assertThat(actual.getTenantId()).isEqualTo(TENANT_ID);
+        assertThat(actual.getPeriodStart()).isEqualTo(START);
+        assertThat(actual.getPeriodEnd()).isEqualTo(END);
+    }
+
+    @Test
     void shouldReturnIdOfBooking() {
         givenExistingOwner();
         givenExistingTenantAndApartmentWithNoBookings();

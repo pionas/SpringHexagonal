@@ -35,8 +35,8 @@ public class HotelRoomOfferAssertion {
 
     public HotelRoomOfferAssertion hasAvailabilityEqualTo(LocalDate start, LocalDate end) {
         Assertions.assertThat(actual).extracting("availability")
-                .hasFieldOrPropertyWithValue("start", start)
-                .hasFieldOrPropertyWithValue("end", end)
+                .hasFieldOrPropertyWithValue("periodStart", start)
+                .hasFieldOrPropertyWithValue("periodEnd", end)
         ;
         return this;
     }
