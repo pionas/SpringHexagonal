@@ -1,13 +1,20 @@
 package info.pionas.rental.application.hotel;
 
+import com.google.common.collect.ImmutableMap;
+import info.pionas.rental.application.apartment.ApartmentDto;
 import info.pionas.rental.domain.hotel.Hotel;
 import info.pionas.rental.domain.hotel.HotelRepository;
+import info.pionas.rental.domain.space.SquareMeterException;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import static info.pionas.rental.domain.hotel.HotelAssertion.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 
 class HotelApplicationServiceTest {
     private static final String NAME = "Great hotel";
@@ -32,4 +39,5 @@ class HotelApplicationServiceTest {
                 .hasNameEqualsTo(NAME)
                 .hasAddressEqualsTo(STREET, POSTAL_CODE, BUILDING_NUMBER, CITY, COUNTRY);
     }
+
 }

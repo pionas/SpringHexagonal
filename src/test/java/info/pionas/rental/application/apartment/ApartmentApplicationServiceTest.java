@@ -9,6 +9,7 @@ import info.pionas.rental.domain.event.FakeEventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import info.pionas.rental.domain.owner.OwnerDoesNotExistException;
 import info.pionas.rental.domain.owner.OwnerRepository;
+import info.pionas.rental.domain.space.SquareMeterException;
 import info.pionas.rental.infrastructure.clock.FakeClock;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -86,6 +87,24 @@ class ApartmentApplicationServiceTest {
     }
 
     @Test
+    void shouldNotAllowToCreateApartmentWithAtLeastOneSpaceThatHaveSquareMaterEqualZero() {
+        givenOwnerExist();
+        ApartmentDto apartmentDto = getApartmentDtoWith(ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0, "Room", 0.0));
+        SquareMeterException actual = assertThrows(SquareMeterException.class, () -> service.add(apartmentDto));
+        assertThat(actual).hasMessage("Square meter lower or equal zero");
+        then(apartmentRepository).should(never()).save(any());
+    }
+
+    @Test
+    void shouldNotAllowToCreateApartmentWithAtLeastOneSpaceThatHaveSquareMaterLowerThanZero() {
+        givenOwnerExist();
+        ApartmentDto apartmentDto = getApartmentDtoWith(ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0, "Room", -13.0));
+        SquareMeterException actual = assertThrows(SquareMeterException.class, () -> service.add(apartmentDto));
+        assertThat(actual).hasMessage("Square meter lower or equal zero");
+        then(apartmentRepository).should(never()).save(any());
+    }
+
+    @Test
     void shouldCreateBookingForApartment() {
         givenOwnerExist();
         givenApartment();
@@ -142,13 +161,17 @@ class ApartmentApplicationServiceTest {
     }
 
     private void givenApartment() {
-        ApartmentDto apartmentDto = new ApartmentDto(OWNER_ID, STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY, DESCRIPTION, SPACES_DEFINITION);
+        ApartmentDto apartmentDto = getApartmentDtoWith(SPACES_DEFINITION);
         Apartment apartment = apartmentFactory.create(apartmentDto.asNewApartmentDto());
         given(apartmentRepository.findById(APARTMENT_ID)).willReturn(apartment);
     }
 
     private ApartmentDto givenApartmentDto() {
-        return new ApartmentDto(OWNER_ID, STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY, DESCRIPTION, SPACES_DEFINITION);
+        return getApartmentDtoWith(SPACES_DEFINITION);
+    }
+
+    private ApartmentDto getApartmentDtoWith(Map<String, Double> spacesDefinition) {
+        return new ApartmentDto(OWNER_ID, STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY, DESCRIPTION, spacesDefinition);
     }
 
 }
