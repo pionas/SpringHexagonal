@@ -83,7 +83,7 @@ class ApartmentRestControllerSystemTest {
     void shouldBookApartment() throws Exception {
         String url = save(givenApartment1()).getResponse().getRedirectedUrl();
         String apartmentId = url.replace("/apartment/", "");
-        ApartmentBookingDto apartmentBookingDto = new ApartmentBookingDto(apartmentId, "1357", LocalDate.of(2020, 11, 12), LocalDate.of(2020, 12, 1));
+        ApartmentBookingDto apartmentBookingDto = new ApartmentBookingDto(apartmentId, "1357", LocalDate.of(2040, 11, 12), LocalDate.of(2040, 12, 1));
 
         mockMvc.perform(put(url.replace("apartment/", "apartment/book/")).contentType(MediaType.APPLICATION_JSON).content(jsonFactory.create(apartmentBookingDto)))
                 .andExpect(status().isCreated())
@@ -93,8 +93,8 @@ class ApartmentRestControllerSystemTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.bookingHistory.bookings.[*]", hasSize(1)))
                 .andExpect(jsonPath("$.bookingHistory.bookings.[0].tenantId").value("1357"))
-                .andExpect(jsonPath("$.bookingHistory.bookings.[0].periodStart").value("2020-11-12"))
-                .andExpect(jsonPath("$.bookingHistory.bookings.[0].periodEnd").value("2020-12-01"));
+                .andExpect(jsonPath("$.bookingHistory.bookings.[0].periodStart").value("2040-11-12"))
+                .andExpect(jsonPath("$.bookingHistory.bookings.[0].periodEnd").value("2040-12-01"));
     }
 
     @Test
