@@ -58,6 +58,7 @@ class ApartmentApplicationServiceTest {
     private static final LocalDate BEFORE_START = START.minusDays(1);
     private static final LocalDate AFTER_START = START.plusDays(1);
     private static final BigDecimal PRICE = BigDecimal.valueOf(42);
+    private static final Money MONEY = Money.of(BigDecimal.valueOf(20));
 
     private final OwnerRepository ownerRepository = mock(OwnerRepository.class);
     private final TenantRepository tenantRepository = mock(TenantRepository.class);
@@ -252,7 +253,7 @@ class ApartmentApplicationServiceTest {
     }
 
     private void givenAcceptedBookingItPeriod(LocalDate periodStart, LocalDate periodEnd) {
-        Booking acceptedBooking = Booking.apartment(APARTMENT_ID, TENANT_ID, new Period(periodStart, periodEnd));
+        Booking acceptedBooking = Booking.apartment(APARTMENT_ID, TENANT_ID, OWNER_ID, MONEY, new Period(periodStart, periodEnd));
         given(bookingRepository.findAllAcceptedBy(getRentalPlaceIdentifier())).willReturn(asList(acceptedBooking));
     }
 

@@ -1,10 +1,12 @@
 package info.pionas.rental.domain.booking;
 
+import info.pionas.rental.domain.money.Money;
 import info.pionas.rental.domain.period.Period;
 import info.pionas.rental.domain.rentalplaceidentifier.RentalType;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -18,6 +20,8 @@ class BookingTest {
     private static final List<LocalDate> DAYS = asList(LocalDate.now(), LocalDate.now().plusDays(1));
     private static final String TENANT_ID = "1234";
     private static final String RENTAL_PLACE_ID = "5748";
+    private static final String OWNER_ID = "123";
+    private static final Money MONEY = Money.of(BigDecimal.valueOf(20));
 
     private final BookingEventsPublisher bookingEventsPublisher = mock(BookingEventsPublisher.class);
 
@@ -25,13 +29,15 @@ class BookingTest {
     void shouldCreateBookingForApartment() {
         Period period = new Period(LocalDate.of(2020, 3, 4), LocalDate.of(2020, 3, 6));
 
-        Booking actual = Booking.apartment(RENTAL_PLACE_ID, TENANT_ID, period);
+        Booking actual = Booking.apartment(RENTAL_PLACE_ID, TENANT_ID, OWNER_ID, MONEY, period);
 
         assertThat(actual)
                 .isOpen()
                 .isApartment()
                 .hasRentalPlaceIdEqualTo(RENTAL_PLACE_ID)
                 .hasTenantIdEqualTo(TENANT_ID)
+                .hasOwnerIdEqualTo(OWNER_ID)
+                .hasPriceEqualTo(MONEY)
                 .containsAllDays(LocalDate.of(2020, 3, 4), LocalDate.of(2020, 3, 5), LocalDate.of(2020, 3, 6));
     }
 

@@ -77,11 +77,43 @@ class JpaApartmentOfferRepositoryIntegrationTest {
     }
 
     @Test
+    void shouldRecognizeWhenApartmentOfferByApartmentIdDoesNotExist() {
+        String nonExistingApartmentId = UUID.randomUUID().toString();
+
+        boolean actual = apartmentOfferRepository.existByApartmentId(nonExistingApartmentId);
+
+        assertThat(actual).isFalse();
+    }
+
+    @Test
+    void shouldRecognizeWhenApartmentOfferByApartmentIdExists() {
+        givenExistingApartmentOffer(createApartmentOffer());
+
+        boolean actual = apartmentOfferRepository.existByApartmentId(apartmentId);
+
+        assertThat(actual).isTrue();
+    }
+
+    @Test
     @Transactional
     void shouldReturnExistingApartmentOffer() {
         String existingId = givenExistingApartmentOffer(createApartmentOffer());
 
         ApartmentOffer actual = apartmentOfferRepository.findById(existingId);
+
+        ApartmentOfferAssertion.assertThat(actual)
+                .hasIdEqualTo(existingId)
+                .hasApartmentIdEqualTo(apartmentId)
+                .hasPriceEqualTo(PRICE)
+                .hasAvailabilityEqualTo(START, END);
+    }
+
+    @Test
+    @Transactional
+    void shouldReturnExistingApartmentOfferByApartmentId() {
+        String existingId = givenExistingApartmentOffer(createApartmentOffer());
+
+        ApartmentOffer actual = apartmentOfferRepository.findByApartmentId(apartmentId);
 
         ApartmentOfferAssertion.assertThat(actual)
                 .hasIdEqualTo(existingId)

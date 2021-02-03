@@ -1,6 +1,7 @@
 package info.pionas.rental.infrastructure.persistence.jpa.booking;
 
 import info.pionas.rental.domain.booking.Booking;
+import info.pionas.rental.domain.money.Money;
 import info.pionas.rental.domain.period.Period;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,8 @@ class JpaBookingRepositoryIntegrationTest {
     private static final List<LocalDate> DAYS = asList(LocalDate.of(2020, 6, 1), LocalDate.of(2020, 6, 2), LocalDate.of(2020, 6, 4));
     private static final String TENANT_ID = randomId();
     private static final Period PERIOD = new Period(LocalDate.now(), LocalDate.now().plusDays(1));
+    private static final String OWNER_ID = "1234";
+    private static final Money MONEY = Money.of(BigDecimal.valueOf(10));
 
     @Autowired
     private JpaBookingRepository repository;
@@ -63,8 +67,8 @@ class JpaBookingRepositoryIntegrationTest {
         String bookingId1 = save(Booking.hotelRoom(rentalPlaceId1, TENANT_ID, DAYS));
         String bookingId2 = save(Booking.hotelRoom(rentalPlaceId1, TENANT_ID, DAYS));
         save(Booking.hotelRoom(rentalPlaceId2, TENANT_ID, DAYS));
-        save(Booking.apartment(rentalPlaceId2, TENANT_ID, PERIOD));
-        save(Booking.apartment(rentalPlaceId1, TENANT_ID, PERIOD));
+        save(Booking.apartment(rentalPlaceId2, TENANT_ID, OWNER_ID, MONEY, PERIOD));
+        save(Booking.apartment(rentalPlaceId1, TENANT_ID, OWNER_ID, MONEY, PERIOD));
 
         List<Booking> actual = repository.findAllBy(booking.rentalPlaceIdentifier());
 
@@ -81,8 +85,8 @@ class JpaBookingRepositoryIntegrationTest {
         String rentalPlaceId2 = randomId();
         Booking booking = Booking.hotelRoom(rentalPlaceId1, TENANT_ID, DAYS);
         save(Booking.hotelRoom(rentalPlaceId2, TENANT_ID, DAYS));
-        save(Booking.apartment(rentalPlaceId2, TENANT_ID, PERIOD));
-        save(Booking.apartment(rentalPlaceId1, TENANT_ID, PERIOD));
+        save(Booking.apartment(rentalPlaceId2, TENANT_ID, OWNER_ID, MONEY, PERIOD));
+        save(Booking.apartment(rentalPlaceId1, TENANT_ID, OWNER_ID, MONEY, PERIOD));
 
         List<Booking> actual = repository.findAllAcceptedBy(booking.rentalPlaceIdentifier());
 

@@ -66,6 +66,16 @@ public class BookingAssertion {
         return this;
     }
 
+    public BookingAssertion hasOwnerIdEqualTo(String expected) {
+        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("ownerId", expected);
+        return this;
+    }
+
+    public BookingAssertion hasPriceEqualTo(Money expected) {
+        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("price", expected);
+        return this;
+    }
+
     public BookingAssertion containsAllDays(LocalDate... expected) {
         return containsAllDays(asList(expected));
     }
@@ -75,12 +85,6 @@ public class BookingAssertion {
             List<LocalDate> actualDays = (List<LocalDate>) days;
             Assertions.assertThat(actualDays).containsExactlyElementsOf(expected);
         });
-        return this;
-    }
-
-    @Deprecated
-    public BookingAssertion isEqualToBookingApartment(String rentalPlaceId, String tenantId, Period period) {
-        Assertions.assertThat(actual).isEqualTo(Booking.apartment(rentalPlaceId, tenantId, period));
         return this;
     }
 

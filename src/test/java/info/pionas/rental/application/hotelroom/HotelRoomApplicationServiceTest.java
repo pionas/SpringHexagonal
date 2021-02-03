@@ -10,7 +10,6 @@ import info.pionas.rental.domain.hotel.*;
 import info.pionas.rental.domain.hotelroomoffer.HotelRoomNotFoundException;
 import info.pionas.rental.domain.space.SquareMeterException;
 import info.pionas.rental.infrastructure.clock.FakeClock;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.ArgumentCaptor;
@@ -41,7 +40,6 @@ class HotelRoomApplicationServiceTest {
     private static final String DESCRIPTION = "What a lovely place";
     private static final String TENANT_ID = "4321";
     private static final List<LocalDate> DAYS = asList(LocalDate.now(), LocalDate.now().plusDays(1));
-    private static final String HOTEL_ROOM_ID = "7821321";
 
     private final HotelRepository hotelRepository = mock(HotelRepository.class);
     private final HotelRoomRepository hotelRoomRepository = mock(HotelRoomRepository.class);

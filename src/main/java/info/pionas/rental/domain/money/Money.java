@@ -1,8 +1,9 @@
 package info.pionas.rental.domain.money;
 
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.Embeddable;
 import java.math.BigDecimal;
@@ -10,7 +11,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-@EqualsAndHashCode
 public class Money {
     private BigDecimal value;
 
@@ -24,5 +24,30 @@ public class Money {
 
     private static boolean isHigherThanZero(BigDecimal price) {
         return price.compareTo(BigDecimal.ZERO) > 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Money money = (Money) o;
+
+        return new EqualsBuilder()
+                .append(value, money.value)
+                .isEquals();
+    }
+
+    @SuppressWarnings("checkstyle:MagicNumber")
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(value)
+                .toHashCode();
     }
 }

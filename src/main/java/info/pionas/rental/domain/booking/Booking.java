@@ -57,11 +57,6 @@ public class Booking {
         this.days = days;
     }
 
-    public static Booking apartment(String rentalPlaceId, String tenantId, Period period) {
-        List<LocalDate> days = period.asDays();
-        return new Booking(RentalType.APARTMENT, rentalPlaceId, tenantId, days);
-    }
-
     @SuppressWarnings("checkstyle:ParameterNumber")
     public static Booking apartment(String rentalPlaceId, String tenantId, String ownerId, Money price, Period period) {
         List<LocalDate> days = period.asDays();
