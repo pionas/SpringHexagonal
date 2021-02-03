@@ -18,12 +18,17 @@ class ApartmentApplicationServiceFactory {
     @Bean
     @SuppressWarnings("checkstyle:ParameterNumber")
     ApartmentApplicationService apartmentApplicationService(
-            ApartmentRepository apartmentRepository, BookingRepository bookingRepository,
-            OwnerRepository ownerRepository, TenantRepository tenantRepository, EventIdFactory eventIdFactory,
-            Clock clock, EventChannel eventChannel) {
+            ApartmentRepository apartmentRepository,
+            BookingRepository bookingRepository,
+            OwnerRepository ownerRepository,
+            TenantRepository tenantRepository,
+            EventIdFactory eventIdFactory,
+            Clock clock,
+            EventChannel eventChannel
+    ) {
         ApartmentEventsPublisher apartmentEventsPublisher = new ApartmentEventsPublisher(eventIdFactory, clock, eventChannel);
         ApartmentFactory apartmentFactory = new ApartmentFactory(ownerRepository);
-        ApartmentDomainService apartmentDomainService = new ApartmentDomainService(apartmentRepository, tenantRepository, apartmentEventsPublisher);
+        ApartmentDomainService apartmentDomainService = new ApartmentDomainService(apartmentRepository, tenantRepository, bookingRepository, apartmentEventsPublisher);
         return new ApartmentApplicationService(apartmentRepository, bookingRepository, apartmentFactory, apartmentDomainService);
     }
 }

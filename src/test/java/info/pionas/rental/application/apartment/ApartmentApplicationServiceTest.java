@@ -2,14 +2,12 @@ package info.pionas.rental.application.apartment;
 
 import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.domain.apartment.*;
-import info.pionas.rental.domain.booking.Booking;
-import info.pionas.rental.domain.booking.BookingAccepted;
-import info.pionas.rental.domain.booking.BookingAssertion;
-import info.pionas.rental.domain.booking.BookingRepository;
+import info.pionas.rental.domain.booking.*;
 import info.pionas.rental.domain.event.FakeEventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import info.pionas.rental.domain.owner.OwnerDoesNotExistException;
 import info.pionas.rental.domain.owner.OwnerRepository;
+import info.pionas.rental.domain.period.Period;
 import info.pionas.rental.domain.space.SquareMeterException;
 import info.pionas.rental.domain.tenant.TenantNotFoundException;
 import info.pionas.rental.domain.tenant.TenantRepository;
@@ -19,8 +17,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -45,6 +46,8 @@ class ApartmentApplicationServiceTest {
     private static final LocalDate MIDDLE = LocalDate.of(2020, 3, 5);
     private static final LocalDate END = LocalDate.of(2020, 3, 6);
     private static final String BOOKING_ID = "8394234";
+    private static final LocalDate BEFORE_START = START.minusDays(1);
+    private static final LocalDate AFTER_START = START.plusDays(1);
 
     private final OwnerRepository ownerRepository = mock(OwnerRepository.class);
     private final TenantRepository tenantRepository = mock(TenantRepository.class);
@@ -112,7 +115,7 @@ class ApartmentApplicationServiceTest {
     @Test
     void shouldCreateBookingForApartment() {
         givenExistingOwner();
-        givenExistingTenantAndApartment();
+        givenExistingTenantAndApartmentWithNoBookings();
         ArgumentCaptor<Booking> captor = ArgumentCaptor.forClass(Booking.class);
 
         service.book(getApartmentBookingDto());
@@ -127,7 +130,7 @@ class ApartmentApplicationServiceTest {
     @Test
     void shouldReturnIdOfBooking() {
         givenExistingOwner();
-        givenExistingTenantAndApartment();
+        givenExistingTenantAndApartmentWithNoBookings();
         ArgumentCaptor<ApartmentBooked> captor = ArgumentCaptor.forClass(ApartmentBooked.class);
 
         service.book(getApartmentBookingDto());
@@ -145,7 +148,7 @@ class ApartmentApplicationServiceTest {
     @Test
     void shouldPublishApartmentBookedEvent() {
         givenExistingOwner();
-        givenExistingTenantAndApartment();
+        givenExistingTenantAndApartmentWithNoBookings();
         given(bookingRepository.save(any())).willReturn(BOOKING_ID);
 
         String actual = service.book(getApartmentBookingDto());
@@ -171,6 +174,7 @@ class ApartmentApplicationServiceTest {
         givenExistingOwner();
         givenExistingApartment();
         givenNonExistingTenant();
+        givenNoBookings();
 
         TenantNotFoundException actual = assertThrows(TenantNotFoundException.class, () -> {
             service.book(getApartmentBookingDto());
@@ -178,6 +182,26 @@ class ApartmentApplicationServiceTest {
 
         assertThat(actual).hasMessage("Tenant with id " + TENANT_ID + " does not exist");
         thenBookingWasNotCreated();
+    }
+
+    @Test
+    void shouldRecognizeWhenHaveBookingsWithinGivenPeriod() {
+        givenExistingOwner();
+        givenExistingTenantAndApartmentWithNoBookings();
+        givenAcceptedBookingsInGivenPeriod();
+
+        ApartmentBookingException actual = assertThrows(ApartmentBookingException.class, () -> {
+            service.book(getApartmentBookingDto());
+        });
+
+        assertThat(actual).hasMessage("There are accepted bookings in given period");
+        thenBookingWasNotCreated();
+    }
+
+    private void givenAcceptedBookingsInGivenPeriod() {
+        Booking acceptedBooking = Booking.apartment(APARTMENT_ID, TENANT_ID, new Period(BEFORE_START, AFTER_START));
+        List<Booking> bookings = asList(acceptedBooking);
+        given(bookingRepository.findAllAcceptedBy(getRentalPlaceIdentifier())).willReturn(bookings);
     }
 
     private void thenBookingWasNotCreated() {
@@ -197,9 +221,18 @@ class ApartmentApplicationServiceTest {
         return new ApartmentBookingDto(APARTMENT_ID, TENANT_ID, START, END);
     }
 
-    private void givenExistingTenantAndApartment() {
+    private void givenExistingTenantAndApartmentWithNoBookings() {
         givenExistingApartment();
         givenExistingTenant();
+        givenNoBookings();
+    }
+
+    private void givenNoBookings() {
+        given(bookingRepository.findAllAcceptedBy(getRentalPlaceIdentifier())).willReturn(emptyList());
+    }
+
+    private RentalPlaceIdentifier getRentalPlaceIdentifier() {
+        return RentalPlaceIdentifierTestFactory.apartment(null);
     }
 
     private void givenExistingApartment() {

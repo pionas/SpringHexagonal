@@ -5,11 +5,22 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import static info.pionas.rental.domain.booking.RentalType.APARTMENT;
+import static info.pionas.rental.domain.booking.RentalType.HOTEL_ROOM;
+
 @RequiredArgsConstructor
 @Getter
 public class RentalPlaceIdentifier {
     private final RentalType rentalType;
     private final String rentalPlaceId;
+
+    public static RentalPlaceIdentifier apartment(String apartmentID) {
+        return new RentalPlaceIdentifier(APARTMENT, apartmentID);
+    }
+
+    public static RentalPlaceIdentifier hotelRoom(String hotelRoomId) {
+        return new RentalPlaceIdentifier(HOTEL_ROOM, hotelRoomId);
+    }
 
     @Override
     public boolean equals(Object o) {

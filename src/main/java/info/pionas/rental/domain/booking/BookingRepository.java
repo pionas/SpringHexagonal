@@ -13,4 +13,6 @@ public interface BookingRepository {
     Booking findById(String id);
 
     List<Booking> findAllBy(RentalPlaceIdentifier identifier);
+
+    List<Booking> findAllAcceptedBy(RentalPlaceIdentifier identifier);
 }

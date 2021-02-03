@@ -2,6 +2,7 @@ package info.pionas.rental.domain.apartment;
 
 import info.pionas.rental.domain.address.Address;
 import info.pionas.rental.domain.booking.Booking;
+import info.pionas.rental.domain.booking.RentalPlaceIdentifier;
 import info.pionas.rental.domain.period.Period;
 import info.pionas.rental.domain.space.Space;
 import info.pionas.rental.domain.space.SpacesFactory;
@@ -54,8 +55,12 @@ public class Apartment {
         this.description = description;
     }
 
-    public Booking book(String tenantId, Period period, ApartmentEventsPublisher publisher) {
-        publisher.publishApartmentBooked(id(), ownerId, tenantId, period);
+    public Booking book(List<Booking> bookings, String tenantId, Period period, ApartmentEventsPublisher publisher) {
+        System.out.println("## bookings.isEmpty()=" + bookings.isEmpty());
+        if (!bookings.isEmpty()) {
+            throw new ApartmentBookingException();
+        }
+        publisher.publishApartmentBooked(id(), getOwnerId(), tenantId, period);
         return Booking.apartment(id(), tenantId, period);
     }
 
@@ -93,6 +98,10 @@ public class Apartment {
                 .append(apartmentNumber)
                 .append(address)
                 .toHashCode();
+    }
+
+    public RentalPlaceIdentifier rentalPlaceIdentifier() {
+        return RentalPlaceIdentifier.apartment(id());
     }
 
     public static class Builder {

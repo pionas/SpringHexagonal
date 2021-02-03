@@ -14,10 +14,12 @@ import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
 import static info.pionas.rental.domain.apartment.Apartment.Builder.apartment;
+import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -47,6 +49,7 @@ class ApartmentTest {
     private static final LocalDate MIDDLE = LocalDate.of(2020, 3, 5);
     private static final LocalDate END = LocalDate.of(2020, 3, 6);
     private static final Period PERIOD = new Period(START, END);
+    private static final List<Booking> EMPTY_LIST = emptyList();;
     private final ApartmentEventsPublisher apartmentEventsPublisher = Mockito.mock(ApartmentEventsPublisher.class);
 
 
@@ -65,7 +68,7 @@ class ApartmentTest {
     void shouldCreateBookingOnceBooked() {
         Apartment apartment = createApartment1();
 
-        Booking actual = apartment.book(TENANT_ID, PERIOD, apartmentEventsPublisher);
+        Booking actual = apartment.book(EMPTY_LIST, TENANT_ID, PERIOD, apartmentEventsPublisher);
 
         BookingAssertion.assertThat(actual)
                 .isApartment()
@@ -77,7 +80,7 @@ class ApartmentTest {
     void shouldPublishApartmentBooked() {
         Apartment apartment = createApartment1();
 
-        apartment.book(TENANT_ID, PERIOD, apartmentEventsPublisher);
+        apartment.book(EMPTY_LIST, TENANT_ID, PERIOD, apartmentEventsPublisher);
 
         BDDMockito.then(apartmentEventsPublisher).should().publishApartmentBooked(any(), eq(OWNER_ID_1), eq(TENANT_ID), eq(new Period(START, END)));
     }

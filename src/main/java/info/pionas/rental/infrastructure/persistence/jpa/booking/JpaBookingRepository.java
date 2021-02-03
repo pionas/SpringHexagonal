@@ -6,6 +6,7 @@ import info.pionas.rental.domain.booking.RentalPlaceIdentifier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,6 +31,11 @@ public class JpaBookingRepository implements BookingRepository {
     @Override
     public List<Booking> findAllBy(RentalPlaceIdentifier identifier) {
         return springJpaBookingRepository.findAllByRentalTypeAndRentalPlaceId(identifier.getRentalType(), identifier.getRentalPlaceId());
+    }
+
+    @Override
+    public List<Booking> findAllAcceptedBy(RentalPlaceIdentifier identifier) {
+        return Collections.emptyList();
     }
 
 }
