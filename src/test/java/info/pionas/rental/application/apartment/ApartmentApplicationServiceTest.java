@@ -128,6 +128,26 @@ class ApartmentApplicationServiceTest {
     }
 
     @Test
+    void shouldAllowToBookApartmentWhenFoundAcceptedBookingsInDifferentPeriod() {
+        givenExistingOwner();
+        givenExistingTenantAndApartmentWithNoBookings();
+        givenAcceptedBookingsInDifferentPeriod();
+
+        ArgumentCaptor<ApartmentBooked> captor = ArgumentCaptor.forClass(ApartmentBooked.class);
+
+        service.book(getApartmentBookingDto());
+
+        then(eventChannel).should().publish(captor.capture());
+        ApartmentBooked actual = captor.getValue();
+        assertThat(actual.getEventId()).isEqualTo(FakeEventIdFactory.UUID);
+        assertThat(actual.getEventCreationDateTime()).isEqualTo(FakeClock.NOW);
+        assertThat(actual.getOwnerId()).isEqualTo(OWNER_ID);
+        assertThat(actual.getTenantId()).isEqualTo(TENANT_ID);
+        assertThat(actual.getPeriodStart()).isEqualTo(START);
+        assertThat(actual.getPeriodEnd()).isEqualTo(END);
+    }
+
+    @Test
     void shouldReturnIdOfBooking() {
         givenExistingOwner();
         givenExistingTenantAndApartmentWithNoBookings();
@@ -199,7 +219,15 @@ class ApartmentApplicationServiceTest {
     }
 
     private void givenAcceptedBookingsInGivenPeriod() {
-        Booking acceptedBooking = Booking.apartment(APARTMENT_ID, TENANT_ID, new Period(BEFORE_START, AFTER_START));
+        givenAcceptedBookingItPeriod(BEFORE_START, AFTER_START);
+    }
+
+    private void givenAcceptedBookingsInDifferentPeriod() {
+        givenAcceptedBookingItPeriod(BEFORE_START.minusDays(10), BEFORE_START);
+    }
+
+    private void givenAcceptedBookingItPeriod(LocalDate beforeStart, LocalDate afterStart) {
+        Booking acceptedBooking = Booking.apartment(APARTMENT_ID, TENANT_ID, new Period(beforeStart, afterStart));
         List<Booking> bookings = asList(acceptedBooking);
         given(bookingRepository.findAllAcceptedBy(getRentalPlaceIdentifier())).willReturn(bookings);
     }

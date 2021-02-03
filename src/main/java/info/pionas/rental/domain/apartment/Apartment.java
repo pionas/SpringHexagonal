@@ -56,12 +56,15 @@ public class Apartment {
     }
 
     public Booking book(List<Booking> bookings, String tenantId, Period period, ApartmentEventsPublisher publisher) {
-        System.out.println("## bookings.isEmpty()=" + bookings.isEmpty());
-        if (!bookings.isEmpty()) {
+        if (areInGivenPeriod(bookings, period)) {
             throw new ApartmentBookingException();
         }
         publisher.publishApartmentBooked(id(), getOwnerId(), tenantId, period);
         return Booking.apartment(id(), tenantId, period);
+    }
+
+    private boolean areInGivenPeriod(List<Booking> bookings, Period period) {
+        return bookings != null && bookings.stream().anyMatch(booking -> booking.isFor(period));
     }
 
     public String id() {

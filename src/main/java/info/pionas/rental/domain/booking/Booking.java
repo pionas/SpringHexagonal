@@ -72,4 +72,8 @@ public class Booking {
     public RentalPlaceIdentifier rentalPlaceIdentifier() {
         return new RentalPlaceIdentifier(rentalType, rentalPlaceId);
     }
+
+    public boolean isFor(Period period) {
+        return getDays().stream().anyMatch(day -> period.contains(day));
+    }
 }

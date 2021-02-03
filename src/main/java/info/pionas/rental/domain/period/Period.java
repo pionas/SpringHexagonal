@@ -23,6 +23,10 @@ public class Period {
         return periodStart.datesUntil(periodEnd.plusDays(1)).collect(Collectors.toList());
     }
 
+    public boolean contains(LocalDate day) {
+        return asDays().contains(day);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -43,4 +47,5 @@ public class Period {
     public int hashCode() {
         return new HashCodeBuilder(17, 37).append(periodStart).append(periodEnd).toHashCode();
     }
+
 }
