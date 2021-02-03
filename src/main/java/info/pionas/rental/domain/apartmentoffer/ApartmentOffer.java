@@ -30,7 +30,7 @@ public class ApartmentOffer {
         return id.toString();
     }
 
-    public static class Builder {
+    static class Builder {
 
         private String apartmentId;
         private BigDecimal price;

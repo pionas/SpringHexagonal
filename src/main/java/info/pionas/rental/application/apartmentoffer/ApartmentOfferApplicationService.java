@@ -1,29 +1,18 @@
 package info.pionas.rental.application.apartmentoffer;
 
-import info.pionas.rental.domain.apartment.ApartmentNotFoundException;
-import info.pionas.rental.domain.apartment.ApartmentRepository;
 import info.pionas.rental.domain.apartmentoffer.ApartmentOffer;
+import info.pionas.rental.domain.apartmentoffer.ApartmentOfferFactory;
 import info.pionas.rental.domain.apartmentoffer.ApartmentOfferRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
-import static info.pionas.rental.domain.apartmentoffer.ApartmentOffer.Builder.apartmentOffer;
 
 @RequiredArgsConstructor
-@Service
 public class ApartmentOfferApplicationService {
-    private final ApartmentRepository apartmentRepository;
     private final ApartmentOfferRepository apartmentOfferRepository;
+    private final ApartmentOfferFactory apartmentOfferFactory;
 
     public String add(ApartmentOfferDto dto) {
-        if (!apartmentRepository.existById(dto.getApartmentId())) {
-            throw new ApartmentNotFoundException(dto.getApartmentId());
-        }
-        ApartmentOffer offer = apartmentOffer()
-                .withApartmentId(dto.getApartmentId())
-                .withPrice(dto.getPrice())
-                .withAvailability(dto.getStart(), dto.getEnd())
-                .build();
+        ApartmentOffer offer = apartmentOfferFactory.create(dto.getApartmentId(), dto.getPrice(), dto.getStart(), dto.getEnd());
         return apartmentOfferRepository.save(offer);
     }
+
 }
