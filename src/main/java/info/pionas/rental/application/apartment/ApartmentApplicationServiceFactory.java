@@ -1,5 +1,6 @@
 package info.pionas.rental.application.apartment;
 
+import info.pionas.rental.domain.apartment.ApartmentDomainService;
 import info.pionas.rental.domain.apartment.ApartmentEventsPublisher;
 import info.pionas.rental.domain.apartment.ApartmentFactory;
 import info.pionas.rental.domain.apartment.ApartmentRepository;
@@ -21,6 +22,7 @@ class ApartmentApplicationServiceFactory {
             Clock clock, EventChannel eventChannel) {
         ApartmentEventsPublisher apartmentEventsPublisher = new ApartmentEventsPublisher(eventIdFactory, clock, eventChannel);
         ApartmentFactory apartmentFactory = new ApartmentFactory(ownerRepository);
-        return new ApartmentApplicationService(apartmentRepository, bookingRepository, apartmentEventsPublisher, apartmentFactory);
+        ApartmentDomainService apartmentDomainService = new ApartmentDomainService(apartmentRepository, apartmentEventsPublisher);
+        return new ApartmentApplicationService(apartmentRepository, bookingRepository, apartmentFactory, apartmentDomainService);
     }
 }
