@@ -1,5 +1,6 @@
 package info.pionas.rental.domain.booking;
 
+import info.pionas.rental.domain.agreement.Agreement;
 import info.pionas.rental.domain.money.Money;
 import info.pionas.rental.domain.period.Period;
 import info.pionas.rental.domain.rentalplaceidentifier.RentalPlaceIdentifier;
@@ -73,9 +74,10 @@ public class Booking {
         bookingEventsPublisher.bookingRejected(rentalType, rentalPlaceId, tenantId, days);
     }
 
-    public void accept(BookingEventsPublisher bookingEventsPublisher) {
+    public Agreement accept(BookingEventsPublisher bookingEventsPublisher) {
         bookingStatus = bookingStatus.moveTo(ACCEPTED);
         bookingEventsPublisher.bookingAccepted(rentalType, rentalPlaceId, tenantId, days);
+        return new Agreement();
     }
 
     public UUID id() {

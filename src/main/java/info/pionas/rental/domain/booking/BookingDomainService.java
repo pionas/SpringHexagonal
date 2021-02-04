@@ -12,7 +12,8 @@ public class BookingDomainService {
 
     public Optional<Agreement> accept(Booking booking, List<Booking> bookings) {
         if (hasNoCollisions(booking, bookings)) {
-            booking.accept(bookingEventsPublisher);
+            Agreement agreement = booking.accept(bookingEventsPublisher);
+            return Optional.of(agreement);
         } else {
             booking.reject(bookingEventsPublisher);
         }

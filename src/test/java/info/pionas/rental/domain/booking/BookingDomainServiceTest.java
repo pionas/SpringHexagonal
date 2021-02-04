@@ -6,6 +6,7 @@ import info.pionas.rental.domain.event.EventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import info.pionas.rental.domain.money.Money;
 import info.pionas.rental.domain.period.Period;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -43,7 +44,7 @@ class BookingDomainServiceTest {
     void shouldAcceptBookingWhenNoOtherBookingsFound() {
         Booking booking = givenApartmentBooking();
 
-        Optional<Agreement> actual = service.accept(booking, emptyList());
+        Agreement actual = service.accept(booking, emptyList()).get();
 
         BookingAssertion.assertThat(booking).isAccepted();
 //        AgreementAssertion.assertThat(actual)
@@ -54,21 +55,21 @@ class BookingDomainServiceTest {
     void shouldPublishBookingAcceptedEventWhenBookingIsAccepted() {
         ArgumentCaptor<BookingAccepted> captor = ArgumentCaptor.forClass(BookingAccepted.class);
 
-        service.accept(givenApartmentBooking(), NO_BOOKINGS_FOUND);
+        Agreement actual = service.accept(givenApartmentBooking(), NO_BOOKINGS_FOUND).get();
 
         then(eventChannel).should().publish(captor.capture());
-        BookingAccepted actual = captor.getValue();
-        assertThat(actual.getRentalType()).isEqualTo("APARTMENT");
-        assertThat(actual.getRentalPlaceId()).isEqualTo(RENTAL_PLACE_ID);
-        assertThat(actual.getTenantId()).isEqualTo(TENANT_ID_1);
-        assertThat(actual.getDays()).containsExactlyElementsOf(DAYS);
+        BookingAccepted actualEvent = captor.getValue();
+        assertThat(actualEvent.getRentalType()).isEqualTo("APARTMENT");
+        assertThat(actualEvent.getRentalPlaceId()).isEqualTo(RENTAL_PLACE_ID);
+        assertThat(actualEvent.getTenantId()).isEqualTo(TENANT_ID_1);
+        assertThat(actualEvent.getDays()).containsExactlyElementsOf(DAYS);
     }
 
     @Test
     void shouldRejectBookingWhenOtherWithDaysCollisionFound() {
         Booking booking = givenApartmentBooking();
 
-        service.accept(booking, asList(givenAcceptedBookingWithDaysCollision()));
+        Optional<Agreement> actual = service.accept(booking, asList(givenAcceptedBookingWithDaysCollision()));
 
         BookingAssertion.assertThat(booking).isRejected();
     }
@@ -78,21 +79,22 @@ class BookingDomainServiceTest {
         ArgumentCaptor<BookingRejected> captor = ArgumentCaptor.forClass(BookingRejected.class);
         Booking booking = givenApartmentBooking();
 
-        service.accept(booking, asList(givenAcceptedBookingWithDaysCollision()));
+        Optional<Agreement> actual = service.accept(booking, asList(givenAcceptedBookingWithDaysCollision()));
 
         then(eventChannel).should().publish(captor.capture());
-        BookingRejected actual = captor.getValue();
-        assertThat(actual.getRentalType()).isEqualTo("APARTMENT");
-        assertThat(actual.getRentalPlaceId()).isEqualTo(RENTAL_PLACE_ID);
-        assertThat(actual.getTenantId()).isEqualTo(TENANT_ID_1);
-        assertThat(actual.getDays()).containsExactlyElementsOf(DAYS);
+        BookingRejected actualEvent = captor.getValue();
+        assertThat(actualEvent.getRentalType()).isEqualTo("APARTMENT");
+        assertThat(actualEvent.getRentalPlaceId()).isEqualTo(RENTAL_PLACE_ID);
+        assertThat(actualEvent.getTenantId()).isEqualTo(TENANT_ID_1);
+        assertThat(actualEvent.getDays()).containsExactlyElementsOf(DAYS);
     }
 
     @Test
     void shouldAcceptBookingWhenOtherWithoutDaysCollisionFound() {
         Booking booking = givenApartmentBooking();
 
-        service.accept(booking, asList(givenAcceptedBookingWithoutDaysCollision()));
+        Agreement actual = service.accept(booking, asList(givenAcceptedBookingWithoutDaysCollision())).get();
+
 
         BookingAssertion.assertThat(booking).isAccepted();
     }
@@ -101,7 +103,7 @@ class BookingDomainServiceTest {
     void shouldAcceptBookingWhenOtherWithDaysCollisionButNotAcceptedFound() {
         Booking booking = givenApartmentBooking();
 
-        service.accept(booking, asList(givenOpenBookingWithDaysCollision()));
+        Agreement actual = service.accept(booking, asList(givenOpenBookingWithDaysCollision())).get();
 
         BookingAssertion.assertThat(booking).isAccepted();
     }
@@ -125,7 +127,7 @@ class BookingDomainServiceTest {
     void shouldAcceptBookingWhenFoundOnlyItself() {
         Booking booking = givenApartmentBooking();
 
-        service.accept(booking, asList(booking));
+        Agreement actual = service.accept(booking, asList(booking)).get();
 
         BookingAssertion.assertThat(booking).isAccepted();
     }
@@ -137,8 +139,9 @@ class BookingDomainServiceTest {
                 givenOpenBookingWithDaysCollision(), givenRejectedBookingWithDaysCollision(),
                 givenAcceptedBookingWithoutDaysCollision(), givenAcceptedBookingWithDaysCollision());
 
-        service.accept(booking, bookings);
+        Optional<Agreement> actual = service.accept(booking, bookings);
 
+        Assertions.assertThat(actual).isEmpty();
         BookingAssertion.assertThat(booking).isRejected();
     }
 
