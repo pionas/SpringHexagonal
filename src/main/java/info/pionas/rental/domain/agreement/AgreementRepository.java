@@ -1,5 +1,7 @@
 package info.pionas.rental.domain.agreement;
 
+import java.util.UUID;
+
 public interface AgreementRepository {
-    void save(Agreement capture);
+    UUID save(Agreement agreement);
 }

@@ -5,13 +5,16 @@ import info.pionas.rental.domain.agreement.AgreementRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 @Repository
 @RequiredArgsConstructor
 public class JpaAgreementRepository implements AgreementRepository {
     private final SpringJpaAgreementRepository springJpaAgreementRepository;
 
     @Override
-    public void save(Agreement agreement) {
-        springJpaAgreementRepository.save(agreement);
+    public UUID save(Agreement agreement) {
+//        return springJpaAgreementRepository.save(agreement).id();
+        return UUID.randomUUID();
     }
 }

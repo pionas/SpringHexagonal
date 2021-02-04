@@ -3,6 +3,7 @@ package info.pionas.rental.infrastructure.persistence.jpa.agreement;
 import info.pionas.rental.domain.agreement.Agreement;
 import info.pionas.rental.domain.agreement.AgreementRepository;
 import info.pionas.rental.domain.money.Money;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import static info.pionas.rental.domain.agreement.Agreement.Builder.agreement;
 import static info.pionas.rental.domain.rentalplaceidentifier.RentalType.APARTMENT;
@@ -28,6 +30,14 @@ class JpaAgreementRepositoryIntegrationTest {
 
     @Autowired
     private AgreementRepository agreementRepository;
+    @Autowired
+    private SpringJpaAgreementTestRepository springJpaAgreementTestRepository;
+    private UUID agreementId;
+
+    @AfterEach
+    void deleteAgreements() {
+        springJpaAgreementTestRepository.deleteById(agreementId);
+    }
 
     @Test
     void shouldSaveAgreement() {
@@ -40,6 +50,6 @@ class JpaAgreementRepositoryIntegrationTest {
                 .withPrice(PRICE)
                 .build();
 
-        agreementRepository.save(agreement);
+        agreementId = agreementRepository.save(agreement);
     }
 }

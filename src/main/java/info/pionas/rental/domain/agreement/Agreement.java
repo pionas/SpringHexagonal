@@ -69,6 +69,10 @@ public class Agreement {
                 .toHashCode();
     }
 
+    public UUID id() {
+        return id;
+    }
+
     public static class Builder {
         private RentalType rentalType;
         private String rentalPlaceId;
