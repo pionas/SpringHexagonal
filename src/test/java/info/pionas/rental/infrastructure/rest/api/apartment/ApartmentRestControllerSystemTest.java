@@ -3,7 +3,12 @@ package info.pionas.rental.infrastructure.rest.api.apartment;
 import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.application.apartment.ApartmentBookingDto;
 import info.pionas.rental.application.apartment.ApartmentDto;
+import info.pionas.rental.application.apartmentoffer.ApartmentOfferDto;
 import info.pionas.rental.infrastructure.json.JsonFactory;
+import info.pionas.rental.infrastructure.persistence.jpa.apartment.SpringJpaApartmentTestRepository;
+import info.pionas.rental.infrastructure.persistence.jpa.apartmentbookinghistory.SpringJpaApartmentBookingHistoryTestRepository;
+import info.pionas.rental.infrastructure.persistence.jpa.booking.SpringJpaBookingTestRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +19,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -45,10 +53,29 @@ class ApartmentRestControllerSystemTest {
     private static final String COUNTRY_2 = "Germany";
     private static final String DESCRIPTION_2 = "Lovely place";
     private static final Map<String, Double> SPACES_DEFINITION_2 = ImmutableMap.of("Toilet", 15.0, "RoomOne", 20.0, "RoomTwo", 25.0);
+    private static final BigDecimal PRICE = BigDecimal.valueOf(123);
+    private static final LocalDate START = LocalDate.of(2030, 10, 11);
+    private static final LocalDate END = LocalDate.of(2050, 10, 20);
 
     private final JsonFactory jsonFactory = new JsonFactory();
+    private final List<String> apartmentIds = new ArrayList<>();
+    private final List<String> apartmentBookingHistoryIds = new ArrayList<>();
+    private final List<String> bookingIds = new ArrayList<>();
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private SpringJpaApartmentTestRepository apartmentRepository;
+    @Autowired
+    private SpringJpaApartmentBookingHistoryTestRepository apartmentBookingHistoryRepository;
+    @Autowired
+    private SpringJpaBookingTestRepository bookingRepository;
+
+    @AfterEach
+    void deleteApartments() {
+        apartmentRepository.deleteAll(apartmentIds);
+        apartmentBookingHistoryRepository.deleteAll(apartmentBookingHistoryIds);
+        bookingRepository.deleteAll(bookingIds);
+    }
 
     @Test
     void shouldReturnNothingWhenApartmentDoesNotExist() throws Exception {
@@ -70,6 +97,7 @@ class ApartmentRestControllerSystemTest {
                 .andExpect(status().isCreated())
                 .andReturn();
 
+        apartmentIds.add(getApartmentId(mvcResult));
         mockMvc.perform(get(mvcResult.getResponse().getRedirectedUrl()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.apartment.ownerId").value(OWNER_ID_1))
@@ -83,18 +111,27 @@ class ApartmentRestControllerSystemTest {
     void shouldBookApartment() throws Exception {
         String url = save(givenApartment1()).getResponse().getRedirectedUrl();
         String apartmentId = url.replace("/apartment/", "");
+        givenApartmentOfferFor(apartmentId);
+        apartmentBookingHistoryIds.add(apartmentId);
         ApartmentBookingDto apartmentBookingDto = new ApartmentBookingDto(apartmentId, "1357", LocalDate.of(2040, 11, 12), LocalDate.of(2040, 12, 1));
 
-        mockMvc.perform(put(url.replace("apartment/", "apartment/book/")).contentType(MediaType.APPLICATION_JSON).content(jsonFactory.create(apartmentBookingDto)))
+        MvcResult mvcResult = mockMvc.perform(put(url.replace("apartment/", "apartment/book/")).contentType(MediaType.APPLICATION_JSON).content(jsonFactory.create(apartmentBookingDto)))
                 .andExpect(status().isCreated())
                 .andReturn();
 
+        bookingIds.add(getBookingId(mvcResult));
         mockMvc.perform(get(url))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.bookingHistory.bookings.[*]", hasSize(1)))
                 .andExpect(jsonPath("$.bookingHistory.bookings.[0].tenantId").value("1357"))
                 .andExpect(jsonPath("$.bookingHistory.bookings.[0].periodStart").value("2040-11-12"))
                 .andExpect(jsonPath("$.bookingHistory.bookings.[0].periodEnd").value("2040-12-01"));
+    }
+
+    private void givenApartmentOfferFor(String apartmentId) throws Exception {
+        ApartmentOfferDto dto = new ApartmentOfferDto(apartmentId, PRICE, START, END);
+
+        mockMvc.perform(post("/apartmentoffer").contentType(MediaType.APPLICATION_JSON).content(jsonFactory.create(dto)));
     }
 
     @Test
@@ -117,6 +154,17 @@ class ApartmentRestControllerSystemTest {
     }
 
     private MvcResult save(ApartmentDto apartmentDto) throws Exception {
-        return mockMvc.perform(post("/apartment").contentType(MediaType.APPLICATION_JSON).content(jsonFactory.create(apartmentDto))).andReturn();
+        MvcResult result = mockMvc.perform(post("/apartment").contentType(MediaType.APPLICATION_JSON).content(jsonFactory.create(apartmentDto))).andReturn();
+        apartmentIds.add(getApartmentId(result));
+
+        return result;
+    }
+
+    private String getApartmentId(MvcResult result) {
+        return result.getResponse().getRedirectedUrl().replace("/apartment/", "");
+    }
+
+    private String getBookingId(MvcResult result) {
+        return result.getResponse().getRedirectedUrl().replace("/booking/", "");
     }
 }
