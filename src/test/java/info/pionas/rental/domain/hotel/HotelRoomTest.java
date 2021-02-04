@@ -17,10 +17,7 @@ import java.util.stream.Stream;
 
 import static info.pionas.rental.domain.hotel.HotelRoom.Builder.hotelRoom;
 import static java.util.Arrays.asList;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 
 class HotelRoomTest {
@@ -35,7 +32,9 @@ class HotelRoomTest {
     private static final int DIFFERENT_ROOM_NUMBER = ROOM_NUMBER_2;
     private static final String TENANT_ID = "325426";
     private static final List<LocalDate> DAYS = asList(LocalDate.now(), LocalDate.now().plusDays(1));
-    private final HotelRoomEventsPublisher hotelRoomEventsPublisher = mock(HotelRoomEventsPublisher.class);
+    private static final String NO_ID = null;
+
+    private final HotelEventsPublisher hotelEventsPublisher = mock(HotelEventsPublisher.class);
 
     @Test
     void shouldCreateHotelRoomWithAllRequiredInformation() {
@@ -47,31 +46,45 @@ class HotelRoomTest {
                 .build();
 
         HotelRoomAssertion.assertThat(actual)
-                .hasHotelIdEqualTo(HOTEL_ID_1)
-                .hasRoomNumberEqualTo(ROOM_NUMBER_1)
+                .isEqualTo(HotelRoomRequirements.hotelRoom()
+                        .withHotelId(HOTEL_ID_1)
+                        .withRoomNumber(ROOM_NUMBER_1)
+                )
                 .hasSpacesDefinitionEqualTo(SPACES_DEFINITION_1)
+                .hasIdEqualTo(null)
+                .hasHotelIdEqualTo(HOTEL_ID_1)
+                .hasNumberEqualTo(ROOM_NUMBER_1)
                 .hasDescriptionEqualTo(DESCRIPTION_1);
+    }
+
+    @Test
+    void shouldNotBeAbleToCreateHotelRoomWithoutSpaces() {
+        HotelRoom.Builder hotelRoom = hotelRoom()
+                .withHotelId(HOTEL_ID_1)
+                .withNumber(ROOM_NUMBER_1)
+                .withDescription(DESCRIPTION_1);
+
+        NotEnoughSpacesGivenException actual = assertThrows(NotEnoughSpacesGivenException.class, hotelRoom::build);
+
+        Assertions.assertThat(actual).hasMessage("No spaces given");
     }
 
     @Test
     void shouldCreateBookingOnceBooked() {
         HotelRoom hotelRoom = givenHotelRoom();
 
-        Booking actual = hotelRoom.book(TENANT_ID, DAYS, hotelRoomEventsPublisher);
+        Booking actual = hotelRoom.book(TENANT_ID, DAYS, hotelEventsPublisher);
 
-        BookingAssertion.assertThat(actual)
-                .isHotelRoom()
-                .hasTenantIdEqualTo(TENANT_ID)
-                .containsAllDays(DAYS);
+        BookingAssertion.assertThat(actual).isEqualToBookingHotelRoom(NO_ID, TENANT_ID, DAYS);
     }
 
     @Test
     void shouldPublishHotelRoomBooked() {
         HotelRoom hotelRoom = givenHotelRoom();
 
-        hotelRoom.book(TENANT_ID, DAYS, hotelRoomEventsPublisher);
+        hotelRoom.book(TENANT_ID, DAYS, hotelEventsPublisher);
 
-        BDDMockito.then(hotelRoomEventsPublisher).should().publishHotelRoomBooked(any(), eq(HOTEL_ID_1.toString()), eq(TENANT_ID), eq(DAYS));
+        BDDMockito.then(hotelEventsPublisher).should().publishHotelRoomBooked(HOTEL_ID_1.toString(), ROOM_NUMBER_1, TENANT_ID, DAYS);
     }
 
     @Test
@@ -125,17 +138,6 @@ class HotelRoomTest {
 
         Assertions.assertThat(actual.equals(toCompare)).isFalse();
         Assertions.assertThat(actual.hashCode()).isNotEqualTo(toCompare.hashCode());
-    }
-
-    @Test
-    void shouldNotBeAbleToCreateHotelRoomWithoutSpaces() {
-        HotelRoom.Builder hotelRoom = hotelRoom()
-                .withHotelId(HOTEL_ID_1)
-                .withNumber(ROOM_NUMBER_1)
-                .withDescription(DESCRIPTION_1);
-
-        NotEnoughSpacesGivenException actual = assertThrows(NotEnoughSpacesGivenException.class, hotelRoom::build);
-        assertThat(actual).hasMessage("No spaces given");
     }
 
     private HotelRoom givenHotelRoom() {

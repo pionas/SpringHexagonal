@@ -1,8 +1,14 @@
 package info.pionas.rental.domain.booking;
 
+import info.pionas.rental.domain.money.Money;
 import info.pionas.rental.domain.period.Period;
+import info.pionas.rental.domain.rentalplaceidentifier.RentalPlaceIdentifier;
+import info.pionas.rental.domain.rentalplaceidentifier.RentalPlaceIdentifierFactory;
+import info.pionas.rental.domain.rentalplaceidentifier.RentalType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -26,11 +32,15 @@ public class Booking {
     private RentalType rentalType;
     private String rentalPlaceId;
     private String tenantId;
+    private String ownerId;
+    @Embedded
+    private Money price;
     @ElementCollection
     private List<LocalDate> days;
     @Enumerated(EnumType.STRING)
     private BookingStatus bookingStatus = BookingStatus.OPEN;
 
+    @Deprecated
     Booking(RentalType rentalType, String rentalPlaceId, String tenantId, List<LocalDate> days) {
         this.rentalType = rentalType;
         this.rentalPlaceId = rentalPlaceId;
@@ -38,14 +48,25 @@ public class Booking {
         this.days = days;
     }
 
-    public static Booking apartment(String rentalPlaceId, String tenantId, Period period) {
+    private Booking(RentalType apartment, String rentalPlaceId, String tenantId, String ownerId, Money price, List<LocalDate> days) {
+        this.rentalType = apartment;
+        this.rentalPlaceId = rentalPlaceId;
+        this.tenantId = tenantId;
+        this.ownerId = ownerId;
+        this.price = price;
+        this.days = days;
+    }
+
+    @SuppressWarnings("checkstyle:ParameterNumber")
+    public static Booking apartment(String rentalPlaceId, String tenantId, String ownerId, Money price, Period period) {
         List<LocalDate> days = period.asDays();
-        return new Booking(RentalType.APARTMENT, rentalPlaceId, tenantId, days);
+        return new Booking(RentalType.APARTMENT, rentalPlaceId, tenantId, ownerId, price, days);
     }
 
     public static Booking hotelRoom(String rentalPlaceId, String tenantId, List<LocalDate> days) {
         return new Booking(RentalType.HOTEL_ROOM, rentalPlaceId, tenantId, days);
     }
+
 
     public void reject(BookingEventsPublisher bookingEventsPublisher) {
         bookingStatus = bookingStatus.moveTo(REJECTED);
@@ -57,8 +78,8 @@ public class Booking {
         bookingEventsPublisher.bookingAccepted(rentalType, rentalPlaceId, tenantId, days);
     }
 
-    public String id() {
-        return id.toString();
+    public UUID id() {
+        return getId();
     }
 
     public boolean hasCollisionWith(Booking booking) {
@@ -70,6 +91,48 @@ public class Booking {
     }
 
     public RentalPlaceIdentifier rentalPlaceIdentifier() {
-        return new RentalPlaceIdentifier(rentalType, rentalPlaceId);
+        return RentalPlaceIdentifierFactory.create(rentalType, rentalPlaceId);
+    }
+
+    public boolean isFor(Period period) {
+        return getDays().stream().anyMatch(day -> period.contains(day));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Booking booking = (Booking) o;
+
+        if (!days.containsAll(booking.days)) {
+            return false;
+        }
+
+        return new EqualsBuilder()
+                .append(getRentalType(), booking.rentalType)
+                .append(getRentalPlaceId(), booking.rentalPlaceId)
+                .append(getTenantId(), booking.tenantId)
+                .append(getOwnerId(), booking.ownerId)
+                .append(getPrice(), booking.price)
+                .isEquals();
+    }
+
+    @Override
+    @SuppressWarnings("checkstyle:MagicNumber")
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(getRentalType())
+                .append(getRentalPlaceId())
+                .append(getTenantId())
+                .append(getOwnerId())
+                .append(getPrice())
+                .append(getDays())
+                .toHashCode();
     }
 }

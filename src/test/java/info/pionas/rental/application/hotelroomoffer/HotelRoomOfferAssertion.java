@@ -16,14 +16,18 @@ public class HotelRoomOfferAssertion {
         return new HotelRoomOfferAssertion(actual);
     }
 
-
-    public HotelRoomOfferAssertion hasIdEqualTo(String expected) {
-        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("id", UUID.fromString(expected));
+    public HotelRoomOfferAssertion hasIdEqualTo(UUID expected) {
+        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("id", expected);
         return this;
     }
 
-    public HotelRoomOfferAssertion hasHotelRoomIdEqualTo(String expected) {
-        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("hotelRoomId", expected);
+    public HotelRoomOfferAssertion hasHotelIdEqualTo(String expected) {
+        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("hotelId", expected);
+        return this;
+    }
+
+    public HotelRoomOfferAssertion hasHotelRoomNumberEqualTo(int expected) {
+        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("hotelRoomNumber", expected);
         return this;
     }
 
@@ -36,8 +40,7 @@ public class HotelRoomOfferAssertion {
     public HotelRoomOfferAssertion hasAvailabilityEqualTo(LocalDate start, LocalDate end) {
         Assertions.assertThat(actual).extracting("availability")
                 .hasFieldOrPropertyWithValue("start", start)
-                .hasFieldOrPropertyWithValue("end", end)
-        ;
+                .hasFieldOrPropertyWithValue("end", end);
         return this;
     }
 }

@@ -12,11 +12,11 @@ import java.util.UUID;
 public class SpringJpaApartmentOfferTestRepository {
     private final SpringJpaApartmentOfferRepository repository;
 
-    public void deleteById(String apartmentOfferId) {
-        repository.deleteById(UUID.fromString(apartmentOfferId));
+    public void deleteById(UUID apartmentOfferId) {
+        repository.deleteById(apartmentOfferId);
     }
 
     public void deleteAll(List<String> apartmentOfferIds) {
-        apartmentOfferIds.forEach(this::deleteById);
+        apartmentOfferIds.forEach(apartmentOfferId -> deleteById(UUID.fromString(apartmentOfferId)));
     }
 }

@@ -1,9 +1,12 @@
 package info.pionas.rental.application.apartmentbookinghistory;
 
 import info.pionas.rental.domain.apartment.ApartmentBooked;
-import info.pionas.rental.domain.apartmentbookinghistory.*;
+import info.pionas.rental.domain.apartment.ApartmentBookedTestFactory;
+import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingAssertion;
+import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingHistory;
+import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingHistoryAssertion;
+import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingHistoryRepository;
 import info.pionas.rental.domain.period.Period;
-import info.pionas.rental.infrastructure.clock.FakeClock;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.BDDMockito;
@@ -11,7 +14,6 @@ import org.mockito.BDDMockito;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import static info.pionas.rental.domain.apartment.ApartmentBooked.Builder.apartmentBooked;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
@@ -73,18 +75,12 @@ class ApartmentBookingHistoryEventListenerTest {
 
     private ApartmentBookingHistory getApartmentBookingHistory() {
         ApartmentBookingHistory apartmentBookingHistory = new ApartmentBookingHistory(APARTMENT_ID);
-        apartmentBookingHistory.addBookingStart(LocalDateTime.now(), OWNER_ID, "9807", new Period(LocalDate.now(), LocalDate.now().plusDays(1)));
+        apartmentBookingHistory.addBookingStart(
+                LocalDateTime.now(), OWNER_ID, "9807", new Period(LocalDate.now(), LocalDate.now().plusDays(1)));
         return apartmentBookingHistory;
     }
 
     private ApartmentBooked givenApartmentBooked() {
-        return apartmentBooked()
-                .withEventId("232132")
-                .withEventCreationDateTime(FakeClock.NOW)
-                .withApartmentId(APARTMENT_ID)
-                .withOwnerId(OWNER_ID)
-                .withTenantId(TENANT_ID)
-                .withPeriod(PERIOD)
-                .build();
+        return ApartmentBookedTestFactory.create("232132", LocalDateTime.now(), APARTMENT_ID, OWNER_ID, TENANT_ID, PERIOD);
     }
 }

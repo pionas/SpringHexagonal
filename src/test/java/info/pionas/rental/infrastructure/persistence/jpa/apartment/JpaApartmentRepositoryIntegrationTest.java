@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.domain.apartment.Apartment;
 import info.pionas.rental.domain.apartment.ApartmentAssertion;
 import info.pionas.rental.domain.apartment.ApartmentRepository;
+import info.pionas.rental.domain.apartment.ApartmentRequirements;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -46,6 +47,24 @@ class JpaApartmentRepositoryIntegrationTest {
     }
 
     @Test
+    void shouldRecognizeWhenApartmentDoesNotExist() {
+        String nonExistingApartmentId = UUID.randomUUID().toString();
+
+        boolean actual = apartmentRepository.existById(nonExistingApartmentId);
+
+        assertThat(actual).isFalse();
+    }
+
+    @Test
+    void shouldRecognizeWhenApartmentExists() {
+        String existingId = givenExistingApartment(createApartment());
+
+        boolean actual = apartmentRepository.existById(existingId);
+
+        assertThat(actual).isTrue();
+    }
+
+    @Test
     void shouldThrowExceptionWhenApartmentDoesNotExist() {
         String nonExistingApartmentId = UUID.randomUUID().toString();
 
@@ -64,9 +83,12 @@ class JpaApartmentRepositoryIntegrationTest {
         Apartment actual = apartmentRepository.findById(existingId);
 
         ApartmentAssertion.assertThat(actual)
-                .hasOwnerIdEqualsTo(OWNER_ID)
+                .isEqualTo(ApartmentRequirements.apartment()
+                        .withOwnerId(OWNER_ID)
+                        .withApartmentNumber(APARTMENT_NUMBER)
+                        .withAddress(STREET, POSTAL_CODE, HOUSE_NUMBER, CITY, COUNTRY)
+                )
                 .hasDescriptionEqualsTo(DESCRIPTION)
-                .hasAddressEqualsTo(STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY)
                 .hasSpacesEqualsTo(SPACES_DEFINITION);
     }
 
@@ -114,17 +136,13 @@ class JpaApartmentRepositoryIntegrationTest {
         Apartment actual = apartmentRepository.findById(existingId);
 
         ApartmentAssertion.assertThat(actual)
-                .hasOwnerIdEqualsTo(OWNER_ID)
+                .isEqualTo(ApartmentRequirements.apartment()
+                        .withOwnerId(OWNER_ID)
+                        .withApartmentNumber(APARTMENT_NUMBER)
+                        .withAddress(STREET, POSTAL_CODE, HOUSE_NUMBER, CITY, COUNTRY)
+                )
                 .hasDescriptionEqualsTo(DESCRIPTION)
-                .hasAddressEqualsTo(STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY)
                 .hasSpacesEqualsTo(SPACES_DEFINITION);
-    }
-
-    @Test
-    void shouldRecognizeApartmentDoesNotExist() {
-        String id = randomId();
-
-        assertThat(apartmentRepository.existById(id)).isFalse();
     }
 
     private String givenExistingApartment(Apartment apartment3) {
@@ -146,9 +164,5 @@ class JpaApartmentRepositoryIntegrationTest {
                 .withDescription(DESCRIPTION)
                 .withSpacesDefinition(SPACES_DEFINITION)
                 .build();
-    }
-
-    private String randomId() {
-        return UUID.randomUUID().toString();
     }
 }

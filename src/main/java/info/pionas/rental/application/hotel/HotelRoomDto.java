@@ -1,15 +1,13 @@
-package info.pionas.rental.application.hotelroom;
+package info.pionas.rental.application.hotel;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 
-
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Getter
 public class HotelRoomDto {
-
     private final String hotelId;
     private final int number;
     private final Map<String, Double> spacesDefinition;

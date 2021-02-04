@@ -2,8 +2,8 @@ package info.pionas.rental.infrastructure.rest.api.hotelroom;
 
 import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.application.hotel.HotelDto;
-import info.pionas.rental.application.hotelroom.HotelRoomBookingDto;
-import info.pionas.rental.application.hotelroom.HotelRoomDto;
+import info.pionas.rental.application.hotel.HotelRoomBookingDto;
+import info.pionas.rental.application.hotel.HotelRoomDto;
 import info.pionas.rental.infrastructure.json.JsonFactory;
 import info.pionas.rental.infrastructure.persistence.jpa.booking.SpringJpaBookingTestRepository;
 import info.pionas.rental.infrastructure.persistence.jpa.hotel.SpringJpaHotelTestRepository;
@@ -85,10 +85,11 @@ class HotelRoomRestControllerSystemTest {
 
     @Test
     void shouldBookHotelRoom() throws Exception {
-        String url = save(givenHotelRoom1()).getResponse().getRedirectedUrl();
-        HotelRoomBookingDto hotelRoomBookingDto = new HotelRoomBookingDto(hotelId, ROOM_NUMBER_1, "1357", asList(LocalDate.of(2020, 11, 12), LocalDate.of(2020, 12, 1)));
+        save(givenHotelRoom1());
+        HotelRoomBookingDto hotelRoomBookingDto = new HotelRoomBookingDto(
+                hotelId, ROOM_NUMBER_1, "1357", asList(LocalDate.of(2020, 11, 12), LocalDate.of(2020, 12, 1)));
 
-        MvcResult result = mockMvc.perform(put(url.replace("hotelroom/", "hotelroom/book/")).contentType(MediaType.APPLICATION_JSON).content(jsonFactory.create(hotelRoomBookingDto)))
+        MvcResult result = mockMvc.perform(put("/hotelroom/book/").contentType(MediaType.APPLICATION_JSON).content(jsonFactory.create(hotelRoomBookingDto)))
                 .andExpect(status().isCreated())
                 .andReturn();
         storeBookingId(result);
@@ -106,7 +107,7 @@ class HotelRoomRestControllerSystemTest {
         return new HotelRoomDto(hotelId, ROOM_NUMBER_2, SPACES_DEFINITION_2, DESCRIPTION_2);
     }
 
-    private MvcResult save(HotelRoomDto hotelRoomDto) throws Exception {
-        return mockMvc.perform(post("/hotelroom").contentType(MediaType.APPLICATION_JSON).content(jsonFactory.create(hotelRoomDto))).andReturn();
+    private void save(HotelRoomDto hotelRoomDto) throws Exception {
+        mockMvc.perform(post("/hotelroom").contentType(MediaType.APPLICATION_JSON).content(jsonFactory.create(hotelRoomDto))).andReturn();
     }
 }

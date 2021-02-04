@@ -3,6 +3,7 @@ package info.pionas.rental.domain.booking;
 import info.pionas.rental.domain.clock.Clock;
 import info.pionas.rental.domain.event.EventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
+import info.pionas.rental.domain.rentalplaceidentifier.RentalType;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;

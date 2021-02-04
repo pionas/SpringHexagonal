@@ -15,39 +15,30 @@ import java.util.function.Consumer;
 public class HotelBookingHistoryAssertion {
     private final HotelBookingHistory actual;
 
-
     public static HotelBookingHistoryAssertion assertThat(HotelBookingHistory actual) {
         return new HotelBookingHistoryAssertion(actual);
     }
 
-    public HotelBookingHistoryAssertion hasHotelRoomBookingHistoryFor(String hotelRoomId, LocalDateTime bookingDateTime, String tenantId, List<LocalDate> days) {
+    public HotelBookingHistoryAssertion hasHotelRoomBookingHistoryFor(int hotelRoomNumber, LocalDateTime bookingDateTime, String tenantId, List<LocalDate> days) {
         return hasHotelRoomBookingHistoryFor(hotelRoomBookingHistory -> {
             HotelRoomBookingHistoryAssertion.assertThat(hotelRoomBookingHistory)
-                    .hasHotelRoomIdEqualTo(hotelRoomId)
+                    .hasHotelRoomNumberEqualTo(hotelRoomNumber)
                     .hasHotelRoomBookingFor(bookingDateTime, tenantId, days);
         });
     }
 
-    public HotelBookingHistoryAssertion hasHotelRoomBookingHistoryFor(String hotelRoomId, String tenantId, List<LocalDate> days) {
+    public HotelBookingHistoryAssertion hasHotelRoomBookingHistoryFor(int hotelRoomNumber, String tenantId, List<LocalDate> days) {
         return hasHotelRoomBookingHistoryFor(hotelRoomBookingHistory -> {
             HotelRoomBookingHistoryAssertion.assertThat(hotelRoomBookingHistory)
-                    .hasHotelRoomIdEqualTo(hotelRoomId)
+                    .hasHotelRoomNumberEqualTo(hotelRoomNumber)
                     .hasHotelRoomBookingFor(tenantId, days);
         });
     }
 
-
-    public HotelBookingHistoryAssertion hasHotelRoomBookingHistoryFor(String tenantId, List<LocalDate> days) {
+    public HotelBookingHistoryAssertion hasInformationAboutHistoryOfHotelRoom(int hotelRoomNumber, int size) {
         return hasHotelRoomBookingHistoryFor(hotelRoomBookingHistory -> {
             HotelRoomBookingHistoryAssertion.assertThat(hotelRoomBookingHistory)
-                    .hasHotelRoomBookingFor(tenantId, days);
-        });
-    }
-
-    public HotelBookingHistoryAssertion hasInformationAboutHistoryOfHotelRoom(String hotelRoomId, int size) {
-        return hasHotelRoomBookingHistoryFor(hotelRoomBookingHistory -> {
-            HotelRoomBookingHistoryAssertion.assertThat(hotelRoomBookingHistory)
-                    .hasHotelRoomIdEqualTo(hotelRoomId)
+                    .hasHotelRoomNumberEqualTo(hotelRoomNumber)
                     .hasInformationAboutBookings(size);
         });
     }

@@ -2,6 +2,7 @@ package info.pionas.rental.domain.apartmentoffer;
 
 import info.pionas.rental.domain.money.Money;
 import info.pionas.rental.domain.offeravailability.OfferAvailability;
+import info.pionas.rental.domain.period.Period;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,11 +27,15 @@ public class ApartmentOffer {
     @Embedded
     private OfferAvailability availability;
 
-    public String id() {
-        return id.toString();
+    public UUID id() {
+        return id;
     }
 
-    static class Builder {
+    public boolean hasAvailabilityWithin(Period period) {
+        return availability.coversAllDaysWithin(period);
+    }
+
+    public static class Builder {
 
         private String apartmentId;
         private BigDecimal price;
@@ -61,12 +66,12 @@ public class ApartmentOffer {
             return new ApartmentOffer(null, apartmentId, money(), availability());
         }
 
-        private Money money() {
-            return Money.of(price);
-        }
-
         private OfferAvailability availability() {
             return OfferAvailability.from(start, end);
+        }
+
+        private Money money() {
+            return Money.of(price);
         }
 
     }

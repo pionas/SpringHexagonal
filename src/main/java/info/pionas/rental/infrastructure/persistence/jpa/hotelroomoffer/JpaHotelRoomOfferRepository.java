@@ -9,19 +9,11 @@ import java.util.UUID;
 
 @Repository
 @RequiredArgsConstructor
-public class JpaHotelRoomOfferRepository implements HotelRoomOfferRepository {
-
-    private final SpringJpaHotelRoomOfferRepository hotelRoomOfferRepository;
-
-    @Override
-    public String save(HotelRoomOffer hotelRoomOffer) {
-        return hotelRoomOfferRepository.save(hotelRoomOffer).id();
-    }
+class JpaHotelRoomOfferRepository implements HotelRoomOfferRepository {
+    private final SpringJpaHotelRoomOfferRepository repository;
 
     @Override
-    public HotelRoomOffer findById(String id) {
-        return hotelRoomOfferRepository.findById(UUID.fromString(id))
-                .orElseThrow(() -> new HotelRoomOfferDoesNotExistException(id));
+    public UUID save(HotelRoomOffer hotelRoomOffer) {
+        return repository.save(hotelRoomOffer).id();
     }
-
 }

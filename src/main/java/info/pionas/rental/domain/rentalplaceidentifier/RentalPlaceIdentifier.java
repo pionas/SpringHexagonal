@@ -1,11 +1,12 @@
-package info.pionas.rental.domain.booking;
+package info.pionas.rental.domain.rentalplaceidentifier;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @Getter
 public class RentalPlaceIdentifier {
     private final RentalType rentalType;

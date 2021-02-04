@@ -18,28 +18,38 @@ public class HotelRoomAssertion {
         return new HotelRoomAssertion(actual);
     }
 
+    public HotelRoomAssertion hasSpacesDefinitionEqualTo(Map<String, Double> expected) {
+        Assertions.assertThat(actual).extracting("spaces").satisfies(spacesActual -> {
+            SpacesAssertion.assertThat((List<Space>) spacesActual)
+                    .hasSize(expected.size())
+                    .hasAllSpacesFrom(expected);
+        });
+
+        return this;
+    }
+
+    public HotelRoomAssertion hasIdEqualTo(UUID expected) {
+        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("id", expected);
+        return this;
+    }
+
     public HotelRoomAssertion hasHotelIdEqualTo(UUID expected) {
         Assertions.assertThat(actual).hasFieldOrPropertyWithValue("hotelId", expected);
         return this;
     }
 
-    public HotelRoomAssertion hasRoomNumberEqualTo(int expected) {
+    public HotelRoomAssertion hasNumberEqualTo(int expected) {
         Assertions.assertThat(actual).hasFieldOrPropertyWithValue("number", expected);
-        return this;
-    }
-
-    public HotelRoomAssertion hasSpacesDefinitionEqualTo(Map<String, Double> expected) {
-        Assertions.assertThat(actual).extracting("spaces").satisfies(spacesActual -> {
-            List<Space> spaces = (List<Space>) spacesActual;
-            SpacesAssertion.assertThat(spaces)
-                    .hasSize(expected.size())
-                    .hasAllSpacesFrom(expected);
-        });
         return this;
     }
 
     public HotelRoomAssertion hasDescriptionEqualTo(String expected) {
         Assertions.assertThat(actual).hasFieldOrPropertyWithValue("description", expected);
+        return this;
+    }
+
+    public HotelRoomAssertion isEqualTo(HotelRoomRequirements requirements) {
+        Assertions.assertThat(actual).isEqualTo(requirements.get());
         return this;
     }
 }

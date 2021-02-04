@@ -4,6 +4,7 @@ import info.pionas.rental.domain.booking.Booking;
 import info.pionas.rental.domain.space.Space;
 import info.pionas.rental.domain.space.SpacesFactory;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Entity
@@ -34,15 +36,9 @@ public class HotelRoom {
     private List<Space> spaces;
     private String description;
 
-    public HotelRoom(UUID hotelId, int number, List<Space> spaces, String description) {
-        this.hotelId = hotelId;
-        this.number = number;
-        this.spaces = spaces;
-        this.description = description;
-    }
+    Booking book(String tenantId, List<LocalDate> days, HotelEventsPublisher hotelEventsPublisher) {
+        hotelEventsPublisher.publishHotelRoomBooked(hotelId(), number, tenantId, days);
 
-    Booking book(String tenantId, List<LocalDate> days, HotelRoomEventsPublisher hotelRoomEventsPublisher) {
-        hotelRoomEventsPublisher.publishHotelRoomBooked(id(), hotelId(), tenantId, days);
         return Booking.hotelRoom(id(), tenantId, days);
     }
 
@@ -50,7 +46,7 @@ public class HotelRoom {
         return getNullable(hotelId);
     }
 
-    public String id() {
+    private String id() {
         return getNullable(id);
     }
 
@@ -127,7 +123,7 @@ public class HotelRoom {
         }
 
         public HotelRoom build() {
-            return new HotelRoom(hotelId, number, spaces(), description);
+            return new HotelRoom(null, hotelId, number, spaces(), description);
         }
 
         private List<Space> spaces() {

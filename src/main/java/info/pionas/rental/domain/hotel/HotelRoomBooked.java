@@ -15,7 +15,7 @@ public class HotelRoomBooked {
 
     private final String eventId;
     private final LocalDateTime eventCreationDateTime;
-    private final String hotelRoomId;
+    private final int hotelRoomNumber;
     private final String hotelId;
     private final String tenantId;
     private final List<LocalDate> days;

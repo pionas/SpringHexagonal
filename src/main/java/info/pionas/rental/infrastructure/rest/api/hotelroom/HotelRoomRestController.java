@@ -1,8 +1,8 @@
 package info.pionas.rental.infrastructure.rest.api.hotelroom;
 
-import info.pionas.rental.application.hotelroom.HotelRoomApplicationService;
-import info.pionas.rental.application.hotelroom.HotelRoomBookingDto;
-import info.pionas.rental.application.hotelroom.HotelRoomDto;
+import info.pionas.rental.application.hotel.HotelApplicationService;
+import info.pionas.rental.application.hotel.HotelRoomBookingDto;
+import info.pionas.rental.application.hotel.HotelRoomDto;
 import info.pionas.rental.query.hotelroom.HotelRoomReadModel;
 import info.pionas.rental.query.hotelroom.QueryHotelRoomRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,24 +10,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/hotelroom")
 public class HotelRoomRestController {
-
-    private final HotelRoomApplicationService hotelRoomApplicationService;
+    private final HotelApplicationService hotelApplicationService;
     private final QueryHotelRoomRepository queryHotelRoomRepository;
 
     @PostMapping
     public ResponseEntity<String> add(@RequestBody HotelRoomDto hotelRoomDto) {
-        String id = hotelRoomApplicationService.add(hotelRoomDto);
-        return ResponseEntity.created(URI.create("/hotelroom/" + id)).build();
+        hotelApplicationService.add(hotelRoomDto);
+        URI uri = URI.create("/hotelroom/" + hotelRoomDto.getHotelId() + "/" + hotelRoomDto.getNumber());
+
+        return ResponseEntity.created(uri).build();
     }
 
-    @PutMapping("/book/{id}")
-    public ResponseEntity<String> book(@PathVariable String id, @RequestBody HotelRoomBookingDto hotelRoomBookingDto) {
-        String bookingId = hotelRoomApplicationService.book(hotelRoomBookingDto);
+    @PutMapping("/book")
+    public ResponseEntity<String> book(@RequestBody HotelRoomBookingDto hotelRoomBookingDto) {
+        UUID bookingId = hotelApplicationService.book(hotelRoomBookingDto);
 
         return ResponseEntity.created(URI.create("/booking/" + bookingId)).build();
     }

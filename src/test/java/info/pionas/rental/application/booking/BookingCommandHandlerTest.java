@@ -3,6 +3,8 @@ package info.pionas.rental.application.booking;
 import info.pionas.rental.domain.booking.*;
 import info.pionas.rental.domain.event.FakeEventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
+import info.pionas.rental.domain.rentalplaceidentifier.RentalPlaceIdentifier;
+import info.pionas.rental.domain.rentalplaceidentifier.RentalPlaceIdentifierFactory;
 import info.pionas.rental.infrastructure.clock.FakeClock;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -82,7 +84,7 @@ class BookingCommandHandlerTest {
     }
 
     private void givenBookings(List<Booking> bookings) {
-        RentalPlaceIdentifier identifier = RentalPlaceIdentifierTestFactory.hotelRoom(RENTAL_PLACE_ID);
+        RentalPlaceIdentifier identifier = RentalPlaceIdentifierFactory.hotelRoom(RENTAL_PLACE_ID);
         given(bookingRepository.findAllBy(identifier)).willReturn(bookings);
     }
 

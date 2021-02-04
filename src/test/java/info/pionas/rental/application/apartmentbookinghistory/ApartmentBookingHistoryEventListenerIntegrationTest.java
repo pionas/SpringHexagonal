@@ -9,8 +9,11 @@ import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingAsserti
 import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingHistory;
 import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingHistoryAssertion;
 import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingHistoryRepository;
+import info.pionas.rental.domain.apartmentoffer.ApartmentOffer;
+import info.pionas.rental.domain.apartmentoffer.ApartmentOfferRepository;
 import info.pionas.rental.infrastructure.persistence.jpa.apartment.SpringJpaApartmentTestRepository;
 import info.pionas.rental.infrastructure.persistence.jpa.apartmentbookinghistory.SpringJpaApartmentBookingHistoryTestRepository;
+import info.pionas.rental.infrastructure.persistence.jpa.apartmentoffer.SpringJpaApartmentOfferTestRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -18,10 +21,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.UUID;
 
 import static info.pionas.rental.domain.apartment.Apartment.Builder.apartment;
+import static info.pionas.rental.domain.apartmentoffer.ApartmentOffer.Builder.apartmentOffer;
 
 @SpringBootTest
 @Tag("IntegrationTest")
@@ -35,6 +41,9 @@ class ApartmentBookingHistoryEventListenerIntegrationTest {
     private static final String COUNTRY = "Poland";
     private static final String DESCRIPTION = "Nice place to stay";
     private static final Map<String, Double> SPACES_DEFINITION = ImmutableMap.of("Toilet", 10.0, "Bedroom", 30.0);
+    private static final BigDecimal PRICE = BigDecimal.valueOf(123.45);
+    private static final LocalDate START = LocalDate.of(2030, 1, 1);
+    private static final LocalDate END = LocalDate.of(2050, 1, 1);
 
     @Autowired
     private ApartmentApplicationService apartmentApplicationService;
@@ -46,24 +55,30 @@ class ApartmentBookingHistoryEventListenerIntegrationTest {
     private ApartmentRepository apartmentRepository;
     @Autowired
     private SpringJpaApartmentTestRepository springJpaApartmentTestRepository;
+    @Autowired
+    private ApartmentOfferRepository apartmentOfferRepository;
+    @Autowired
+    private SpringJpaApartmentOfferTestRepository springJpaApartmentOfferTestRepository;
 
     private String apartmentId;
+    private UUID apartmentOfferId;
 
     @AfterEach
     void removeApartment() {
         springJpaApartmentTestRepository.deleteById(apartmentId);
         springJpaApartmentBookingHistoryTestRepository.deleteById(apartmentId);
+        springJpaApartmentOfferTestRepository.deleteById(apartmentOfferId);
     }
 
     @Test
     @Transactional
     void shouldUpdateApartmentBookingHistory() {
         String tenantId = "11223344";
-        LocalDate start = LocalDate.of(2020, 1, 13);
-        LocalDate end = LocalDate.of(2020, 1, 14);
-        givenExistingApartment();
-
+        LocalDate start = LocalDate.of(2040, 1, 13);
+        LocalDate end = LocalDate.of(2040, 1, 14);
+        givenExistingApartmentWithOffer();
         ApartmentBookingDto apartmentBookingDto = new ApartmentBookingDto(apartmentId, tenantId, start, end);
+
         apartmentApplicationService.book(apartmentBookingDto);
         ApartmentBookingHistory actual = apartmentBookingHistoryRepository.findFor(apartmentId);
 
@@ -77,8 +92,17 @@ class ApartmentBookingHistoryEventListenerIntegrationTest {
                 });
     }
 
-    private void givenExistingApartment() {
+    private void givenExistingApartmentWithOffer() {
         apartmentId = apartmentRepository.save(createApartment());
+        apartmentOfferId = apartmentOfferRepository.save(createApartmentOffer());
+    }
+
+    private ApartmentOffer createApartmentOffer() {
+        return apartmentOffer()
+                .withApartmentId(apartmentId)
+                .withPrice(PRICE)
+                .withAvailability(START, END)
+                .build();
     }
 
     private Apartment createApartment() {

@@ -12,12 +12,11 @@ import java.time.LocalDate;
 public class HotelRoomOfferDto {
     private final String hotelId;
     private final int number;
-    private final String hotelRoomId;
     private final BigDecimal price;
     private final LocalDate start;
     private final LocalDate end;
 
-    public CreateHotelRoomOffer asDto() {
-        return new CreateHotelRoomOffer(getNumber(), getHotelRoomId(), getPrice(), getStart(), getEnd());
+    CreateHotelRoomOffer asDto() {
+        return new CreateHotelRoomOffer(getHotelId(), getNumber(), getPrice(), getStart(), getEnd());
     }
 }

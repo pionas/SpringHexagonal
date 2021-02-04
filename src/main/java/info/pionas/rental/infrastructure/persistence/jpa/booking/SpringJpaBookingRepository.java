@@ -1,7 +1,7 @@
 package info.pionas.rental.infrastructure.persistence.jpa.booking;
 
 import info.pionas.rental.domain.booking.Booking;
-import info.pionas.rental.domain.booking.RentalType;
+import info.pionas.rental.domain.rentalplaceidentifier.RentalType;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static info.pionas.rental.domain.booking.BookingAccepted.Builder.bookingAccepted;
-import static info.pionas.rental.domain.booking.RentalType.APARTMENT;
+import static info.pionas.rental.domain.rentalplaceidentifier.RentalType.APARTMENT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class BookingAcceptedTest {

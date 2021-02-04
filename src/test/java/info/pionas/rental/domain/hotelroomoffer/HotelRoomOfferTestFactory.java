@@ -11,9 +11,10 @@ import static info.pionas.rental.domain.hotelroomoffer.HotelRoomOffer.Builder.ho
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class HotelRoomOfferTestFactory {
 
-    public static HotelRoomOffer create(String hotelRoomId, BigDecimal price, LocalDate start, LocalDate end) {
+    public static HotelRoomOffer create(String hotelId, int hotelRoomNumber, BigDecimal price, LocalDate start, LocalDate end) {
         return hotelRoomOffer()
-                .withHotelRoomId(hotelRoomId)
+                .withHotelId(hotelId)
+                .withHotelRoomNumber(hotelRoomNumber)
                 .withPrice(price)
                 .withAvailability(start, end)
                 .build();
