@@ -17,8 +17,8 @@ class ApartmentOfferAssertion {
         return new ApartmentOfferAssertion(actual);
     }
 
-    public ApartmentOfferAssertion hasIdEqualTo(String expected) {
-        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("id", UUID.fromString(expected));
+    public ApartmentOfferAssertion hasIdEqualTo(UUID expected) {
+        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("id", expected);
         return this;
     }
 
@@ -35,9 +35,8 @@ class ApartmentOfferAssertion {
 
     public ApartmentOfferAssertion hasAvailabilityEqualTo(LocalDate start, LocalDate end) {
         Assertions.assertThat(actual).extracting("availability")
-                .hasFieldOrPropertyWithValue("periodStart", start)
-                .hasFieldOrPropertyWithValue("periodEnd", end)
-        ;
+                .hasFieldOrPropertyWithValue("start", start)
+                .hasFieldOrPropertyWithValue("end", end);
         return this;
     }
 }

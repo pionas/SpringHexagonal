@@ -2,7 +2,6 @@ package info.pionas.rental.domain.hotel;
 
 import info.pionas.rental.domain.address.Address;
 import info.pionas.rental.domain.booking.Booking;
-import info.pionas.rental.domain.hotelroomoffer.HotelRoomNotFoundException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -51,22 +50,20 @@ public class Hotel {
                 .withSpacesDefinition(spacesDefinition)
                 .withDescription(description)
                 .build();
+
         hotelRooms.add(hotelRoom);
     }
 
-    public String getIdOfRoom(int number) {
-        return getHotelRooms(number).id();
+
+    public Booking bookRoom(int number, String tenantId, List<LocalDate> days, HotelEventsPublisher hotelEventsPublisher) {
+        return getHotelRoom(number).book(tenantId, days, hotelEventsPublisher);
     }
 
-    private HotelRoom getHotelRooms(int number) {
+    private HotelRoom getHotelRoom(int number) {
         return hotelRooms.stream()
                 .filter(hotelRoom -> hotelRoom.hasNumberEqualTo(number))
                 .findFirst()
-                .orElseThrow(() -> HotelRoomNotFoundException.ofHotelNumber(number));
-    }
-
-    public Booking bookRoom(int number, String tenantId, List<LocalDate> days, HotelRoomEventsPublisher hotelRoomEventsPublisher) {
-        return getHotelRooms(number).book(tenantId, days, hotelRoomEventsPublisher);
+                .get();
     }
 
     public boolean hasRoomWithNumber(int number) {

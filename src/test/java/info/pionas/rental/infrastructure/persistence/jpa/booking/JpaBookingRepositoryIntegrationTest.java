@@ -3,6 +3,7 @@ package info.pionas.rental.infrastructure.persistence.jpa.booking;
 import info.pionas.rental.domain.booking.Booking;
 import info.pionas.rental.domain.money.Money;
 import info.pionas.rental.domain.period.Period;
+import info.pionas.rental.domain.rentalplaceidentifier.RentalPlaceIdentifierFactory;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Tag;
@@ -19,7 +20,6 @@ import java.util.UUID;
 
 import static info.pionas.rental.domain.booking.BookingAssertion.assertThat;
 import static java.util.Arrays.asList;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Tag("DomainRepositoryIntegrationTest")
@@ -34,11 +34,11 @@ class JpaBookingRepositoryIntegrationTest {
     private JpaBookingRepository repository;
     @Autowired
     private SpringJpaBookingRepository jpaRepository;
-    private final List<String> bookingIds = new ArrayList<>();
+    private final List<UUID> bookingIds = new ArrayList<>();
 
     @AfterEach
     void deleteBooking() {
-        bookingIds.forEach(id -> jpaRepository.deleteById(UUID.fromString(id)));
+        bookingIds.forEach(id -> jpaRepository.deleteById(id));
     }
 
     @Test
@@ -46,16 +46,13 @@ class JpaBookingRepositoryIntegrationTest {
     void shouldFindExistingBooking() {
         String rentalPlaceId = randomId();
         Booking booking = Booking.hotelRoom(rentalPlaceId, TENANT_ID, DAYS);
-        String bookingId = save(booking);
+        UUID bookingId = save(booking);
 
-        Booking actual = repository.findById(bookingId);
+        Booking actual = repository.findById(bookingId.toString());
 
         assertThat(actual)
                 .isOpen()
-                .isHotelRoom()
-                .hasRentalPlaceIdEqualTo(rentalPlaceId)
-                .hasTenantIdEqualTo(TENANT_ID)
-                .containsAllDays(DAYS);
+                .isEqualToBookingHotelRoom(rentalPlaceId, TENANT_ID, DAYS);
     }
 
     @Test
@@ -63,9 +60,9 @@ class JpaBookingRepositoryIntegrationTest {
         String rentalPlaceId1 = randomId();
         String rentalPlaceId2 = randomId();
         Booking booking = Booking.hotelRoom(rentalPlaceId1, TENANT_ID, DAYS);
-        String bookingId = save(booking);
-        String bookingId1 = save(Booking.hotelRoom(rentalPlaceId1, TENANT_ID, DAYS));
-        String bookingId2 = save(Booking.hotelRoom(rentalPlaceId1, TENANT_ID, DAYS));
+        UUID bookingId = save(booking);
+        UUID bookingId1 = save(Booking.hotelRoom(rentalPlaceId1, TENANT_ID, DAYS));
+        UUID bookingId2 = save(Booking.hotelRoom(rentalPlaceId1, TENANT_ID, DAYS));
         save(Booking.hotelRoom(rentalPlaceId2, TENANT_ID, DAYS));
         save(Booking.apartment(rentalPlaceId2, TENANT_ID, OWNER_ID, MONEY, PERIOD));
         save(Booking.apartment(rentalPlaceId1, TENANT_ID, OWNER_ID, MONEY, PERIOD));
@@ -80,31 +77,12 @@ class JpaBookingRepositoryIntegrationTest {
     }
 
     @Test
-    void shouldFindAcceptedBookingsByRentalPlaceIdentifier() {
-        String rentalPlaceId1 = randomId();
-        String rentalPlaceId2 = randomId();
-        Booking booking = Booking.hotelRoom(rentalPlaceId1, TENANT_ID, DAYS);
-        save(Booking.hotelRoom(rentalPlaceId2, TENANT_ID, DAYS));
-        save(Booking.apartment(rentalPlaceId2, TENANT_ID, OWNER_ID, MONEY, PERIOD));
-        save(Booking.apartment(rentalPlaceId1, TENANT_ID, OWNER_ID, MONEY, PERIOD));
-
-        List<Booking> actual = repository.findAllAcceptedBy(booking.rentalPlaceIdentifier());
-
-        Assertions.assertThat(actual)
-                .hasSize(0);
+    void shouldFindNoAcceptedBookingsByRentalPlaceIdentifier() {
+        repository.findAllAcceptedBy(RentalPlaceIdentifierFactory.apartment(randomId()));
     }
 
-    @Test
-    void shouldThrowExceptionWhenBookingDoesNotExist() {
-        String id = randomId();
-
-        BookingDoesNotExistException actual = assertThrows(BookingDoesNotExistException.class, () -> repository.findById(id));
-
-        Assertions.assertThat(actual).hasMessage("Booking with id " + id + " does not exist");
-    }
-
-    private String save(Booking booking) {
-        String bookingId = repository.save(booking);
+    private UUID save(Booking booking) {
+        UUID bookingId = repository.save(booking);
         bookingIds.add(bookingId);
 
         return bookingId;

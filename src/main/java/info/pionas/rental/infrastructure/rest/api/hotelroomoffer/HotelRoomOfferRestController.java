@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,7 +20,7 @@ public class HotelRoomOfferRestController {
 
     @PostMapping
     public ResponseEntity<String> add(@RequestBody HotelRoomOfferDto hotelRoomOfferDto) {
-        String hotelRoomOfferId = hotelRoomOfferApplicationService.add(hotelRoomOfferDto);
+        UUID hotelRoomOfferId = hotelRoomOfferApplicationService.add(hotelRoomOfferDto);
         return ResponseEntity.created(URI.create("/hotelroomoffer/" + hotelRoomOfferId)).build();
     }
 }

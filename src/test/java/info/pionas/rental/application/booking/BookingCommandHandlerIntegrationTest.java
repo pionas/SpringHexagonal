@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 import static java.util.Arrays.asList;
 
@@ -25,7 +26,7 @@ class BookingCommandHandlerIntegrationTest {
     @Autowired
     private SpringJpaBookingTestRepository springJpaBookingTestRepository;
 
-    private String bookingId;
+    private UUID bookingId;
 
     @AfterEach
     void removeBookings() {
@@ -36,8 +37,8 @@ class BookingCommandHandlerIntegrationTest {
     void shouldAcceptBooking() {
         givenOpenBooking();
 
-        controller.accept(bookingId);
-        Booking actual = bookingRepository.findById(bookingId);
+        controller.accept(bookingId.toString());
+        Booking actual = bookingRepository.findById(bookingId.toString());
 
         BookingAssertion.assertThat(actual).isAccepted();
     }
@@ -46,8 +47,8 @@ class BookingCommandHandlerIntegrationTest {
     void shouldRejectBooking() {
         givenOpenBooking();
 
-        controller.reject(bookingId);
-        Booking actual = bookingRepository.findById(bookingId);
+        controller.reject(bookingId.toString());
+        Booking actual = bookingRepository.findById(bookingId.toString());
 
         BookingAssertion.assertThat(actual).isRejected();
     }

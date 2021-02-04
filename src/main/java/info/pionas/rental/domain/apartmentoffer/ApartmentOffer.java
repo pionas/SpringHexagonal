@@ -1,6 +1,7 @@
 package info.pionas.rental.domain.apartmentoffer;
 
 import info.pionas.rental.domain.money.Money;
+import info.pionas.rental.domain.offeravailability.OfferAvailability;
 import info.pionas.rental.domain.period.Period;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,10 +25,16 @@ public class ApartmentOffer {
     @Embedded
     private Money money;
     @Embedded
-    private Period availability;
+    private OfferAvailability availability;
 
-    public String id() {
-        return id.toString();
+    private ApartmentOffer(String apartmentId, Money money, OfferAvailability availability) {
+        this.apartmentId = apartmentId;
+        this.money = money;
+        this.availability = availability;
+    }
+
+    public UUID id() {
+        return id;
     }
 
     public boolean hasAvailabilityWithin(Period period) {
@@ -62,15 +69,15 @@ public class ApartmentOffer {
         }
 
         public ApartmentOffer build() {
-            return new ApartmentOffer(null, apartmentId, money(), availability());
+            return new ApartmentOffer(apartmentId, money(), availability());
+        }
+
+        private OfferAvailability availability() {
+            return OfferAvailability.from(start, end);
         }
 
         private Money money() {
             return Money.of(price);
-        }
-
-        private Period availability() {
-            return Period.from(start, end);
         }
 
     }

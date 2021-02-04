@@ -7,7 +7,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import javax.persistence.Embeddable;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -19,30 +20,31 @@ public class Period {
     private LocalDate periodStart;
     private LocalDate periodEnd;
 
+    public static Period from(LocalDate start, LocalDate end) {
+        if (start.isBefore(LocalDate.now())) {
+            throw PeriodException.startDateFromPast(start);
+        }
+
+        if (start.isAfter(end)) {
+            throw PeriodException.startAfterEnd(start, end);
+        }
+
+        return new Period(start, end);
+    }
+
     public List<LocalDate> asDays() {
-        return periodStart.datesUntil(periodEnd.plusDays(1)).collect(Collectors.toList());
+        List<LocalDate> dates = periodStart.datesUntil(periodEnd).collect(toList());
+        dates.add(periodEnd);
+
+        return dates;
     }
 
     public boolean contains(LocalDate day) {
         return asDays().contains(day);
     }
 
-    public static Period from(LocalDate start, LocalDate end) {
-        if (start.isAfter(end)) {
-            throw PeriodException.startAfterEnd(start, end);
-        }
-        if (start.isBefore(LocalDate.now())) {
-            throw PeriodException.startFromPast(start);
-        }
-        return new Period(start, end);
-    }
-
-    public static Period fromStart(LocalDate start) {
-        return from(start, start.plusYears(1));
-    }
-
-    public boolean coversAllDaysWithin(Period period) {
-        return !period.getPeriodStart().isBefore(periodStart) && !period.getPeriodEnd().isAfter(periodEnd);
+    public boolean isWithin(LocalDate start, LocalDate end) {
+        return !periodStart.isBefore(start) && !periodEnd.isAfter(end);
     }
 
     @Override

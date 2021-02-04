@@ -34,15 +34,16 @@ public class HotelRoom {
     private List<Space> spaces;
     private String description;
 
-    public HotelRoom(UUID hotelId, int number, List<Space> spaces, String description) {
+    private HotelRoom(UUID hotelId, int number, List<Space> spaces, String description) {
         this.hotelId = hotelId;
         this.number = number;
         this.spaces = spaces;
         this.description = description;
     }
 
-    Booking book(String tenantId, List<LocalDate> days, HotelRoomEventsPublisher hotelRoomEventsPublisher) {
-        hotelRoomEventsPublisher.publishHotelRoomBooked(id(), hotelId(), tenantId, days);
+    Booking book(String tenantId, List<LocalDate> days, HotelEventsPublisher hotelEventsPublisher) {
+        hotelEventsPublisher.publishHotelRoomBooked(hotelId(), number, tenantId, days);
+
         return Booking.hotelRoom(id(), tenantId, days);
     }
 
@@ -50,7 +51,7 @@ public class HotelRoom {
         return getNullable(hotelId);
     }
 
-    public String id() {
+    private String id() {
         return getNullable(id);
     }
 

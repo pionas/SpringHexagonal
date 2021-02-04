@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.UUID;
 
 
 @RequiredArgsConstructor
@@ -29,7 +30,7 @@ public class ApartmentRestController {
 
     @PutMapping("/book/{id}")
     public ResponseEntity<String> book(@RequestBody ApartmentBookingDto apartmentBookingDto) {
-        String bookingId = apartmentApplicationService.book(apartmentBookingDto);
+        UUID bookingId = apartmentApplicationService.book(apartmentBookingDto);
 
         return ResponseEntity.created(URI.create("/booking/" + bookingId)).build();
     }

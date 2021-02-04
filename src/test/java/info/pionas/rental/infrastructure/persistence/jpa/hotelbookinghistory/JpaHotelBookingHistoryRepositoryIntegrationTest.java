@@ -53,18 +53,18 @@ class JpaHotelBookingHistoryRepositoryIntegrationTest {
     @Transactional
     void shouldFindExistingHotelBookingHistory() {
         hotelId = randomId();
-        String hotelRoomId = randomId();
+        int hotelRoomNumber = 78;
         LocalDateTime bookingDateTime = LocalDateTime.now();
         String tenantId = randomId();
         List<LocalDate> days = asList(LocalDate.now());
         HotelBookingHistory hotelBookingHistory = new HotelBookingHistory(hotelId);
-        hotelBookingHistory.add(hotelRoomId, bookingDateTime, tenantId, days);
+        hotelBookingHistory.add(hotelRoomNumber, bookingDateTime, tenantId, days);
         repository.save(hotelBookingHistory);
 
         HotelBookingHistory actual = repository.findFor(hotelId);
 
         HotelBookingHistoryAssertion
-                .assertThat(actual).hasHotelRoomBookingHistoryFor(hotelRoomId, bookingDateTime, tenantId, days);
+                .assertThat(actual).hasHotelRoomBookingHistoryFor(hotelRoomNumber, bookingDateTime, tenantId, days);
     }
 
     private String randomId() {

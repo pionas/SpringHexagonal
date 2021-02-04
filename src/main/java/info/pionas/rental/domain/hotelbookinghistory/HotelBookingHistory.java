@@ -1,6 +1,8 @@
 package info.pionas.rental.domain.hotelbookinghistory;
 
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -27,22 +29,43 @@ public class HotelBookingHistory {
         this.hotelId = hotelId;
     }
 
-    public void add(String hotelRoomId, LocalDateTime bookingDateTime, String tenantId, List<LocalDate> days) {
-        HotelRoomBookingHistory hotelRoomBookingHistory = findFor(hotelRoomId);
+    public void add(int hotelRoomNumber, LocalDateTime bookingDateTime, String tenantId, List<LocalDate> days) {
+        HotelRoomBookingHistory hotelRoomBookingHistory = findFor(hotelRoomNumber);
         hotelRoomBookingHistory.add(bookingDateTime, tenantId, days);
-
     }
 
-    private HotelRoomBookingHistory findFor(String hotelRoomId) {
+    private HotelRoomBookingHistory findFor(int hotelRoomNumber) {
         Optional<HotelRoomBookingHistory> history = hotelRoomBookingHistories.stream()
-                .filter(hotelRoomBookingHistory -> hotelRoomBookingHistory.hasIdEqualTo(hotelRoomId))
+                .filter(hotelRoomBookingHistory -> hotelRoomBookingHistory.hasNumberEqualTo(hotelRoomNumber))
                 .findFirst();
+
         if (history.isEmpty()) {
-            HotelRoomBookingHistory hotelRoomBookingHistory = new HotelRoomBookingHistory(hotelRoomId);
+            HotelRoomBookingHistory hotelRoomBookingHistory = new HotelRoomBookingHistory(hotelRoomNumber);
             hotelRoomBookingHistories.add(hotelRoomBookingHistory);
             return hotelRoomBookingHistory;
+        } else {
+            return history.get();
         }
-        return history.get();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        HotelBookingHistory that = (HotelBookingHistory) o;
+
+        return new EqualsBuilder().append(hotelId, that.hotelId).isEquals();
+    }
+
+    @Override
+    @SuppressWarnings("checkstyle:MagicNumber")
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(hotelId).toHashCode();
+    }
 }

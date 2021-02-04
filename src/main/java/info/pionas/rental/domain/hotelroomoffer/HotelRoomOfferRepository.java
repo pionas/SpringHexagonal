@@ -1,7 +1,7 @@
 package info.pionas.rental.domain.hotelroomoffer;
 
-public interface HotelRoomOfferRepository {
-    String save(HotelRoomOffer hotelRoomOffer);
+import java.util.UUID;
 
-    HotelRoomOffer findById(String id);
+public interface HotelRoomOfferRepository {
+    UUID save(HotelRoomOffer hotelRoomOffer);
 }

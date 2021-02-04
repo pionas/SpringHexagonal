@@ -1,12 +1,9 @@
 package info.pionas.rental.domain.apartmentoffer;
 
-import org.springframework.stereotype.Repository;
+import java.util.UUID;
 
-@Repository
 public interface ApartmentOfferRepository {
-    String save(ApartmentOffer apartmentOffer);
-
-    ApartmentOffer findById(String id);
+    UUID save(ApartmentOffer apartmentOffer);
 
     boolean existByApartmentId(String apartmentId);
 

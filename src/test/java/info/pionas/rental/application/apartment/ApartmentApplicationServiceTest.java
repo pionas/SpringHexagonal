@@ -27,6 +27,7 @@ import org.mockito.ArgumentCaptor;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.UUID;
 
 import static info.pionas.rental.domain.apartment.Apartment.Builder.apartment;
 import static java.util.Arrays.asList;
@@ -53,7 +54,7 @@ class ApartmentApplicationServiceTest {
     private static final String TENANT_ID = "137";
     private static final LocalDate START = LocalDate.of(2040, 3, 4);
     private static final LocalDate END = LocalDate.of(2040, 3, 6);
-    private static final String BOOKING_ID = "8394234";
+    private static final UUID BOOKING_ID = UUID.randomUUID();
     private static final String NO_ID = null;
     private static final LocalDate BEFORE_START = START.minusDays(1);
     private static final LocalDate AFTER_START = START.plusDays(1);
@@ -181,7 +182,7 @@ class ApartmentApplicationServiceTest {
         givenExistingTenantAndApartmentWithNoBookings();
         given(bookingRepository.save(any())).willReturn(BOOKING_ID);
 
-        String actual = service.book(givenBookApartmentDto());
+        UUID actual = service.book(givenBookApartmentDto());
 
         Assertions.assertThat(actual).isEqualTo(BOOKING_ID);
     }

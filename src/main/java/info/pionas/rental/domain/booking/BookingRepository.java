@@ -4,12 +4,13 @@ import info.pionas.rental.domain.rentalplaceidentifier.RentalPlaceIdentifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @Repository
 public interface BookingRepository {
 
-    String save(Booking booking);
+    UUID save(Booking booking);
 
     Booking findById(String id);
 

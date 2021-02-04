@@ -9,13 +9,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class HotelRoomEventsPublisher {
+public class HotelEventsPublisher {
     private final EventIdFactory eventIdFactory;
     private final Clock clock;
     private final EventChannel eventChannel;
 
-    void publishHotelRoomBooked(String hotelRoomId, String hotelId, String tenantId, List<LocalDate> days) {
-        HotelRoomBooked hotelRoomBooked = new HotelRoomBooked(eventIdFactory.create(), clock.now(), hotelRoomId, hotelId, tenantId, days);
+
+    void publishHotelRoomBooked(String hotelId, int hotelRoomNumber, String tenantId, List<LocalDate> days) {
+        HotelRoomBooked hotelRoomBooked = new HotelRoomBooked(eventIdFactory.create(), clock.now(), hotelRoomNumber, hotelId, tenantId, days);
         eventChannel.publish(hotelRoomBooked);
     }
 }

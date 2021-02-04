@@ -78,8 +78,8 @@ public class Booking {
         bookingEventsPublisher.bookingAccepted(rentalType, rentalPlaceId, tenantId, days);
     }
 
-    public String id() {
-        return id.toString();
+    public UUID id() {
+        return getId();
     }
 
     public boolean hasCollisionWith(Booking booking) {
@@ -110,6 +110,10 @@ public class Booking {
 
         Booking booking = (Booking) o;
 
+        if (!days.containsAll(booking.days)) {
+            return false;
+        }
+
         return new EqualsBuilder()
                 .append(rentalType, booking.rentalType)
                 .append(rentalPlaceId, booking.rentalPlaceId)
@@ -119,8 +123,8 @@ public class Booking {
                 .isEquals();
     }
 
-    @SuppressWarnings("checkstyle:MagicNumber")
     @Override
+    @SuppressWarnings("checkstyle:MagicNumber")
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
                 .append(rentalType)

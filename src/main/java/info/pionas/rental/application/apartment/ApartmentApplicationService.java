@@ -9,6 +9,8 @@ import info.pionas.rental.domain.booking.Booking;
 import info.pionas.rental.domain.booking.BookingRepository;
 import lombok.RequiredArgsConstructor;
 
+import java.util.UUID;
+
 @RequiredArgsConstructor
 public class ApartmentApplicationService {
 
@@ -23,7 +25,7 @@ public class ApartmentApplicationService {
         return apartmentRepository.save(apartment);
     }
 
-    public String book(ApartmentBookingDto apartmentBookingDto) {
+    public UUID book(ApartmentBookingDto apartmentBookingDto) {
         Booking booking = apartmentDomainService.book(apartmentBookingDto.asNewApartmentBookingDto());
 
         return bookingRepository.save(booking);

@@ -7,7 +7,6 @@ import info.pionas.rental.application.apartmentoffer.ApartmentOfferDto;
 import info.pionas.rental.infrastructure.json.JsonFactory;
 import info.pionas.rental.infrastructure.persistence.jpa.apartment.SpringJpaApartmentTestRepository;
 import info.pionas.rental.infrastructure.persistence.jpa.apartmentbookinghistory.SpringJpaApartmentBookingHistoryTestRepository;
-import info.pionas.rental.infrastructure.persistence.jpa.apartmentoffer.SpringJpaApartmentOfferTestRepository;
 import info.pionas.rental.infrastructure.persistence.jpa.booking.SpringJpaBookingTestRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Tag;
@@ -49,7 +48,6 @@ class BookingRestControllerSystemTest {
     private final JsonFactory jsonFactory = new JsonFactory();
     private final List<String> apartmentIds = new ArrayList<>();
     private final List<String> bookingIds = new ArrayList<>();
-    private String apartmentOfferId;
 
     @Autowired
     private MockMvc mockMvc;
@@ -59,17 +57,12 @@ class BookingRestControllerSystemTest {
     private SpringJpaApartmentBookingHistoryTestRepository apartmentBookingHistoryRepository;
     @Autowired
     private SpringJpaBookingTestRepository bookingRepository;
-    @Autowired
-    private SpringJpaApartmentOfferTestRepository apartmentOfferRepository;
 
     @AfterEach
     void deleteBookings() {
         apartmentRepository.deleteAll(apartmentIds);
         apartmentBookingHistoryRepository.deleteAll(apartmentIds);
         bookingRepository.deleteAll(bookingIds);
-        if (apartmentOfferId != null) {
-            apartmentOfferRepository.deleteById(apartmentOfferId);
-        }
     }
 
     @Test

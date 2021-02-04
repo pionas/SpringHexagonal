@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 class HotelRoomOfferApplicationServiceFactory {
     @Bean
-    HotelRoomOfferApplicationService create(HotelRoomOfferRepository repository, HotelRepository hotelRepository) {
-        return new HotelRoomOfferApplicationService(repository, hotelRepository, new HotelRoomOfferDomainService());
+    HotelRoomOfferApplicationService hotelRoomOfferApplicationService(HotelRoomOfferRepository hotelRoomOfferRepository, HotelRepository hotelRepository) {
+        return new HotelRoomOfferApplicationService(hotelRoomOfferRepository, hotelRepository, new HotelRoomOfferDomainService());
     }
 }

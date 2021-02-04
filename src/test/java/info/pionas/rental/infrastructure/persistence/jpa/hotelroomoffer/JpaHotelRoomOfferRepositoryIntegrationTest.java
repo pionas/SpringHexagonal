@@ -23,76 +23,33 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 @Tag("DomainRepositoryIntegrationTest")
 class JpaHotelRoomOfferRepositoryIntegrationTest {
-    private static final String HOTEL_ROOM_ID = "1234";
-    private static final BigDecimal PRICE = BigDecimal.valueOf(123);
-    private static final LocalDate START = LocalDate.now();
-    private static final LocalDate END = START.plusDays(6);
+    private static final String HOTEL_ID = "1234";
+    private static final int HOTEL_ROOM_NUMBER = 213131;
+    private static final BigDecimal PRICE = BigDecimal.valueOf(42.13);
+    private static final LocalDate START = LocalDate.of(2040, 12, 10);
+    private static final LocalDate END = LocalDate.of(2041, 12, 20);
 
-    @Autowired
-    private HotelRoomOfferRepository hotelRoomOfferRepository;
-    @Autowired
-    private SpringJpaHotelRoomOfferTestRepository springJpaHotelRoomOfferTestRepository;
+    @Autowired private JpaHotelRoomOfferRepository jpaHotelRoomOfferRepository;
+    @Autowired private SpringJpaHotelRoomOfferRepository springJpaHotelRoomOfferRepository;
 
-    private final List<String> hotelRoomOfferIds = new ArrayList<>();
+    private UUID hotelRoomOfferId;
 
     @AfterEach
-    void deleteHotelRoomOffers() {
-        springJpaHotelRoomOfferTestRepository.deleteAll(hotelRoomOfferIds);
+    void deleteHotelRoomOffer() {
+        springJpaHotelRoomOfferRepository.deleteById(hotelRoomOfferId);
     }
 
     @Test
-    void shouldThrowExceptionWhenHotelRoomOfferDoesNotExist() {
-        String nonExistingHotelRoomOfferId = UUID.randomUUID().toString();
+    void shouldSaveHotelRoomOffer() {
+        HotelRoomOffer hotelRoomOffer = HotelRoomOfferTestFactory.create(HOTEL_ID, HOTEL_ROOM_NUMBER, PRICE, START, END);
 
-        HotelRoomOfferDoesNotExistException actual = assertThrows(HotelRoomOfferDoesNotExistException.class, () -> {
-            hotelRoomOfferRepository.findById(nonExistingHotelRoomOfferId);
-        });
+        hotelRoomOfferId = jpaHotelRoomOfferRepository.save(hotelRoomOffer);
 
-        assertThat(actual).hasMessage("Hotel room offer with id " + nonExistingHotelRoomOfferId + " does not exist");
-    }
-
-    @Test
-    @Transactional
-    void shouldReturnExistingHotelRoomOffer() {
-        String existingId = givenExistingHotelRoomOffer(createHotelRoomOffer());
-
-        HotelRoomOffer actual = hotelRoomOfferRepository.findById(existingId);
-
-        HotelRoomOfferAssertion.assertThat(actual)
-                .hasIdEqualTo(existingId)
-                .hasHotelRoomIdEqualTo(HOTEL_ROOM_ID)
+        HotelRoomOfferAssertion.assertThat(springJpaHotelRoomOfferRepository.findById(hotelRoomOfferId).get())
+                .hasIdEqualTo(hotelRoomOfferId)
+                .hasHotelIdEqualTo(HOTEL_ID)
+                .hasHotelRoomNumberEqualTo(HOTEL_ROOM_NUMBER)
                 .hasPriceEqualTo(PRICE)
                 .hasAvailabilityEqualTo(START, END);
-    }
-
-    @Test
-    @Transactional
-    void shouldReturnExistingHotelRoomOfferWeWant() {
-        HotelRoomOffer hotelRoomOffer1 = HotelRoomOfferTestFactory.create(HOTEL_ROOM_ID, BigDecimal.valueOf(190), START, END);
-        givenExistingHotelRoomOffer(hotelRoomOffer1);
-        String existingId = givenExistingHotelRoomOffer(createHotelRoomOffer());
-        HotelRoomOffer hotelRoom2 = HotelRoomOfferTestFactory.create(HOTEL_ROOM_ID, BigDecimal.valueOf(190), START, END);
-        givenExistingHotelRoomOffer(hotelRoom2);
-        HotelRoomOffer hotelRoom3 = HotelRoomOfferTestFactory.create(HOTEL_ROOM_ID, BigDecimal.valueOf(190), START, END);
-        givenExistingHotelRoomOffer(hotelRoom3);
-
-        HotelRoomOffer actual = hotelRoomOfferRepository.findById(existingId);
-
-        HotelRoomOfferAssertion.assertThat(actual)
-                .hasIdEqualTo(existingId)
-                .hasHotelRoomIdEqualTo(HOTEL_ROOM_ID)
-                .hasPriceEqualTo(PRICE)
-                .hasAvailabilityEqualTo(START, END);
-    }
-
-    private String givenExistingHotelRoomOffer(HotelRoomOffer hotelRoomOffer) {
-        String hotelRoomOfferId = hotelRoomOfferRepository.save(hotelRoomOffer);
-        hotelRoomOfferIds.add(hotelRoomOfferId);
-
-        return hotelRoomOfferId;
-    }
-
-    private HotelRoomOffer createHotelRoomOffer() {
-        return HotelRoomOfferTestFactory.create(HOTEL_ROOM_ID, PRICE, START, END);
     }
 }

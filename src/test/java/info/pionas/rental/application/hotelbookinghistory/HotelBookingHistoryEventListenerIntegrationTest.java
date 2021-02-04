@@ -1,8 +1,8 @@
 package info.pionas.rental.application.hotelbookinghistory;
 
 import com.google.common.collect.ImmutableMap;
-import info.pionas.rental.application.hotelroom.HotelRoomApplicationService;
-import info.pionas.rental.application.hotelroom.HotelRoomBookingDto;
+import info.pionas.rental.application.hotel.HotelApplicationService;
+import info.pionas.rental.application.hotel.HotelRoomBookingDto;
 import info.pionas.rental.domain.hotel.Hotel;
 import info.pionas.rental.domain.hotel.HotelRepository;
 import info.pionas.rental.domain.hotelbookinghistory.HotelBookingHistory;
@@ -20,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import static info.pionas.rental.domain.hotel.Hotel.Builder.hotel;
 import static java.util.Arrays.asList;
@@ -27,12 +28,12 @@ import static java.util.Arrays.asList;
 @SpringBootTest
 @Tag("IntegrationTest")
 class HotelBookingHistoryEventListenerIntegrationTest {
-    private static final int HOTEL_NUMBER = 42;
-    private static final ImmutableMap<String, Double> SPACES_DEFINITION = ImmutableMap.of("Room1", 30.0);
-    private static final String DESCRIPTION = "This is very nice place";
+    private static final int HOTEL_ROOM_NUMBER = 13;
+    private static final Map<String, Double> SPACES_DEFINITION = ImmutableMap.of("RoomOne", 20.0, "RoomTwo", 20.0);
+    private static final String DESCRIPTION = "What a lovely place";
 
     @Autowired
-    private HotelRoomApplicationService hotelRoomApplicationService;
+    private HotelApplicationService hotelApplicationService;
     @Autowired
     private HotelBookingHistoryRepository hotelBookingHistoryRepository;
     @Autowired
@@ -41,15 +42,15 @@ class HotelBookingHistoryEventListenerIntegrationTest {
     private HotelRepository hotelRepository;
     @Autowired
     private SpringJpaHotelTestRepository springJpaHotelTestRepository;
-    private String hotelId;
 
+    private String hotelId;
 
     @BeforeEach
     void givenExistingHotelRoom() {
         Hotel hotel = hotel().withName("Great hotel").build();
         hotelId = hotelRepository.save(hotel);
 
-        hotel.addRoom(HOTEL_NUMBER, SPACES_DEFINITION, DESCRIPTION);
+        hotel.addRoom(HOTEL_ROOM_NUMBER, SPACES_DEFINITION, DESCRIPTION);
         hotelRepository.save(hotel);
     }
 
@@ -64,12 +65,11 @@ class HotelBookingHistoryEventListenerIntegrationTest {
     void shouldUpdateHotelBookingHistory() {
         String tenantId = "11223344";
         List<LocalDate> days = asList(LocalDate.of(2020, 1, 13), LocalDate.of(2020, 1, 14));
-        HotelRoomBookingDto hotelRoomBookingDto = new HotelRoomBookingDto(hotelId, HOTEL_NUMBER, tenantId, days);
+        HotelRoomBookingDto hotelRoomBookingDto = new HotelRoomBookingDto(hotelId, HOTEL_ROOM_NUMBER, tenantId, days);
 
-        hotelRoomApplicationService.book(hotelRoomBookingDto);
+        hotelApplicationService.book(hotelRoomBookingDto);
         HotelBookingHistory actual = hotelBookingHistoryRepository.findFor(hotelId);
 
-        HotelBookingHistoryAssertion.assertThat(actual).hasHotelRoomBookingHistoryFor(tenantId, days);
+        HotelBookingHistoryAssertion.assertThat(actual).hasHotelRoomBookingHistoryFor(HOTEL_ROOM_NUMBER, tenantId, days);
     }
-
 }

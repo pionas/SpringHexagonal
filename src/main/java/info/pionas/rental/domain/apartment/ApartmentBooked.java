@@ -19,6 +19,16 @@ public final class ApartmentBooked {
     private final LocalDate periodStart;
     private final LocalDate periodEnd;
 
+    ApartmentBooked(String eventId, LocalDateTime eventCreationDateTime, String apartmentId, String ownerId, String tenantId, Period period) {
+        this.eventId = eventId;
+        this.eventCreationDateTime = eventCreationDateTime;
+        this.apartmentId = apartmentId;
+        this.ownerId = ownerId;
+        this.tenantId = tenantId;
+        periodStart = period.getPeriodStart();
+        periodEnd = period.getPeriodEnd();
+    }
+
     public static class Builder {
         private String eventId;
         private LocalDateTime eventCreationDateTime;

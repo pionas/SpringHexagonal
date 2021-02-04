@@ -6,26 +6,24 @@ import info.pionas.rental.domain.rentalplaceidentifier.RentalPlaceIdentifier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+import static java.util.Collections.emptyList;
 
-@Repository
 @RequiredArgsConstructor
-public class JpaBookingRepository implements BookingRepository {
-
+@Repository
+class JpaBookingRepository implements BookingRepository {
     private final SpringJpaBookingRepository springJpaBookingRepository;
 
     @Override
-    public String save(Booking booking) {
+    public UUID save(Booking booking) {
         return springJpaBookingRepository.save(booking).id();
     }
 
     @Override
-    public Booking findById(String id) {
-        return springJpaBookingRepository.findById(UUID.fromString(id))
-                .orElseThrow(() -> new BookingDoesNotExistException(id));
+    public Booking findById(String bookingId) {
+        return springJpaBookingRepository.findById(UUID.fromString(bookingId)).get();
     }
 
     @Override
@@ -35,7 +33,6 @@ public class JpaBookingRepository implements BookingRepository {
 
     @Override
     public List<Booking> findAllAcceptedBy(RentalPlaceIdentifier identifier) {
-        return Collections.emptyList();
+        return emptyList();
     }
-
 }

@@ -13,21 +13,14 @@ public class JpaApartmentOfferRepository implements ApartmentOfferRepository {
     private final SpringJpaApartmentOfferRepository springJpaApartmentOfferRepository;
 
     @Override
-    public String save(ApartmentOffer apartmentOffer) {
+    public UUID save(ApartmentOffer apartmentOffer) {
         return springJpaApartmentOfferRepository.save(apartmentOffer).id();
-    }
-
-    @Override
-    public ApartmentOffer findById(String id) {
-        return springJpaApartmentOfferRepository.findById(UUID.fromString(id))
-                .orElseThrow(() -> new ApartmentOfferDoesNotExistException(id));
     }
 
     @Override
     public boolean existByApartmentId(String apartmentId) {
         return springJpaApartmentOfferRepository.existsByApartmentId(apartmentId);
     }
-
 
     @Override
     public ApartmentOffer findByApartmentId(String apartmentId) {
