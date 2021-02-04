@@ -13,6 +13,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -78,12 +79,13 @@ public class Booking {
     public Agreement accept(BookingEventsPublisher bookingEventsPublisher) {
         bookingStatus = bookingStatus.moveTo(ACCEPTED);
         bookingEventsPublisher.bookingAccepted(rentalType, rentalPlaceId, tenantId, days);
+        List<LocalDate> daysNew = new ArrayList<>(days);
         return agreement()
                 .withRentalType(rentalType)
                 .withRentalPlaceId(rentalPlaceId)
                 .withOwnerId(ownerId)
                 .withTenantId(tenantId)
-                .withDays(days)
+                .withDays(daysNew)
                 .withPrice(price)
                 .build();
     }

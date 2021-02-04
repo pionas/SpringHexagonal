@@ -14,7 +14,6 @@ public class JpaAgreementRepository implements AgreementRepository {
 
     @Override
     public UUID save(Agreement agreement) {
-//        return springJpaAgreementRepository.save(agreement).id();
-        return null;
+        return springJpaAgreementRepository.save(agreement).id();
     }
 }

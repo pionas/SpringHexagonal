@@ -29,7 +29,7 @@ public class Agreement {
     private String rentalPlaceId;
     private String ownerId;
     private String tenantId;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<LocalDate> days;
     @Embedded
     private Money price;
