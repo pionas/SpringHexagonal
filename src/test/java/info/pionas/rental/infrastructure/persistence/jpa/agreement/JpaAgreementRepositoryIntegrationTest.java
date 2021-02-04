@@ -36,7 +36,9 @@ class JpaAgreementRepositoryIntegrationTest {
 
     @AfterEach
     void deleteAgreements() {
-        springJpaAgreementTestRepository.deleteById(agreementId);
+        if (agreementId != null) {
+            springJpaAgreementTestRepository.deleteById(agreementId);
+        }
     }
 
     @Test
