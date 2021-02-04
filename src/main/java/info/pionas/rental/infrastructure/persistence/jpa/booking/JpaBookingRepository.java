@@ -2,14 +2,13 @@ package info.pionas.rental.infrastructure.persistence.jpa.booking;
 
 import info.pionas.rental.domain.booking.Booking;
 import info.pionas.rental.domain.booking.BookingRepository;
+import info.pionas.rental.domain.booking.BookingStatus;
 import info.pionas.rental.domain.rentalplaceidentifier.RentalPlaceIdentifier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.UUID;
-
-import static java.util.Collections.emptyList;
 
 @RequiredArgsConstructor
 @Repository
@@ -33,6 +32,6 @@ class JpaBookingRepository implements BookingRepository {
 
     @Override
     public List<Booking> findAllAcceptedBy(RentalPlaceIdentifier identifier) {
-        return emptyList();
+        return springJpaBookingRepository.findAllByRentalTypeAndRentalPlaceIdAndBookingStatus(identifier.getRentalType(), identifier.getRentalPlaceId(), BookingStatus.ACCEPTED);
     }
 }
