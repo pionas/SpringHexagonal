@@ -31,7 +31,15 @@ class ApartmentApplicationServiceFactory {
         ApartmentEventsPublisher apartmentEventsPublisher = new ApartmentEventsPublisher(eventIdFactory, clock, eventChannel);
         ApartmentFactory apartmentFactory = new ApartmentFactory(ownerRepository);
 
-        ApartmentDomainService apartmentDomainService = new ApartmentDomainService(apartmentRepository, tenantRepository, bookingRepository, apartmentOfferRepository, apartmentEventsPublisher);
-        return new ApartmentApplicationService(apartmentRepository, bookingRepository, apartmentFactory, apartmentDomainService);
+        ApartmentDomainService apartmentDomainService = new ApartmentDomainService(
+                apartmentRepository, tenantRepository, bookingRepository,
+                apartmentOfferRepository, apartmentEventsPublisher
+        );
+        return new ApartmentApplicationService(
+                apartmentRepository,
+                bookingRepository,
+                apartmentFactory,
+                apartmentDomainService
+        );
     }
 }

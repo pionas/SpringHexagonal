@@ -58,6 +58,7 @@ public class Apartment {
         this.description = description;
     }
 
+    @SuppressWarnings("checkstyle:MagicNumber")
     @Deprecated
     public Booking book(List<Booking> bookings, String tenantId, Period period, ApartmentEventsPublisher publisher) {
         if (areInGivenPeriod(bookings, period)) {
