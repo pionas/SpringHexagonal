@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import static info.pionas.rental.domain.agreement.Agreement.Builder.agreement;
 import static info.pionas.rental.domain.booking.BookingStatus.ACCEPTED;
 import static info.pionas.rental.domain.booking.BookingStatus.REJECTED;
 
@@ -77,7 +78,14 @@ public class Booking {
     public Agreement accept(BookingEventsPublisher bookingEventsPublisher) {
         bookingStatus = bookingStatus.moveTo(ACCEPTED);
         bookingEventsPublisher.bookingAccepted(rentalType, rentalPlaceId, tenantId, days);
-        return new Agreement();
+        return agreement()
+                .withRentalType(rentalType)
+                .withRentalPlaceId(rentalPlaceId)
+                .withOwnerId(ownerId)
+                .withTenantId(tenantId)
+                .withDays(days)
+                .withPrice(price)
+                .build();
     }
 
     public UUID id() {

@@ -1,6 +1,7 @@
 package info.pionas.rental.domain.booking;
 
 import info.pionas.rental.domain.agreement.Agreement;
+import info.pionas.rental.domain.agreement.AgreementAssertion;
 import info.pionas.rental.domain.clock.Clock;
 import info.pionas.rental.domain.event.EventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static info.pionas.rental.domain.rentalplaceidentifier.RentalType.APARTMENT;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,8 +49,7 @@ class BookingDomainServiceTest {
         Agreement actual = service.accept(booking, emptyList()).get();
 
         BookingAssertion.assertThat(booking).isAccepted();
-//        AgreementAssertion.assertThat(actual)
-//                .isEqualToAgreement(RENTAL_PLACE_ID, TENANT_ID_1, OWNER_ID_1, DAYS, PRICE);
+        thenExpectedAgreementWasCreated(actual);
     }
 
     @Test
@@ -63,6 +64,7 @@ class BookingDomainServiceTest {
         assertThat(actualEvent.getRentalPlaceId()).isEqualTo(RENTAL_PLACE_ID);
         assertThat(actualEvent.getTenantId()).isEqualTo(TENANT_ID_1);
         assertThat(actualEvent.getDays()).containsExactlyElementsOf(DAYS);
+        thenExpectedAgreementWasCreated(actual);
     }
 
     @Test
@@ -97,6 +99,7 @@ class BookingDomainServiceTest {
 
 
         BookingAssertion.assertThat(booking).isAccepted();
+        thenExpectedAgreementWasCreated(actual);
     }
 
     @Test
@@ -106,6 +109,7 @@ class BookingDomainServiceTest {
         Agreement actual = service.accept(booking, asList(givenOpenBookingWithDaysCollision())).get();
 
         BookingAssertion.assertThat(booking).isAccepted();
+        thenExpectedAgreementWasCreated(actual);
     }
 
 
@@ -130,6 +134,7 @@ class BookingDomainServiceTest {
         Agreement actual = service.accept(booking, asList(booking)).get();
 
         BookingAssertion.assertThat(booking).isAccepted();
+        thenExpectedAgreementWasCreated(actual);
     }
 
     @Test
@@ -171,6 +176,11 @@ class BookingDomainServiceTest {
 
     private Booking givenApartmentBooking() {
         return Booking.apartment(RENTAL_PLACE_ID, TENANT_ID_1, OWNER_ID, PRICE, PERIOD);
+    }
+
+    private void thenExpectedAgreementWasCreated(Agreement actual) {
+        AgreementAssertion.assertThat(actual)
+                .isEqualToAgreement(APARTMENT, RENTAL_PLACE_ID, OWNER_ID, TENANT_ID_1, DAYS, PRICE);
     }
 
 }
