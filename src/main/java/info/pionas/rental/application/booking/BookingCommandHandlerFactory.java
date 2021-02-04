@@ -1,5 +1,6 @@
 package info.pionas.rental.application.booking;
 
+import info.pionas.rental.domain.agreement.AgreementRepository;
 import info.pionas.rental.domain.booking.BookingDomainService;
 import info.pionas.rental.domain.booking.BookingDomainServiceFactory;
 import info.pionas.rental.domain.booking.BookingEventsPublisher;
@@ -13,8 +14,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 class BookingCommandHandlerFactory {
     @Bean
-    BookingCommandHandler bookingCommandHandler(BookingRepository bookingRepository, EventIdFactory eventIdFactory, Clock clock, EventChannel eventChannel) {
+    BookingCommandHandler bookingCommandHandler(BookingRepository bookingRepository, AgreementRepository agreementRepository, EventIdFactory eventIdFactory, Clock clock, EventChannel eventChannel) {
         BookingDomainService bookingDomainService = new BookingDomainServiceFactory().create(eventIdFactory, clock, eventChannel);
-        return new BookingCommandHandler(bookingRepository, bookingDomainService, new BookingEventsPublisher(eventIdFactory, clock, eventChannel));
+        return new BookingCommandHandler(bookingRepository, agreementRepository, bookingDomainService, new BookingEventsPublisher(eventIdFactory, clock, eventChannel));
     }
 }
