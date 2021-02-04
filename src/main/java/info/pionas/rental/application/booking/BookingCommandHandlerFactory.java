@@ -13,9 +13,20 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 class BookingCommandHandlerFactory {
+    @SuppressWarnings("checkstyle:ParameterNumber")
     @Bean
-    BookingCommandHandler bookingCommandHandler(BookingRepository bookingRepository, AgreementRepository agreementRepository, EventIdFactory eventIdFactory, Clock clock, EventChannel eventChannel) {
+    BookingCommandHandler bookingCommandHandler(
+            BookingRepository bookingRepository,
+            AgreementRepository agreementRepository,
+            EventIdFactory eventIdFactory,
+            Clock clock,
+            EventChannel eventChannel) {
         BookingDomainService bookingDomainService = new BookingDomainServiceFactory().create(eventIdFactory, clock, eventChannel);
-        return new BookingCommandHandler(bookingRepository, agreementRepository, bookingDomainService, new BookingEventsPublisher(eventIdFactory, clock, eventChannel));
+        return new BookingCommandHandler(
+                bookingRepository,
+                agreementRepository,
+                bookingDomainService,
+                new BookingEventsPublisher(eventIdFactory, clock, eventChannel)
+        );
     }
 }
