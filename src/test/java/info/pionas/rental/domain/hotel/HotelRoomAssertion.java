@@ -8,6 +8,7 @@ import org.assertj.core.api.Assertions;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class HotelRoomAssertion {
@@ -24,6 +25,21 @@ public class HotelRoomAssertion {
                     .hasAllSpacesFrom(expected);
         });
 
+        return this;
+    }
+
+    public HotelRoomAssertion hasIdEqualTo(UUID expected) {
+        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("id", expected);
+        return this;
+    }
+
+    public HotelRoomAssertion hasHotelIdEqualTo(UUID expected) {
+        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("hotelId", expected);
+        return this;
+    }
+
+    public HotelRoomAssertion hasNumberEqualTo(int expected) {
+        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("number", expected);
         return this;
     }
 

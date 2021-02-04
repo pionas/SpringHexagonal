@@ -51,6 +51,9 @@ class HotelRoomTest {
                         .withRoomNumber(ROOM_NUMBER_1)
                 )
                 .hasSpacesDefinitionEqualTo(SPACES_DEFINITION_1)
+                .hasIdEqualTo(null)
+                .hasHotelIdEqualTo(HOTEL_ID_1)
+                .hasNumberEqualTo(ROOM_NUMBER_1)
                 .hasDescriptionEqualTo(DESCRIPTION_1);
     }
 

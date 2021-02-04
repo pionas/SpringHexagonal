@@ -27,12 +27,6 @@ public class ApartmentOffer {
     @Embedded
     private OfferAvailability availability;
 
-    private ApartmentOffer(String apartmentId, Money money, OfferAvailability availability) {
-        this.apartmentId = apartmentId;
-        this.money = money;
-        this.availability = availability;
-    }
-
     public UUID id() {
         return id;
     }
@@ -69,7 +63,7 @@ public class ApartmentOffer {
         }
 
         public ApartmentOffer build() {
-            return new ApartmentOffer(apartmentId, money(), availability());
+            return new ApartmentOffer(null, apartmentId, money(), availability());
         }
 
         private OfferAvailability availability() {

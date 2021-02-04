@@ -50,6 +50,7 @@ class ApartmentTest {
     private static final Period PERIOD = new Period(START, END);
     private static final String NO_ID = null;
     private static final List<Booking> NO_BOOKINGS = emptyList();
+    private static final Money MONEY = Money.of(BigDecimal.valueOf(42));
 
     private final ApartmentEventsPublisher apartmentEventsPublisher = Mockito.mock(ApartmentEventsPublisher.class);
 
@@ -87,18 +88,17 @@ class ApartmentTest {
     @Test
     void shouldCreateBookingOnceBooked() {
         Apartment apartment = createApartment1();
-
-        Booking actual = apartment.book(NO_BOOKINGS, TENANT_ID, PERIOD, apartmentEventsPublisher);
+        Booking actual = apartment.book(givenApartmentBooking());
 
         BookingAssertion.assertThat(actual)
-                .isEqualToBookingApartment(NO_ID, TENANT_ID, OWNER_ID_1, Money.of(BigDecimal.valueOf(42)), new Period(START, END));
+                .isEqualToBookingApartment(NO_ID, TENANT_ID, OWNER_ID_1, MONEY, new Period(START, END));
     }
 
     @Test
     void shouldPublishApartmentBooked() {
         Apartment apartment = createApartment1();
 
-        apartment.book(NO_BOOKINGS, TENANT_ID, PERIOD, apartmentEventsPublisher);
+        apartment.book(givenApartmentBooking());
 
         BDDMockito.then(apartmentEventsPublisher).should().publishApartmentBooked(any(), eq(OWNER_ID_1), eq(TENANT_ID), eq(new Period(START, END)));
     }
@@ -161,6 +161,10 @@ class ApartmentTest {
                 .withCountry(COUNTRY_1)
                 .withDescription(DESCRIPTION_2)
                 .withSpacesDefinition(SPACES_DEFINITION_2);
+    }
+
+    private ApartmentBooking givenApartmentBooking() {
+        return new ApartmentBooking(NO_BOOKINGS, TENANT_ID, PERIOD, MONEY, apartmentEventsPublisher);
     }
 
     private Apartment createApartment1() {

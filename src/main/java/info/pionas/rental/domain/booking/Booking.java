@@ -115,11 +115,11 @@ public class Booking {
         }
 
         return new EqualsBuilder()
-                .append(rentalType, booking.rentalType)
-                .append(rentalPlaceId, booking.rentalPlaceId)
-                .append(tenantId, booking.tenantId)
-                .append(ownerId, booking.ownerId)
-                .append(price, booking.price)
+                .append(getRentalType(), booking.rentalType)
+                .append(getRentalPlaceId(), booking.rentalPlaceId)
+                .append(getTenantId(), booking.tenantId)
+                .append(getOwnerId(), booking.ownerId)
+                .append(getPrice(), booking.price)
                 .isEquals();
     }
 
@@ -127,12 +127,12 @@ public class Booking {
     @SuppressWarnings("checkstyle:MagicNumber")
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
-                .append(rentalType)
-                .append(rentalPlaceId)
-                .append(tenantId)
-                .append(ownerId)
-                .append(price)
-                .append(days)
+                .append(getRentalType())
+                .append(getRentalPlaceId())
+                .append(getTenantId())
+                .append(getOwnerId())
+                .append(getPrice())
+                .append(getDays())
                 .toHashCode();
     }
 }

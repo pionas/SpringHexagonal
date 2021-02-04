@@ -95,7 +95,9 @@ class HotelApplicationServiceTest {
                     HotelRoomAssertion.assertThat(hotelRoom)
                             .isEqualTo(HotelRoomRequirements.hotelRoom().withRoomNumber(ROOM_NUMBER))
                             .hasSpacesDefinitionEqualTo(SPACES_DEFINITION)
-                            .hasDescriptionEqualTo(DESCRIPTION);
+                            .hasDescriptionEqualTo(DESCRIPTION)
+                            .hasIdEqualTo(null)
+                            .hasNumberEqualTo(ROOM_NUMBER);
                 });
     }
 

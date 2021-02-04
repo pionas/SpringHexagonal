@@ -34,13 +34,6 @@ public class HotelRoomOffer {
         return id;
     }
 
-    private HotelRoomOffer(String hotelId, int hotelRoomNumber, Money money, OfferAvailability availability) {
-        this.hotelId = hotelId;
-        this.hotelRoomNumber = hotelRoomNumber;
-        this.money = money;
-        this.availability = availability;
-    }
-
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     static class Builder {
         private static final LocalDate NO_END_DATE = null;
@@ -77,7 +70,7 @@ public class HotelRoomOffer {
         }
 
         HotelRoomOffer build() {
-            return new HotelRoomOffer(hotelId, hotelRoomNumber, money(), hotelRoomAvailability());
+            return new HotelRoomOffer(null, hotelId, hotelRoomNumber, money(), hotelRoomAvailability());
         }
 
         private OfferAvailability hotelRoomAvailability() {

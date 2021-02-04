@@ -2,7 +2,6 @@ package info.pionas.rental.domain.apartment;
 
 import info.pionas.rental.domain.address.Address;
 import info.pionas.rental.domain.booking.Booking;
-import info.pionas.rental.domain.money.Money;
 import info.pionas.rental.domain.period.Period;
 import info.pionas.rental.domain.rentalplaceidentifier.RentalPlaceIdentifier;
 import info.pionas.rental.domain.rentalplaceidentifier.RentalPlaceIdentifierFactory;
@@ -14,7 +13,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,16 +56,6 @@ public class Apartment {
         this.description = description;
     }
 
-    @SuppressWarnings("checkstyle:MagicNumber")
-    @Deprecated
-    public Booking book(List<Booking> bookings, String tenantId, Period period, ApartmentEventsPublisher publisher) {
-        if (areInGivenPeriod(bookings, period)) {
-            throw new ApartmentBookingException();
-        }
-        publisher.publishApartmentBooked(id(), getOwnerId(), tenantId, period);
-        return Booking.apartment(id(), tenantId, getOwnerId(), Money.of(BigDecimal.valueOf(42)), period);
-    }
-
     public Booking book(ApartmentBooking apartmentBooking) {
         Period period = apartmentBooking.getPeriod();
         String tenantId = apartmentBooking.getTenantId();
@@ -76,9 +64,7 @@ public class Apartment {
         }
         apartmentBooking.getApartmentEventsPublisher().publishApartmentBooked(id(), getOwnerId(), tenantId, period);
         return Booking.apartment(id(), tenantId, getOwnerId(), apartmentBooking.getPrice(), period);
-
     }
-
 
     private boolean areInGivenPeriod(List<Booking> bookings, Period period) {
         return bookings != null && bookings.stream().anyMatch(booking -> booking.isFor(period));
@@ -104,9 +90,9 @@ public class Apartment {
         Apartment apartment = (Apartment) o;
 
         return new EqualsBuilder()
-                .append(ownerId, apartment.ownerId)
-                .append(apartmentNumber, apartment.apartmentNumber)
-                .append(address, apartment.address)
+                .append(getOwnerId(), apartment.ownerId)
+                .append(getApartmentNumber(), apartment.apartmentNumber)
+                .append(getAddress(), apartment.address)
                 .isEquals();
     }
 
@@ -114,9 +100,9 @@ public class Apartment {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
-                .append(ownerId)
-                .append(apartmentNumber)
-                .append(address)
+                .append(getOwnerId())
+                .append(getApartmentNumber())
+                .append(getAddress())
                 .toHashCode();
     }
 

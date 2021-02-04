@@ -42,6 +42,16 @@ public class BookingAssertion {
         return this;
     }
 
+    public BookingAssertion hasOwnerIdEqualTo(String expected) {
+        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("ownerId", expected);
+        return this;
+    }
+
+    public BookingAssertion hasPriceEqualTo(Money expected) {
+        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("price", expected);
+        return this;
+    }
+
     public BookingAssertion isEqualToBookingApartment(String rentalPlaceId, String tenantId, String ownerId, Money price, Period period) {
         Assertions.assertThat(actual).isEqualTo(Booking.apartment(rentalPlaceId, tenantId, ownerId, price, period));
         return this;
