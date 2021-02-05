@@ -28,9 +28,9 @@ class PaymentEventListenerTest {
     public static final BigDecimal PRICE = BigDecimal.valueOf(100.00);
     public static final BigDecimal AMOUNT = BigDecimal.valueOf(200.00);
     private static final List<LocalDate> DAYS = asList(LocalDate.now(), LocalDate.now().plusDays(1));
-    private static final String EVENT_ID = "213213";
-    private static final LocalDateTime CREATION_TIME = LocalDateTime.now();
-    private static final List<LocalDate> DAYS_1 = asList(LocalDate.now(), LocalDate.now().plusDays(1));
+    private static final String EVENT_ID = FakeEventIdFactory.UUID;
+    private static final LocalDateTime CREATION_TIME = FakeClock.NOW;
+
     private final PaymentService paymentService = mock(PaymentService.class);
     private final PaymentEventChannel eventChannel = mock(PaymentEventChannel.class);
     private final PaymentEventListener paymentEventListener = new PaymentEventListenerFactory()
@@ -39,30 +39,39 @@ class PaymentEventListenerTest {
     @Test
     void shouldPay() {
         givenSuccessfulPayment();
-        ArgumentCaptor<PaymentCompleted> captor = ArgumentCaptor.forClass(PaymentCompleted.class);
-        paymentEventListener.consume(givenAgreementAccepted());
-        then(eventChannel).should().publish(captor.capture());
-        PaymentCompletedAssertion.assertThat(captor.getValue())
-                .hasSenderId(TENANT_ID)
-                .hasRecipientId(OWNER_ID)
-                .hasAmount(AMOUNT);
-    }
 
-    @Test
-    void shouldPublishEventWhenSuccessfullyPay() {
-        givenSuccessfulPayment();
         paymentEventListener.consume(givenAgreementAccepted());
 
         then(paymentService).should().transfer(TENANT_ID, OWNER_ID, AMOUNT);
     }
 
     @Test
+    void shouldPublishEventWhenSuccessfullyPay() {
+        givenSuccessfulPayment();
+        ArgumentCaptor<PaymentCompleted> captor = ArgumentCaptor.forClass(PaymentCompleted.class);
+
+        paymentEventListener.consume(givenAgreementAccepted());
+
+        then(eventChannel).should().publish(captor.capture());
+        PaymentCompletedAssertion.assertThat(captor.getValue())
+                .hasEventId()
+                .hasEventCreationDateTime(CREATION_TIME)
+                .hasSenderId(TENANT_ID)
+                .hasRecipientId(OWNER_ID)
+                .hasAmount(AMOUNT);
+    }
+
+    @Test
     void shouldRecognizeThereIsNotEnoughMoney() {
         givenNotEnoughMoney();
         ArgumentCaptor<PaymentFailed> captor = ArgumentCaptor.forClass(PaymentFailed.class);
+
         paymentEventListener.consume(givenAgreementAccepted());
+
         then(eventChannel).should().publish(captor.capture());
         PaymentFailedAssertion.assertThat(captor.getValue())
+                .hasEventId()
+                .hasEventCreationDateTime(CREATION_TIME)
                 .hasSenderId(TENANT_ID)
                 .hasRecipientId(OWNER_ID)
                 .hasAmount(AMOUNT);
