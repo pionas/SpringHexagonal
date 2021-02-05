@@ -17,6 +17,8 @@ import java.util.UUID;
 import static info.pionas.rental.domain.agreement.Agreement.Builder.agreement;
 import static info.pionas.rental.domain.rentalplaceidentifier.RentalType.APARTMENT;
 import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Tag("DomainRepositoryIntegrationTest")
@@ -53,5 +55,17 @@ class JpaAgreementRepositoryIntegrationTest {
                 .build();
 
         agreementId = agreementRepository.save(agreement);
+    }
+
+
+    @Test
+    void shouldThrowExceptionWhenApartmentDoesNotExist() {
+        UUID nonExistingAgreementId = UUID.randomUUID();
+
+        AgreementDoesNotExistException actual = assertThrows(AgreementDoesNotExistException.class, () -> {
+            agreementRepository.findById(nonExistingAgreementId);
+        });
+
+        assertThat(actual).hasMessage("Agreement with id " + nonExistingAgreementId + " does not exist");
     }
 }
