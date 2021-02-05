@@ -250,6 +250,9 @@
                                         <include>info/pionas/usermanagment/domain/**/*</include>
                                         <include>info/pionas/usermanagment/application/**/*</include>
                                         <include>info/pionas/usermanagment/infrastructure/persistence/jpa/**/*</include>
+                                        <include>info/pionas/payment/domain/**/*</include>
+                                        <include>info/pionas/payment/application/**/*</include>
+                                        <include>info/pionas/payment/infrastructure/persistence/jpa/**/*</include>
                                     </includes>
                                     <rules>
                                         <rule>
@@ -322,16 +325,19 @@
                                 </goals>
                                 <configuration>
                                     <excludes>
-                                        <exclude>info/pionas/rental/RentalApplication.class</exclude>
+                                        <exclude>info/pionas/RentalApplication.class</exclude>
                                         <exclude>info/pionas/rental/domain/**/*</exclude>
                                         <exclude>info/pionas/rental/application/**/*</exclude>
                                         <exclude>info/pionas/rental/infrastructure/persistence/jpa/**/*</exclude>
                                         <exclude>info/pionas/rental/infrastructure/rest/api/**/*</exclude>
-                                        <exclude>info/pionas/usermanagment/UserManagmentApplication.class</exclude>
                                         <exclude>info/pionas/usermanagment/domain/**/*</exclude>
                                         <exclude>info/pionas/usermanagment/application/**/*</exclude>
                                         <exclude>info/pionas/usermanagment/infrastructure/persistence/jpa/**/*</exclude>
                                         <exclude>info/pionas/usermanagment/infrastructure/rest/api/**/*</exclude>
+                                        <exclude>info/pionas/payment/domain/**/*</exclude>
+                                        <exclude>info/pionas/payment/application/**/*</exclude>
+                                        <exclude>info/pionas/payment/infrastructure/persistence/jpa/**/*</exclude>
+                                        <exclude>info/pionas/payment/infrastructure/rest/api/**/*</exclude>
                                     </excludes>
 
                                     <includes>
@@ -339,6 +345,8 @@
                                         <include>info/pionas/rental/query/**/*</include>
                                         <include>info/pionas/usermanagment/infrastructure/**/*</include>
                                         <include>info/pionas/usermanagment/query/**/*</include>
+                                        <include>info/pionas/payment/infrastructure/**/*</include>
+                                        <include>info/pionas/payment/query/**/*</include>
                                     </includes>
                                     <rules>
                                         <rule>

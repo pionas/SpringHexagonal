@@ -1,5 +1,6 @@
 package info.pionas.rental.domain.booking;
 
+import info.pionas.rental.domain.agreement.Agreement;
 import info.pionas.rental.domain.money.Money;
 import info.pionas.rental.domain.period.Period;
 import info.pionas.rental.domain.rentalplaceidentifier.RentalPlaceIdentifier;
@@ -12,9 +13,11 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static info.pionas.rental.domain.agreement.Agreement.Builder.agreement;
 import static info.pionas.rental.domain.booking.BookingStatus.ACCEPTED;
 import static info.pionas.rental.domain.booking.BookingStatus.REJECTED;
 
@@ -35,7 +38,7 @@ public class Booking {
     private String ownerId;
     @Embedded
     private Money price;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<LocalDate> days;
     @Enumerated(EnumType.STRING)
     private BookingStatus bookingStatus = BookingStatus.OPEN;
@@ -73,9 +76,18 @@ public class Booking {
         bookingEventsPublisher.bookingRejected(rentalType, rentalPlaceId, tenantId, days);
     }
 
-    public void accept(BookingEventsPublisher bookingEventsPublisher) {
+    public Agreement accept(BookingEventsPublisher bookingEventsPublisher) {
         bookingStatus = bookingStatus.moveTo(ACCEPTED);
         bookingEventsPublisher.bookingAccepted(rentalType, rentalPlaceId, tenantId, days);
+        List<LocalDate> daysNew = new ArrayList<>(days);
+        return agreement()
+                .withRentalType(rentalType)
+                .withRentalPlaceId(rentalPlaceId)
+                .withOwnerId(ownerId)
+                .withTenantId(tenantId)
+                .withDays(daysNew)
+                .withPrice(price)
+                .build();
     }
 
     public UUID id() {

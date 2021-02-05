@@ -9,7 +9,7 @@ import java.util.Map;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 
-enum BookingStatus {
+public enum BookingStatus {
     OPEN,
     REJECTED,
     ACCEPTED;
