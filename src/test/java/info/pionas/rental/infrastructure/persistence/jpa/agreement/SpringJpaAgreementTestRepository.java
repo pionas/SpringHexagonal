@@ -17,6 +17,6 @@ public class SpringJpaAgreementTestRepository {
     }
 
     public UUID save(Agreement agreement) {
-        return repository.save(agreement).id();
+        return repository.save(agreement).getId();
     }
 }

@@ -1,5 +1,6 @@
 package info.pionas.rental.domain.agreement;
 
+import info.pionas.rental.domain.agreeement.AgreementEventPublisher;
 import info.pionas.rental.domain.money.Money;
 import info.pionas.rental.domain.rentalplaceidentifier.RentalType;
 import lombok.AccessLevel;
@@ -71,6 +72,10 @@ public class Agreement {
                 .append(getDays())
                 .append(getPrice())
                 .toHashCode();
+    }
+
+    public void accept(AgreementEventPublisher agreementEventPublisher) {
+        agreementEventPublisher.agreementAccepted(getRentalType(), getRentalPlaceId(), getOwnerId(), getTenantId(), getDays(), getPrice());
     }
 
     public static class Builder {

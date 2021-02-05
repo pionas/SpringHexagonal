@@ -14,6 +14,11 @@ public class JpaAgreementRepository implements AgreementRepository {
 
     @Override
     public UUID save(Agreement agreement) {
-        return springJpaAgreementRepository.save(agreement).id();
+        return springJpaAgreementRepository.save(agreement).getId();
+    }
+
+    @Override
+    public Agreement findById(UUID agreementId) {
+        return springJpaAgreementRepository.findById(agreementId).orElseThrow(() -> new AgreementDoesNotExistException(agreementId.toString()));
     }
 }

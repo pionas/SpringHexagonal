@@ -1,6 +1,7 @@
 package info.pionas.rental.domain.money;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -11,6 +12,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
+@Getter
 public class Money {
     private BigDecimal value;
 
@@ -39,7 +41,7 @@ public class Money {
         Money money = (Money) o;
 
         return new EqualsBuilder()
-                .append(value, money.value)
+                .append(getValue(), money.value)
                 .isEquals();
     }
 
@@ -47,7 +49,8 @@ public class Money {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
-                .append(value)
+                .append(getValue())
                 .toHashCode();
     }
+
 }
