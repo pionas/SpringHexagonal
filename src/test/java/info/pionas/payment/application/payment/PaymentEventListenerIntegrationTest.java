@@ -5,7 +5,7 @@ import info.pionas.payment.domain.payment.PaymentCompleted;
 import info.pionas.payment.domain.payment.PaymentCompletedAssertion;
 import info.pionas.payment.domain.payment.PaymentFailed;
 import info.pionas.payment.domain.payment.PaymentFailedAssertion;
-import info.pionas.payment.infrastructure.paymentservice.RestPaymentClient;
+import info.pionas.payment.infrastructure.paymentservice.FakePaymentService;
 import info.pionas.rental.domain.agreeement.AgreementAccepted;
 import info.pionas.rental.domain.agreeement.AgreementAcceptedTestFactory;
 import info.pionas.rental.domain.event.FakeEventIdFactory;
@@ -24,8 +24,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static info.pionas.payment.domain.payment.PaymentStatus.NOT_ENOUGH_MONEY;
-import static info.pionas.payment.domain.payment.PaymentStatus.SUCCESS;
 import static java.util.Arrays.asList;
 import static org.mockito.BDDMockito.then;
 
@@ -45,7 +43,7 @@ public class PaymentEventListenerIntegrationTest {
     @Autowired
     private EventChannel eventChannel;
     @Autowired
-    private RestPaymentClient restPaymentClient;
+    private FakePaymentService restPaymentClient;
     @SpyBean
     private PaymentEventChannel paymentEventChannel;
 

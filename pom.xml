@@ -115,12 +115,12 @@
             <version>${archunit-junit5-engine.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.smalaca</groupId>
-            <version>1.0-SNAPSHOT</version>
-            <artifactId>contracts</artifactId>
-            <scope>test</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.smalaca</groupId>-->
+<!--            <version>1.0-SNAPSHOT</version>-->
+<!--            <artifactId>contracts</artifactId>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
     </dependencies>
 
     <build>

@@ -2,12 +2,14 @@ package info.pionas.payment.infrastructure.paymentservice;
 
 import com.google.common.collect.ImmutableMap;
 import info.pionas.payment.domain.payment.PaymentStatus;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 public class PaymentResponse {
     private static final Map<String, PaymentStatus> STATUSES = ImmutableMap.of(
