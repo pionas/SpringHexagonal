@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import java.math.BigDecimal;
 
 @RequiredArgsConstructor
-public class PaymenEventPublisher {
+public class PaymentEventPublisher {
     private final PaymentEventChannel eventChannel;
     private final EventIdFactory eventIdFactory;
     private final Clock clock;

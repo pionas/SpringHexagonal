@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @Getter
 public class Payment {
     private final PaymentService paymentService;
-    private final PaymenEventPublisher paymenEventPublisher;
+    private final PaymentEventPublisher paymentEventPublisher;
     private final String senderId;
     private final String recipientId;
     private final BigDecimal totalAmount;
@@ -19,10 +19,10 @@ public class Payment {
         PaymentStatus paymentStatus = paymentService.transfer(getSenderId(), getRecipientId(), getTotalAmount());
         switch (paymentStatus) {
             case SUCCESS:
-                paymenEventPublisher.paymentCompleted(getSenderId(), getRecipientId(), getTotalAmount());
+                paymentEventPublisher.paymentCompleted(getSenderId(), getRecipientId(), getTotalAmount());
                 break;
             case NOT_ENOUGH_MONEY:
-                paymenEventPublisher.paymentFailed(getSenderId(), getRecipientId(), getTotalAmount());
+                paymentEventPublisher.paymentFailed(getSenderId(), getRecipientId(), getTotalAmount());
                 break;
         }
     }

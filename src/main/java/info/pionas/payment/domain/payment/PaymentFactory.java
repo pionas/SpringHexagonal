@@ -9,10 +9,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PaymentFactory {
     private final PaymentService paymentService;
-    private final PaymenEventPublisher paymenEventPublisher;
+    private final PaymentEventPublisher paymentEventPublisher;
 
     public Payment create(String senderId, String recipientId, List<LocalDate> days, BigDecimal amount) {
-        return new Payment(paymentService, paymenEventPublisher, senderId, recipientId, totalAmount(days, amount));
+        return new Payment(paymentService, paymentEventPublisher, senderId, recipientId, totalAmount(days, amount));
     }
 
     private BigDecimal totalAmount(List<LocalDate> days, BigDecimal amount) {
