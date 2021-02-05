@@ -45,6 +45,8 @@ class AgreementApplicationServiceTest {
 
         then(eventChannel).should().publish(captor.capture());
         AgreementAcceptedAssertion.assertThat(captor.getValue())
+                .hasEventId(FakeEventIdFactory.UUID)
+                .hasEventCreationDateTime(FakeClock.NOW)
                 .hasRentalType("APARTMENT")
                 .hasRentalPlaceId(RENTAL_PLACE_ID)
                 .hasOwnerId(OWNER_ID)

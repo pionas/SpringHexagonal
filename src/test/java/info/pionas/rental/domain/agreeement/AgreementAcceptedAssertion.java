@@ -5,6 +5,7 @@ import org.assertj.core.api.Assertions;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -13,6 +14,16 @@ public class AgreementAcceptedAssertion {
 
     public static AgreementAcceptedAssertion assertThat(AgreementAccepted actual) {
         return new AgreementAcceptedAssertion(actual);
+    }
+
+    public AgreementAcceptedAssertion hasEventId(String expected) {
+        Assertions.assertThat(actual.getEventId()).isEqualTo(expected);
+        return this;
+    }
+
+    public AgreementAcceptedAssertion hasEventCreationDateTime(LocalDateTime expected) {
+        Assertions.assertThat(actual.getEventCreationDateTime()).isEqualTo(expected);
+        return this;
     }
 
     public AgreementAcceptedAssertion hasRentalType(String expected) {
