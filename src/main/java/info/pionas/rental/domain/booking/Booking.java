@@ -38,7 +38,7 @@ public class Booking {
     private String ownerId;
     @Embedded
     private Money price;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<LocalDate> days;
     @Enumerated(EnumType.STRING)
     private BookingStatus bookingStatus = BookingStatus.OPEN;
