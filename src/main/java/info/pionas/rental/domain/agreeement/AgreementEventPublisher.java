@@ -16,7 +16,13 @@ public class AgreementEventPublisher {
     private final EventIdFactory eventIdFactory;
     private final Clock clock;
 
-    public void agreementAccepted(RentalType rentalType, String rentalPlaceId, String ownerId, String tenantId, List<LocalDate> days, Money price) {
+    @SuppressWarnings("checkstyle:ParameterNumber")
+    public void agreementAccepted(RentalType rentalType,
+                                  String rentalPlaceId,
+                                  String ownerId,
+                                  String tenantId,
+                                  List<LocalDate> days,
+                                  Money price) {
         AgreementAccepted event = new AgreementAccepted(
                 eventIdFactory.create(), clock.now(), rentalType.name(), rentalPlaceId, ownerId, tenantId, days, price.getValue());
         eventChannel.publish(event);
