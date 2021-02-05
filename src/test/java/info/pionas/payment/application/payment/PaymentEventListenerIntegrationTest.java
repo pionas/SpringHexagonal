@@ -18,18 +18,22 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static info.pionas.payment.domain.payment.PaymentStatus.NOT_ENOUGH_MONEY;
+import static info.pionas.payment.domain.payment.PaymentStatus.SUCCESS;
 import static java.util.Arrays.asList;
 import static org.mockito.BDDMockito.then;
 
 @SpringBootTest
 @Tag("IntegrationTest")
-public class PaymentEventListenerIntegrationTest {
+@ActiveProfiles("FakePaymentService")
+class PaymentEventListenerIntegrationTest {
     private static final String EVENT_ID = FakeEventIdFactory.UUID;
     private static final LocalDateTime CREATION_TIME = FakeClock.NOW;
     private static final String RENTAL_TYPE = RentalType.APARTMENT.name();
@@ -49,6 +53,7 @@ public class PaymentEventListenerIntegrationTest {
 
     @Test
     void shouldConsumePublishedAgreementAcceptedAndPublishPaymentCompleted() {
+        restPaymentClient.change(SUCCESS);
         ArgumentCaptor<PaymentCompleted> captor = ArgumentCaptor.forClass(PaymentCompleted.class);
 
         eventChannel.publish(givenAgreementAccepted());
@@ -62,7 +67,8 @@ public class PaymentEventListenerIntegrationTest {
     }
 
     @Test
-    void shouldConsumePublishedAgreementFailedAndPublishPaymentCompleted() {
+    void shouldConsumePublishedAgreementAcceptedAndPublishPaymentFailed() {
+        restPaymentClient.change(NOT_ENOUGH_MONEY);
         ArgumentCaptor<PaymentFailed> captor = ArgumentCaptor.forClass(PaymentFailed.class);
 
         eventChannel.publish(givenAgreementAccepted());
