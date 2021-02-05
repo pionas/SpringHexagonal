@@ -1,27 +1,39 @@
 package info.pionas.payment.infrastructure.paymentservice;
 
+import com.smalaca.rentalapplication.paymentservice.payment.PaymentContract;
+import com.smalaca.rentalapplication.paymentservice.payment.PaymentRequest;
+import com.smalaca.rentalapplication.paymentservice.payment.PaymentScenario;
+import info.pionas.payment.domain.payment.PaymentService;
 import info.pionas.payment.domain.payment.PaymentStatus;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import java.math.BigDecimal;
-import java.util.UUID;
-
+import static info.pionas.payment.domain.payment.PaymentStatus.NOT_ENOUGH_MONEY;
 import static info.pionas.payment.domain.payment.PaymentStatus.SUCCESS;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SpringBootTest
 @Tag("IntegrationTest")
 class RestPaymentClientTest {
-    private static final String SENDER_ID = UUID.randomUUID().toString();
-    private static final String RECIPIENT_ID = UUID.randomUUID().toString();
-    private static final BigDecimal AMOUNT = BigDecimal.valueOf(123.45);
-
-    private final RestPaymentClient client = new RestPaymentClient();
+    private final PaymentContract contract = new PaymentContract();
+    @Autowired
+    private PaymentService paymentService;
 
     @Test
-    void shouldTransfer() {
-        PaymentStatus actual = client.transfer(SENDER_ID, RECIPIENT_ID, AMOUNT);
-
+    void shouldPaySuccessfully() {
+        PaymentScenario scenario = contract.successfulPayment();
+        PaymentRequest request = scenario.getRequest();
+        PaymentStatus actual = paymentService.transfer(request.getSenderId(), request.getRecipientId(), request.getAmount());
         assertThat(actual).isEqualTo(SUCCESS);
+    }
+
+    @Test
+    void shouldRecognizeThereIsNotEnoughMoney() {
+        PaymentScenario scenario = contract.notEnoughMoney();
+        PaymentRequest request = scenario.getRequest();
+        PaymentStatus actual = paymentService.transfer(request.getSenderId(), request.getRecipientId(), request.getAmount());
+        assertThat(actual).isEqualTo(NOT_ENOUGH_MONEY);
     }
 }

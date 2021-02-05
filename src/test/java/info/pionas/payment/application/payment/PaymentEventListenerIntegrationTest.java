@@ -51,7 +51,6 @@ public class PaymentEventListenerIntegrationTest {
 
     @Test
     void shouldConsumePublishedAgreementAcceptedAndPublishPaymentCompleted() {
-        restPaymentClient.change(SUCCESS);
         ArgumentCaptor<PaymentCompleted> captor = ArgumentCaptor.forClass(PaymentCompleted.class);
 
         eventChannel.publish(givenAgreementAccepted());
@@ -66,7 +65,6 @@ public class PaymentEventListenerIntegrationTest {
 
     @Test
     void shouldConsumePublishedAgreementFailedAndPublishPaymentCompleted() {
-        restPaymentClient.change(NOT_ENOUGH_MONEY);
         ArgumentCaptor<PaymentFailed> captor = ArgumentCaptor.forClass(PaymentFailed.class);
 
         eventChannel.publish(givenAgreementAccepted());

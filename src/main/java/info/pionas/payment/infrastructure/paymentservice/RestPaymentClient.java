@@ -2,20 +2,21 @@ package info.pionas.payment.infrastructure.paymentservice;
 
 import info.pionas.payment.domain.payment.PaymentService;
 import info.pionas.payment.domain.payment.PaymentStatus;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 
-@Component
+@RequiredArgsConstructor
 public class RestPaymentClient implements PaymentService {
-    private PaymentStatus paymentStatus = PaymentStatus.SUCCESS;
+    private final RestTemplate restTemplate;
+    private final String url;
 
     @Override
     public PaymentStatus transfer(String senderId, String recipientId, BigDecimal amount) {
-        return paymentStatus;
+        PaymentRequest request = new PaymentRequest(senderId, recipientId, amount);
+        PaymentResponse response = restTemplate.postForObject(url.concat("/payment"), request, PaymentResponse.class);
+        return response.paymentStatus();
     }
 
-    public void change(PaymentStatus paymentStatus) {
-        this.paymentStatus = paymentStatus;
-    }
 }
