@@ -20,7 +20,7 @@ import static org.mockito.Mockito.mock;
  */
 @Tag("IntegrationTest")
 class RestPaymentClientFakeIntegrationTest {
-    private static final String URL = "http://somewhere.com:1234";
+    private static final String URL = "http://localhost:8104";
     private static final String SENDER_ID = "12345";
     private static final String RECIPIENT_ID = "67890";
     private static final BigDecimal AMOUNT = BigDecimal.valueOf(123.45);
@@ -53,7 +53,7 @@ class RestPaymentClientFakeIntegrationTest {
     private PaymentService givenPaymentService(String status) {
         RestTemplate restTemplate = mock(RestTemplate.class);
         PaymentRequest request = new PaymentRequest(SENDER_ID, RECIPIENT_ID, AMOUNT);
-        given(restTemplate.postForObject(URL + "/payment", request, PaymentResponse.class)).willReturn(new PaymentResponse(status));
+        given(restTemplate.postForObject(URL.concat("/payment"), request, PaymentResponse.class)).willReturn(new PaymentResponse(status));
 
         return new RestPaymentClient(restTemplate, URL);
     }
