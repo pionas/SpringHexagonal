@@ -34,6 +34,10 @@ public class Agreement {
     @Embedded
     private Money price;
 
+//    public UUID id() {
+//        return getId();
+//    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -67,10 +71,6 @@ public class Agreement {
                 .append(getDays())
                 .append(getPrice())
                 .toHashCode();
-    }
-
-    public UUID id() {
-        return id;
     }
 
     public static class Builder {
