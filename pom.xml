@@ -322,12 +322,11 @@
                                 </goals>
                                 <configuration>
                                     <excludes>
-                                        <exclude>info/pionas/rental/RentalApplication.class</exclude>
+                                        <exclude>info/pionas/RentalApplication.class</exclude>
                                         <exclude>info/pionas/rental/domain/**/*</exclude>
                                         <exclude>info/pionas/rental/application/**/*</exclude>
                                         <exclude>info/pionas/rental/infrastructure/persistence/jpa/**/*</exclude>
                                         <exclude>info/pionas/rental/infrastructure/rest/api/**/*</exclude>
-                                        <exclude>info/pionas/usermanagment/UserManagmentApplication.class</exclude>
                                         <exclude>info/pionas/usermanagment/domain/**/*</exclude>
                                         <exclude>info/pionas/usermanagment/application/**/*</exclude>
                                         <exclude>info/pionas/usermanagment/infrastructure/persistence/jpa/**/*</exclude>
