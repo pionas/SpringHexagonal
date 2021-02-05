@@ -16,13 +16,13 @@ public class Payment {
 
     @SuppressWarnings("checkstyle:MissingSwitchDefault")
     public void pay() {
-        PaymentStatus paymentStatus = paymentService.transfer(getSenderId(), getRecipientId(), getTotalAmount());
+        PaymentStatus paymentStatus = getPaymentService().transfer(getSenderId(), getRecipientId(), getTotalAmount());
         switch (paymentStatus) {
             case SUCCESS:
-                paymentEventPublisher.paymentCompleted(getSenderId(), getRecipientId(), getTotalAmount());
+                getPaymentEventPublisher().paymentCompleted(getSenderId(), getRecipientId(), getTotalAmount());
                 break;
             case NOT_ENOUGH_MONEY:
-                paymentEventPublisher.paymentFailed(getSenderId(), getRecipientId(), getTotalAmount());
+                getPaymentEventPublisher().paymentFailed(getSenderId(), getRecipientId(), getTotalAmount());
                 break;
         }
     }
