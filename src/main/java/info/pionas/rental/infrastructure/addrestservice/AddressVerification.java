@@ -2,9 +2,7 @@ package info.pionas.rental.infrastructure.addrestservice;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 public class AddressVerification {
@@ -12,6 +10,6 @@ public class AddressVerification {
     private String status;
 
     public boolean isValid() {
-        return VALID.equals(status);
+        return VALID.equals(getStatus());
     }
 }

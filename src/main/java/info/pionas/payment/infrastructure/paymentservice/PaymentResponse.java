@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.Map;
 
-@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 public class PaymentResponse {
@@ -19,6 +18,6 @@ public class PaymentResponse {
     private String status;
 
     public PaymentStatus paymentStatus() {
-        return STATUSES.get(status);
+        return STATUSES.get(getStatus());
     }
 }
