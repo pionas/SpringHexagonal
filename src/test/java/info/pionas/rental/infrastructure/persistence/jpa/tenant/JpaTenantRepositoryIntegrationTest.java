@@ -115,6 +115,32 @@ class JpaTenantRepositoryIntegrationTest {
                 .hasEmailEqualsTo(EMAIL);
     }
 
+    @Test
+    void shouldRecognizeWhenTenantByEmailExists() {
+        givenExistingTenant(createTenant());
+
+        Tenant actual = tenantRepository.findByEmail(EMAIL).get();
+
+        TenantAssertion.assertThat(actual)
+                .hasLoginEqualsTo(LOGIN)
+                .hasFirstNameEqualsTo(FIRST_NAME)
+                .hasLastNameEqualsTo(LAST_NAME)
+                .hasEmailEqualsTo(EMAIL);
+    }
+
+    @Test
+    void shouldRecognizeWhenTenantByLoginExists() {
+        givenExistingTenant(createTenant());
+
+        Tenant actual = tenantRepository.findByLogin(LOGIN).get();
+
+        TenantAssertion.assertThat(actual)
+                .hasLoginEqualsTo(LOGIN)
+                .hasFirstNameEqualsTo(FIRST_NAME)
+                .hasLastNameEqualsTo(LAST_NAME)
+                .hasEmailEqualsTo(EMAIL);
+    }
+
     private String givenExistingTenant(Tenant tenant) {
         String tenantId = tenantRepository.save(tenant);
         tenantIds.add(tenantId);
