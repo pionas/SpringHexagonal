@@ -75,7 +75,7 @@ public class Tenant {
         if (!isPasswordConfirmValid) {
             throw TenantException.byPassword();
         }
-        boolean passwordMatches = passwordEncoder.matches(newTenantDto.getCurrentPassword(), getPassword());
+        boolean passwordMatches = passwordEncoder.matches(getSalt() + newTenantDto.getCurrentPassword(), getPassword());
         if (!passwordMatches) {
             throw TenantException.byPassword();
         }
