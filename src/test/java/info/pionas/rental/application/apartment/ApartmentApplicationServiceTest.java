@@ -23,7 +23,6 @@ import info.pionas.rental.domain.space.SquareMeterException;
 import info.pionas.rental.domain.tenant.TenantNotFoundException;
 import info.pionas.rental.domain.tenant.TenantRepository;
 import info.pionas.rental.infrastructure.clock.FakeClock;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -102,7 +101,7 @@ class ApartmentApplicationServiceTest {
 
         String actual = service.add(givenApartmentDto());
 
-        Assertions.assertThat(actual).isEqualTo(APARTMENT_ID);
+        assertThat(actual).isEqualTo(APARTMENT_ID);
     }
 
     private ApartmentDto givenApartmentDto() {
@@ -192,7 +191,7 @@ class ApartmentApplicationServiceTest {
 
         UUID actual = service.book(givenBookApartmentDto());
 
-        Assertions.assertThat(actual).isEqualTo(BOOKING_ID);
+        assertThat(actual).isEqualTo(BOOKING_ID);
     }
 
     @Test
