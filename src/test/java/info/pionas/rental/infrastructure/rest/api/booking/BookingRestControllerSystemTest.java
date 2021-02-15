@@ -4,10 +4,12 @@ import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.application.apartment.ApartmentBookingDto;
 import info.pionas.rental.application.apartment.ApartmentDto;
 import info.pionas.rental.application.apartmentoffer.ApartmentOfferDto;
+import info.pionas.rental.application.tenant.TenantDto;
 import info.pionas.rental.infrastructure.json.JsonFactory;
 import info.pionas.rental.infrastructure.persistence.jpa.apartment.SpringJpaApartmentTestRepository;
 import info.pionas.rental.infrastructure.persistence.jpa.apartmentbookinghistory.SpringJpaApartmentBookingHistoryTestRepository;
 import info.pionas.rental.infrastructure.persistence.jpa.booking.SpringJpaBookingTestRepository;
+import info.pionas.rental.infrastructure.persistence.jpa.tenant.SpringJpaTenantTestRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -34,6 +36,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Tag("SystemTest")
 @ActiveProfiles("FakeAddressCatalogue")
 class BookingRestControllerSystemTest {
+    private static final String LOGIN = "john.doe";
+    private static final String FIRST_NAME = "John";
+    private static final String LAST_NAME = "Doe";
+    private static final String EMAIL = "john.doe@example.com";
+    private static final String PASSWORD = "123456";
     private static final String OWNER_ID = "1234";
     private static final String STREET = "Florianska";
     private static final String POSTAL_CODE = "12-345";
@@ -50,6 +57,7 @@ class BookingRestControllerSystemTest {
     private final JsonFactory jsonFactory = new JsonFactory();
     private final List<String> apartmentIds = new ArrayList<>();
     private final List<String> bookingIds = new ArrayList<>();
+    private final List<String> tenantIds = new ArrayList<>();
 
     @Autowired
     private MockMvc mockMvc;
@@ -59,12 +67,15 @@ class BookingRestControllerSystemTest {
     private SpringJpaApartmentBookingHistoryTestRepository apartmentBookingHistoryRepository;
     @Autowired
     private SpringJpaBookingTestRepository bookingRepository;
+    @Autowired
+    private SpringJpaTenantTestRepository tenantRepository;
 
     @AfterEach
     void deleteBookings() {
         apartmentRepository.deleteAll(apartmentIds);
         apartmentBookingHistoryRepository.deleteAll(apartmentIds);
         bookingRepository.deleteAll(bookingIds);
+        tenantRepository.deleteAll(tenantIds);
     }
 
     @Test
@@ -82,11 +93,14 @@ class BookingRestControllerSystemTest {
     }
 
     private String getUrlToExistingBooking() throws Exception {
-        String url = save(givenApartment()).getResponse().getRedirectedUrl();
+        String url = save(givenTenant()).getResponse().getRedirectedUrl();
+        String tenantId = url.replace("/tenant/", "");
+        tenantIds.add(tenantId);
+        url = save(givenApartment()).getResponse().getRedirectedUrl();
         String apartmentId = url.replace("/apartment/", "");
         givenApartmentOfferFor(apartmentId);
         apartmentIds.add(apartmentId);
-        ApartmentBookingDto apartmentBookingDto = new ApartmentBookingDto(apartmentId, "1357", LocalDate.of(2040, 11, 12), LocalDate.of(2040, 12, 1));
+        ApartmentBookingDto apartmentBookingDto = new ApartmentBookingDto(apartmentId, tenantId, LocalDate.of(2040, 11, 12), LocalDate.of(2040, 12, 1));
 
         MvcResult mvcResult = mockMvc.perform(put(url.replace("apartment/", "apartment/book/")).contentType(MediaType.APPLICATION_JSON).content(jsonFactory.create(apartmentBookingDto)))
                 .andExpect(status().isCreated())
@@ -109,7 +123,15 @@ class BookingRestControllerSystemTest {
         return new ApartmentDto(OWNER_ID, STREET, POSTAL_CODE, HOUSE_NUMBER, APARTMENT_NUMBER, CITY, COUNTRY, DESCRIPTION, SPACES_DEFINITION);
     }
 
+    private TenantDto givenTenant() {
+        return new TenantDto(LOGIN, EMAIL, FIRST_NAME, LAST_NAME, PASSWORD, PASSWORD, null);
+    }
+
     private MvcResult save(ApartmentDto apartmentDto) throws Exception {
         return mockMvc.perform(post("/apartment").contentType(MediaType.APPLICATION_JSON).content(jsonFactory.create(apartmentDto))).andReturn();
+    }
+
+    private MvcResult save(TenantDto tenantDto) throws Exception {
+        return mockMvc.perform(post("/tenant").contentType(MediaType.APPLICATION_JSON).content(jsonFactory.create(tenantDto))).andReturn();
     }
 }
