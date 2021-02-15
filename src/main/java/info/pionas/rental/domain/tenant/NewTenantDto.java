@@ -15,5 +15,4 @@ public class NewTenantDto {
     private final String password;
     private final String passwordRepeat;
     private final String currentPassword;
-
 }

@@ -46,12 +46,10 @@ public class Tenant {
     }
 
     public String id() {
-        if (id == null) {
-            return null;
-        }
         return id.toString();
     }
 
+    @SuppressWarnings("checkstyle:MagicNumber")
     public void update(PasswordEncoder passwordEncoder, NewTenantDto newTenantDto) {
         if (StringUtils.isNoneEmpty(newTenantDto.getEmail())) {
             setEmail(newTenantDto.getEmail());
@@ -132,6 +130,7 @@ public class Tenant {
             return this;
         }
 
+        @SuppressWarnings("checkstyle:MagicNumber")
         public Builder withPassword(String password, String passwordRepeat) {
             boolean isPasswordConfirmValid = isPasswordConfirmValid(password, passwordRepeat);
             if (!isPasswordConfirmValid) {

@@ -2,6 +2,7 @@ package info.pionas.common;
 
 import java.security.SecureRandom;
 
+@SuppressWarnings("checkstyle:HideUtilityClassConstructor")
 public class StringUtils {
     private static final String CHAR_LOWER = "abcdefghijklmnopqrstuvwxyz";
     private static final String CHAR_UPPER = CHAR_LOWER.toUpperCase();

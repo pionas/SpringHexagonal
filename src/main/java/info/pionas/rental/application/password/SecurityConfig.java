@@ -18,13 +18,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Log
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
+    @SuppressWarnings("checkstyle:MagicNumber")
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        super.configure(http);
         http.anonymous().principal("guest").authorities("GUEST_ROLE");
         http.cors().and().csrf().disable();
     }
