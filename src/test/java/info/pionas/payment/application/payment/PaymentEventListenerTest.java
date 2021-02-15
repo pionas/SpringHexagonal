@@ -2,8 +2,8 @@ package info.pionas.payment.application.payment;
 
 import info.pionas.payment.domain.event.PaymentEventChannel;
 import info.pionas.payment.domain.payment.*;
-import info.pionas.rental.domain.agreeement.AgreementAccepted;
-import info.pionas.rental.domain.agreeement.AgreementAcceptedTestFactory;
+import info.pionas.rental.domain.agreement.AgreementAccepted;
+import info.pionas.rental.domain.agreement.AgreementAcceptedTestFactory;
 import info.pionas.rental.domain.event.FakeEventIdFactory;
 import info.pionas.rental.domain.rentalplaceidentifier.RentalType;
 import info.pionas.rental.infrastructure.clock.FakeClock;

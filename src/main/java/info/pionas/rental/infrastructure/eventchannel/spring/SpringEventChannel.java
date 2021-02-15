@@ -1,6 +1,6 @@
 package info.pionas.rental.infrastructure.eventchannel.spring;
 
-import info.pionas.rental.domain.agreeement.AgreementAccepted;
+import info.pionas.rental.domain.agreement.AgreementAccepted;
 import info.pionas.rental.domain.apartment.ApartmentBooked;
 import info.pionas.rental.domain.booking.BookingAccepted;
 import info.pionas.rental.domain.booking.BookingRejected;

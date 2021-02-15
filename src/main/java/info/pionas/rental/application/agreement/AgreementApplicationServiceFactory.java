@@ -1,6 +1,6 @@
-package info.pionas.rental.application.agreeement;
+package info.pionas.rental.application.agreement;
 
-import info.pionas.rental.domain.agreeement.AgreementEventPublisher;
+import info.pionas.rental.domain.agreement.AgreementEventPublisher;
 import info.pionas.rental.domain.agreement.AgreementRepository;
 import info.pionas.rental.domain.clock.Clock;
 import info.pionas.rental.domain.event.EventIdFactory;
