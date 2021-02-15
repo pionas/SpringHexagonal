@@ -4,6 +4,8 @@ import info.pionas.common.StringUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.Entity;
@@ -87,6 +89,40 @@ public class Tenant {
 
     private static String encodePassword(PasswordEncoder passwordEncoder, String salt, String password) {
         return passwordEncoder.encode(salt + password);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Tenant tenant = (Tenant) o;
+
+        return new EqualsBuilder()
+                .append(getLogin(), tenant.login)
+                .append(getEmail(), tenant.email)
+                .append(getFirstName(), tenant.firstName)
+                .append(getLastName(), tenant.lastName)
+                .append(getPassword(), tenant.password)
+                .append(getSalt(), tenant.salt).isEquals();
+    }
+
+    @SuppressWarnings("checkstyle:MagicNumber")
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(getLogin())
+                .append(getEmail())
+                .append(getFirstName())
+                .append(getLastName())
+                .append(getPassword())
+                .append(getSalt())
+                .toHashCode();
     }
 
     public static class Builder {
