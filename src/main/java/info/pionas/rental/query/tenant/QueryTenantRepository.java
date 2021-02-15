@@ -1,6 +1,5 @@
 package info.pionas.rental.query.tenant;
 
-import info.pionas.rental.domain.tenant.TenantNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +15,6 @@ public class QueryTenantRepository {
     }
 
     public TenantReadModel findById(String id) {
-        return springQueryTenantRepository.findById(UUID.fromString(id))
-                .orElseThrow(() -> new TenantNotFoundException(id));
+        return springQueryTenantRepository.findById(UUID.fromString(id)).orElse(null);
     }
 }
