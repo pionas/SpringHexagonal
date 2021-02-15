@@ -11,9 +11,12 @@ import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingHistory
 import info.pionas.rental.domain.apartmentbookinghistory.ApartmentBookingHistoryRepository;
 import info.pionas.rental.domain.apartmentoffer.ApartmentOffer;
 import info.pionas.rental.domain.apartmentoffer.ApartmentOfferRepository;
+import info.pionas.rental.domain.tenant.Tenant;
+import info.pionas.rental.domain.tenant.TenantRepository;
 import info.pionas.rental.infrastructure.persistence.jpa.apartment.SpringJpaApartmentTestRepository;
 import info.pionas.rental.infrastructure.persistence.jpa.apartmentbookinghistory.SpringJpaApartmentBookingHistoryTestRepository;
 import info.pionas.rental.infrastructure.persistence.jpa.apartmentoffer.SpringJpaApartmentOfferTestRepository;
+import info.pionas.rental.infrastructure.persistence.jpa.tenant.SpringJpaTenantTestRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -28,10 +31,15 @@ import java.util.UUID;
 
 import static info.pionas.rental.domain.apartment.Apartment.Builder.apartment;
 import static info.pionas.rental.domain.apartmentoffer.ApartmentOffer.Builder.apartmentOffer;
+import static info.pionas.rental.domain.tenant.Tenant.Builder.tenant;
 
 @SpringBootTest
 @Tag("IntegrationTest")
 class ApartmentBookingHistoryEventListenerIntegrationTest {
+    private static final String LOGIN = "john.doe";
+    private static final String FIRST_NAME = "John";
+    private static final String LAST_NAME = "Doe";
+    private static final String EMAIL = "john.doe@example.com";
     private static final String OWNER_ID = "1234";
     private static final String STREET = "Florianska";
     private static final String POSTAL_CODE = "12-345";
@@ -59,21 +67,26 @@ class ApartmentBookingHistoryEventListenerIntegrationTest {
     private ApartmentOfferRepository apartmentOfferRepository;
     @Autowired
     private SpringJpaApartmentOfferTestRepository springJpaApartmentOfferTestRepository;
+    @Autowired
+    private TenantRepository tenantRepository;
+    @Autowired
+    private SpringJpaTenantTestRepository springJpaTenantTestRepository;
 
     private String apartmentId;
     private UUID apartmentOfferId;
+    private String tenantId;
 
     @AfterEach
     void removeApartment() {
         springJpaApartmentTestRepository.deleteById(apartmentId);
         springJpaApartmentBookingHistoryTestRepository.deleteById(apartmentId);
         springJpaApartmentOfferTestRepository.deleteById(apartmentOfferId);
+        springJpaTenantTestRepository.deleteById(tenantId);
     }
 
     @Test
     @Transactional
     void shouldUpdateApartmentBookingHistory() {
-        String tenantId = "11223344";
         LocalDate start = LocalDate.of(2040, 1, 13);
         LocalDate end = LocalDate.of(2040, 1, 14);
         givenExistingApartmentWithOffer();
@@ -95,6 +108,16 @@ class ApartmentBookingHistoryEventListenerIntegrationTest {
     private void givenExistingApartmentWithOffer() {
         apartmentId = apartmentRepository.save(createApartment());
         apartmentOfferId = apartmentOfferRepository.save(createApartmentOffer());
+        tenantId = tenantRepository.save(createTenant());
+    }
+
+    private Tenant createTenant() {
+        return tenant()
+                .withLogin(LOGIN)
+                .withFirstName(FIRST_NAME)
+                .withLastName(LAST_NAME)
+                .withEmail(EMAIL)
+                .build();
     }
 
     private ApartmentOffer createApartmentOffer() {
