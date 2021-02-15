@@ -20,7 +20,7 @@ public class TenantRestController {
     @PostMapping
     public ResponseEntity<String> add(@RequestBody TenantDto tenantDto) {
         String tenantId = tenantApplicationService.add(tenantDto);
-        return ResponseEntity.created(URI.create("/apartment/" + tenantId)).build();
+        return ResponseEntity.created(URI.create("/tenant/" + tenantId)).build();
     }
 
     @PutMapping("/{id}")
