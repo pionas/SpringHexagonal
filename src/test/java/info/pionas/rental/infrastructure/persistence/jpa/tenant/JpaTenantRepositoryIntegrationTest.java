@@ -141,6 +141,24 @@ class JpaTenantRepositoryIntegrationTest {
                 .hasEmailEqualsTo(EMAIL);
     }
 
+    @Test
+    void shouldDeleteExistingTenant() {
+        String existingId = tenantRepository.save(createTenant());
+
+        tenantRepository.deleteById(existingId);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenTryDeleteTenantDoesNotExist() {
+        String nonExistingTenantId = UUID.randomUUID().toString();
+
+        TenantNotFoundException actual = assertThrows(TenantNotFoundException.class, () -> {
+            tenantRepository.deleteById(nonExistingTenantId);
+        });
+
+        assertThat(actual).hasMessage("Tenant with id: " + nonExistingTenantId + " does not exist");
+    }
+
     private String givenExistingTenant(Tenant tenant) {
         String tenantId = tenantRepository.save(tenant);
         tenantIds.add(tenantId);
