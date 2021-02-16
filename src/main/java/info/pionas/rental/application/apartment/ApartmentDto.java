@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 
+import static info.pionas.rental.domain.apartment.NewApartmentDto.Builder.newApartmentDto;
+
 
 @RequiredArgsConstructor
 @Getter
@@ -22,16 +24,16 @@ public class ApartmentDto {
     private final Map<String, Double> spacesDefinition;
 
     public NewApartmentDto asNewApartmentDto() {
-        return NewApartmentDto.builder()
-                .ownerId(getOwnerId())
-                .street(getStreet())
-                .postalCode(getPostalCode())
-                .houseNumber(getHouseNumber())
-                .apartmentNumber(getApartmentNumber())
-                .city(getCity())
-                .country(getCountry())
-                .description(getDescription())
-                .spacesDefinition(getSpacesDefinition())
+        return newApartmentDto()
+                .withOwnerId(getOwnerId())
+                .withStreet(getStreet())
+                .withPostalCode(getPostalCode())
+                .withHouseNumber(getHouseNumber())
+                .withApartmentNumber(getApartmentNumber())
+                .withCity(getCity())
+                .withCountry(getCountry())
+                .withDescription(getDescription())
+                .withSpacesDefinition(getSpacesDefinition())
                 .build();
     }
 }
