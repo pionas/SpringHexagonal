@@ -20,4 +20,7 @@ public class TenantApplicationService {
         tenantDomainService.update(tenantId, tenantDto.asNewTenantDto());
     }
 
+    public void delete(String tenantId) {
+        tenantRepository.deleteById(tenantId);
+    }
 }

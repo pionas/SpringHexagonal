@@ -73,6 +73,15 @@ class TenantApplicationServiceTest {
                 .hasEmailEqualsTo(EMAIL);
     }
 
+    @Test
+    void shouldDeleteTenant() {
+        givenExistingTenant();
+        passwordMatches();
+        service.delete(ID);
+
+        then(tenantRepository).should().deleteById(ID);
+    }
+
     private void givenExistingTenant() {
         given(tenantRepository.findById(ID)).willReturn(givenTenant());
     }
