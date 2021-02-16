@@ -1,8 +1,8 @@
 package info.pionas.rental.domain.tenant;
 
 import info.pionas.rental.domain.error.ErrorExceptions;
+import info.pionas.rental.domain.password.PasswordEncoderFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ import static info.pionas.rental.domain.tenant.Tenant.Builder.tenant;
 public class TenantDomainService {
 
     private final TenantRepository tenantRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoderFactory passwordEncoder;
 
     public Tenant create(NewTenantDto newTenantDto) {
         verifyExistenceOfTenants(null, newTenantDto);

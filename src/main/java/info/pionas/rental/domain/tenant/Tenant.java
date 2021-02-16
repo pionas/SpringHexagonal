@@ -1,11 +1,12 @@
 package info.pionas.rental.domain.tenant;
 
 import info.pionas.common.StringUtils;
+import info.pionas.rental.domain.password.PasswordEncoderFactory;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,9 +15,9 @@ import javax.persistence.Table;
 import java.util.Objects;
 import java.util.UUID;
 
-@NoArgsConstructor
-@Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
+@Getter
 @Table(name = "TENANT")
 @SuppressWarnings("PMD.UnusedPrivateField")
 public class Tenant {
@@ -45,12 +46,20 @@ public class Tenant {
         this.password = password;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
     public String id() {
         return id.toString();
     }
 
     @SuppressWarnings("checkstyle:MagicNumber")
-    public void update(PasswordEncoder passwordEncoder, NewTenantDto newTenantDto) {
+    public void update(PasswordEncoderFactory passwordEncoder, NewTenantDto newTenantDto) {
         if (StringUtils.isNoneEmpty(newTenantDto.getEmail())) {
             this.email = newTenantDto.getEmail();
         }
@@ -66,27 +75,19 @@ public class Tenant {
         if (StringUtils.isNoneEmpty(newTenantDto.getPassword())) {
             verifyPassword(passwordEncoder, newTenantDto);
             this.salt = StringUtils.generateString(10);
-            this.password = encodePassword(passwordEncoder, getSalt(), newTenantDto.getPassword());
+            this.password = passwordEncoder.encode(this.salt + newTenantDto.getPassword());
         }
     }
 
-    private void verifyPassword(PasswordEncoder passwordEncoder, NewTenantDto newTenantDto) {
-        boolean isPasswordConfirmValid = isPasswordConfirmValid(newTenantDto.getPassword(), newTenantDto.getPasswordRepeat());
+    private void verifyPassword(PasswordEncoderFactory passwordEncoder, NewTenantDto newTenantDto) {
+        boolean isPasswordConfirmValid = Objects.equals(newTenantDto.getPassword(), newTenantDto.getPasswordRepeat());
         if (!isPasswordConfirmValid) {
             throw TenantException.byPassword();
         }
-        boolean passwordMatches = passwordEncoder.matches(getSalt() + newTenantDto.getCurrentPassword(), getPassword());
+        boolean passwordMatches = passwordEncoder.matches(this.salt + newTenantDto.getCurrentPassword(), this.password);
         if (!passwordMatches) {
             throw TenantException.byPassword();
         }
-    }
-
-    private static boolean isPasswordConfirmValid(String password, String passwordRepeat) {
-        return Objects.equals(password, passwordRepeat);
-    }
-
-    private static String encodePassword(PasswordEncoder passwordEncoder, String salt, String password) {
-        return passwordEncoder.encode(salt + password);
     }
 
     @Override
@@ -124,7 +125,7 @@ public class Tenant {
     }
 
     public static class Builder {
-        private PasswordEncoder passwordEncoder;
+        private PasswordEncoderFactory passwordEncoder;
         private String login;
         private String email;
         private String firstName;
@@ -139,7 +140,7 @@ public class Tenant {
             return new Builder();
         }
 
-        public Builder withPasswordEncoder(PasswordEncoder passwordEncoder) {
+        public Builder withPasswordEncoder(PasswordEncoderFactory passwordEncoder) {
             this.passwordEncoder = passwordEncoder;
             return this;
         }
@@ -166,12 +167,12 @@ public class Tenant {
 
         @SuppressWarnings("checkstyle:MagicNumber")
         public Builder withPassword(String password, String passwordRepeat) {
-            boolean isPasswordConfirmValid = isPasswordConfirmValid(password, passwordRepeat);
+            boolean isPasswordConfirmValid = Objects.equals(password, passwordRepeat);
             if (!isPasswordConfirmValid) {
                 throw TenantException.byPassword();
             }
             this.salt = StringUtils.generateString(10);
-            this.password = encodePassword(passwordEncoder, salt, password);
+            this.password = passwordEncoder.encode(salt + password);
             return this;
         }
 

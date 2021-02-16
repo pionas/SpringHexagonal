@@ -1,9 +1,9 @@
 package info.pionas.rental.domain.tenant;
 
 import info.pionas.rental.domain.error.ErrorExceptions;
+import info.pionas.rental.domain.password.PasswordEncoderFactory;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -28,7 +28,7 @@ class TenantDomainServiceTest {
     private static final String PASSWORD = "123456";
     private static final String ID = UUID.randomUUID().toString();
 
-    private final PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
+    private final PasswordEncoderFactory passwordEncoder = mock(PasswordEncoderFactory.class);
     private final TenantRepository tenantRepository = mock(TenantRepository.class);
 
     private final TenantDomainService service = new TenantDomainService(tenantRepository, passwordEncoder);
