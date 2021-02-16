@@ -29,6 +29,12 @@ public class TenantRestController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable String id) {
+        tenantApplicationService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping
     public Iterable<TenantReadModel> findAll() {
         return queryTenantRepository.findAll();

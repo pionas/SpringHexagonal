@@ -99,6 +99,19 @@ class TenantRestControllerSystemTest {
                 .andExpect(status().isNoContent());
     }
 
+
+    @Test
+    void shouldDeleteTenant() throws Exception {
+        TenantDto tenantDto = givenTenant1();
+
+        MvcResult mvcResult = mockMvc.perform(post("/tenant").contentType(MediaType.APPLICATION_JSON).content(jsonFactory.create(tenantDto)))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        mockMvc.perform(delete(mvcResult.getResponse().getRedirectedUrl()))
+                .andExpect(status().isNoContent());
+    }
+
     private TenantDto givenTenant1() {
         return new TenantDto(LOGIN_1, EMAIL_1, FIRST_NAME_1, LAST_NAME_1, PASSWORD, PASSWORD, null);
     }
