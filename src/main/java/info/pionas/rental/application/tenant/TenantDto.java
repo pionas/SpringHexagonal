@@ -4,6 +4,8 @@ import info.pionas.rental.domain.tenant.NewTenantDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import static info.pionas.rental.domain.tenant.NewTenantDto.Builder.newTenantDto;
+
 @AllArgsConstructor
 @Getter
 public class TenantDto {
@@ -16,14 +18,14 @@ public class TenantDto {
     private String currentPassword;
 
     public NewTenantDto asNewTenantDto() {
-        return NewTenantDto.builder()
-                .login(getLogin())
-                .email(getEmail())
-                .firstName(getFirstName())
-                .lastName(getLastName())
-                .password(getPassword())
-                .passwordRepeat(getPasswordRepeat())
-                .currentPassword(getCurrentPassword())
+        return newTenantDto()
+                .withLogin(getLogin())
+                .withEmail(getEmail())
+                .withFirstName(getFirstName())
+                .withLastName(getLastName())
+                .withPassword(getPassword())
+                .withPasswordRepeat(getPasswordRepeat())
+                .withCurrentPassword(getCurrentPassword())
                 .build();
     }
 }
