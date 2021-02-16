@@ -3,7 +3,6 @@ package info.pionas.rental.domain.tenant;
 import info.pionas.common.StringUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,7 +16,6 @@ import java.util.UUID;
 
 @NoArgsConstructor
 @Getter
-@Setter
 @Entity
 @Table(name = "TENANT")
 @SuppressWarnings("PMD.UnusedPrivateField")
@@ -54,21 +52,21 @@ public class Tenant {
     @SuppressWarnings("checkstyle:MagicNumber")
     public void update(PasswordEncoder passwordEncoder, NewTenantDto newTenantDto) {
         if (StringUtils.isNoneEmpty(newTenantDto.getEmail())) {
-            setEmail(newTenantDto.getEmail());
+            this.email = newTenantDto.getEmail();
         }
         if (StringUtils.isNoneEmpty(newTenantDto.getFirstName())) {
-            setFirstName(newTenantDto.getFirstName());
+            this.firstName = newTenantDto.getFirstName();
         }
         if (StringUtils.isNoneEmpty(newTenantDto.getLastName())) {
-            setLastName(newTenantDto.getLastName());
+            this.lastName = newTenantDto.getLastName();
         }
         if (StringUtils.isNoneEmpty(newTenantDto.getLogin())) {
-            setLogin(newTenantDto.getLogin());
+            this.login = newTenantDto.getLogin();
         }
         if (StringUtils.isNoneEmpty(newTenantDto.getPassword())) {
             verifyPassword(passwordEncoder, newTenantDto);
-            setSalt(StringUtils.generateString(10));
-            setPassword(encodePassword(passwordEncoder, getSalt(), newTenantDto.getPassword()));
+            this.salt = StringUtils.generateString(10);
+            this.password = encodePassword(passwordEncoder, getSalt(), newTenantDto.getPassword());
         }
     }
 
