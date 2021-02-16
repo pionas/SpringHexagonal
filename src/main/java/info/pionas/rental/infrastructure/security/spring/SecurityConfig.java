@@ -1,4 +1,4 @@
-package info.pionas.rental.application.security;
+package info.pionas.rental.infrastructure.security.spring;
 
 import lombok.extern.java.Log;
 import org.springframework.context.annotation.Bean;
