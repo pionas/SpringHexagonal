@@ -15,4 +15,6 @@ public interface TenantRepository {
     Optional<Tenant> findByEmail(String email);
 
     Optional<Tenant> findByLogin(String login);
+
+    void deleteById(String id);
 }

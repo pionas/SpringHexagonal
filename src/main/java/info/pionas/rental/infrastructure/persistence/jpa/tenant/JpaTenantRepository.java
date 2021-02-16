@@ -31,6 +31,12 @@ public class JpaTenantRepository implements TenantRepository {
     }
 
     @Override
+    public void deleteById(String id) {
+        Tenant tenant = findById(id);
+        springJpaTenantRepository.delete(tenant);
+    }
+
+    @Override
     public Optional<Tenant> findByEmail(String email) {
         return springJpaTenantRepository.findByEmail(email);
     }
@@ -39,4 +45,5 @@ public class JpaTenantRepository implements TenantRepository {
     public Optional<Tenant> findByLogin(String login) {
         return springJpaTenantRepository.findByLogin(login);
     }
+
 }
