@@ -1,8 +1,8 @@
-package info.pionas.rental.application.agreeement;
+package info.pionas.rental.application.agreement;
 
-import info.pionas.rental.domain.agreeement.AgreementAccepted;
-import info.pionas.rental.domain.agreeement.AgreementAcceptedAssertion;
 import info.pionas.rental.domain.agreement.Agreement;
+import info.pionas.rental.domain.agreement.AgreementAccepted;
+import info.pionas.rental.domain.agreement.AgreementAcceptedAssertion;
 import info.pionas.rental.domain.agreement.AgreementRepository;
 import info.pionas.rental.domain.event.FakeEventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;

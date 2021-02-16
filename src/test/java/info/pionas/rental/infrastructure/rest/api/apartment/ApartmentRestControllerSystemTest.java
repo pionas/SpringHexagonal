@@ -4,10 +4,12 @@ import com.google.common.collect.ImmutableMap;
 import info.pionas.rental.application.apartment.ApartmentBookingDto;
 import info.pionas.rental.application.apartment.ApartmentDto;
 import info.pionas.rental.application.apartmentoffer.ApartmentOfferDto;
+import info.pionas.rental.application.tenant.TenantDto;
 import info.pionas.rental.infrastructure.json.JsonFactory;
 import info.pionas.rental.infrastructure.persistence.jpa.apartment.SpringJpaApartmentTestRepository;
 import info.pionas.rental.infrastructure.persistence.jpa.apartmentbookinghistory.SpringJpaApartmentBookingHistoryTestRepository;
 import info.pionas.rental.infrastructure.persistence.jpa.booking.SpringJpaBookingTestRepository;
+import info.pionas.rental.infrastructure.persistence.jpa.tenant.SpringJpaTenantTestRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
@@ -34,7 +37,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Tag("SystemTest")
+@ActiveProfiles("FakeAddressCatalogue")
 class ApartmentRestControllerSystemTest {
+    private static final String LOGIN = "john.doe";
+    private static final String FIRST_NAME = "John";
+    private static final String LAST_NAME = "Doe";
+    private static final String EMAIL = "john.doe@example.com";
+    private static final String PASSWORD = "123456";
     private static final String OWNER_ID_1 = "1234";
     private static final String STREET_1 = "Florianska";
     private static final String POSTAL_CODE_1 = "12-345";
@@ -61,6 +70,7 @@ class ApartmentRestControllerSystemTest {
     private final List<String> apartmentIds = new ArrayList<>();
     private final List<String> apartmentBookingHistoryIds = new ArrayList<>();
     private final List<String> bookingIds = new ArrayList<>();
+    private final List<String> tenantIds = new ArrayList<>();
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -69,12 +79,15 @@ class ApartmentRestControllerSystemTest {
     private SpringJpaApartmentBookingHistoryTestRepository apartmentBookingHistoryRepository;
     @Autowired
     private SpringJpaBookingTestRepository bookingRepository;
+    @Autowired
+    private SpringJpaTenantTestRepository tenantRepository;
 
     @AfterEach
     void deleteApartments() {
         apartmentRepository.deleteAll(apartmentIds);
         apartmentBookingHistoryRepository.deleteAll(apartmentBookingHistoryIds);
         bookingRepository.deleteAll(bookingIds);
+        tenantRepository.deleteAll(tenantIds);
     }
 
     @Test
@@ -109,11 +122,14 @@ class ApartmentRestControllerSystemTest {
 
     @Test
     void shouldBookApartment() throws Exception {
-        String url = save(givenApartment1()).getResponse().getRedirectedUrl();
+        String url = save(givenTenant()).getResponse().getRedirectedUrl();
+        String tenantId = url.replace("/tenant/", "");
+        url = save(givenApartment1()).getResponse().getRedirectedUrl();
         String apartmentId = url.replace("/apartment/", "");
+
         givenApartmentOfferFor(apartmentId);
         apartmentBookingHistoryIds.add(apartmentId);
-        ApartmentBookingDto apartmentBookingDto = new ApartmentBookingDto(apartmentId, "1357", LocalDate.of(2040, 11, 12), LocalDate.of(2040, 12, 1));
+        ApartmentBookingDto apartmentBookingDto = new ApartmentBookingDto(apartmentId, tenantId, LocalDate.of(2040, 11, 12), LocalDate.of(2040, 12, 1));
 
         MvcResult mvcResult = mockMvc.perform(put(url.replace("apartment/", "apartment/book/")).contentType(MediaType.APPLICATION_JSON).content(jsonFactory.create(apartmentBookingDto)))
                 .andExpect(status().isCreated())
@@ -123,7 +139,7 @@ class ApartmentRestControllerSystemTest {
         mockMvc.perform(get(url))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.bookingHistory.bookings.[*]", hasSize(1)))
-                .andExpect(jsonPath("$.bookingHistory.bookings.[0].tenantId").value("1357"))
+                .andExpect(jsonPath("$.bookingHistory.bookings.[0].tenantId").value(tenantId))
                 .andExpect(jsonPath("$.bookingHistory.bookings.[0].periodStart").value("2040-11-12"))
                 .andExpect(jsonPath("$.bookingHistory.bookings.[0].periodEnd").value("2040-12-01"));
     }
@@ -153,9 +169,20 @@ class ApartmentRestControllerSystemTest {
         return new ApartmentDto(OWNER_ID_2, STREET_2, POSTAL_CODE_2, HOUSE_NUMBER_2, APARTMENT_NUMBER_2, CITY_2, COUNTRY_2, DESCRIPTION_2, SPACES_DEFINITION_2);
     }
 
+    private TenantDto givenTenant() {
+        return new TenantDto(LOGIN, EMAIL, FIRST_NAME, LAST_NAME, PASSWORD, PASSWORD, null);
+    }
+
     private MvcResult save(ApartmentDto apartmentDto) throws Exception {
         MvcResult result = mockMvc.perform(post("/apartment").contentType(MediaType.APPLICATION_JSON).content(jsonFactory.create(apartmentDto))).andReturn();
         apartmentIds.add(getApartmentId(result));
+
+        return result;
+    }
+
+    private MvcResult save(TenantDto tenantDto) throws Exception {
+        MvcResult result = mockMvc.perform(post("/tenant").contentType(MediaType.APPLICATION_JSON).content(jsonFactory.create(tenantDto))).andReturn();
+        tenantIds.add(getTenantId(result));
 
         return result;
     }
@@ -166,5 +193,9 @@ class ApartmentRestControllerSystemTest {
 
     private String getBookingId(MvcResult result) {
         return result.getResponse().getRedirectedUrl().replace("/booking/", "");
+    }
+
+    private String getTenantId(MvcResult result) {
+        return result.getResponse().getRedirectedUrl().replace("/tenant/", "");
     }
 }

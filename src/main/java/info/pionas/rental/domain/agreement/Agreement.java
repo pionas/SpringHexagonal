@@ -1,6 +1,5 @@
 package info.pionas.rental.domain.agreement;
 
-import info.pionas.rental.domain.agreeement.AgreementEventPublisher;
 import info.pionas.rental.domain.money.Money;
 import info.pionas.rental.domain.rentalplaceidentifier.RentalType;
 import lombok.AccessLevel;

@@ -1,28 +1,47 @@
-package info.pionas.rental.infrastructure.addrestservice;
-
-import info.pionas.rental.domain.address.AddressDto;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-@SpringBootTest
-@Tag("IntegrationTest")
-class RestAddressCatalogueClientIntegrationTest {
-    private static final String STREET = "Grodzka";
-    private static final String POSTAL_CODE = "54-321";
-    private static final String BUILDING_NUMBER = "13";
-    private static final String CITY = "Berlin";
-    private static final String COUNTRY = "Germany";
-
-    @Test
-    void shouldAlwaysReturnTrue() {
-        boolean actual = new RestAddressCatalogueClient().exists(givenAddressDto());
-        assertThat(actual).isTrue();
-    }
-
-    private AddressDto givenAddressDto() {
-        return new AddressDto(STREET, POSTAL_CODE, BUILDING_NUMBER, CITY, COUNTRY);
-    }
-}
+//package info.pionas.rental.infrastructure.addrestservice;
+//
+//import com.smalaca.rentalapplication.addressservice.addressverifiacation.AddressVerificationContract;
+//import com.smalaca.rentalapplication.addressservice.addressverifiacation.AddressVerificationRequest;
+//import com.smalaca.rentalapplication.addressservice.addressverifiacation.AddressVerificationScenario;
+//import info.pionas.rental.domain.address.AddressCatalogue;
+//import info.pionas.rental.domain.address.AddressDto;
+//import org.junit.jupiter.api.Tag;
+//import org.junit.jupiter.api.Test;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.boot.test.context.SpringBootTest;
+//
+//import static org.assertj.core.api.Assertions.assertThat;
+//
+//@SpringBootTest
+//@Tag("IntegrationTest")
+//class RestAddressCatalogueClientIntegrationTest {
+//    private final AddressVerificationContract contract = new AddressVerificationContract();
+//    @Autowired
+//    private AddressCatalogue addressCatalogue;
+//
+//    @Test
+//    void shouldRecognizeValidAddress() {
+//        AddressVerificationScenario scenario = contract.validAddress();
+//        AddressDto addressDto = addressDto(scenario);
+//
+//        boolean actual = addressCatalogue.exists(addressDto);
+//
+//        assertThat(actual).isTrue();
+//    }
+//
+//    @Test
+//    void shouldRecognizeInvalidAddress() {
+//        AddressVerificationScenario scenario = contract.invalidAddress();
+//        AddressDto addressDto = addressDto(scenario);
+//
+//        boolean actual = addressCatalogue.exists(addressDto);
+//
+//        assertThat(actual).isFalse();
+//    }
+//
+//    private AddressDto addressDto(AddressVerificationScenario scenario) {
+//        AddressVerificationRequest request = scenario.getRequest();
+//        return new AddressDto(request.getStreet(), request.getPostalCode(), request.getBuildingNumber(), request.getCity(), request.getCountry());
+//    }
+//
+//}

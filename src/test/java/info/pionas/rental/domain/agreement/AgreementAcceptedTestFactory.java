@@ -1,4 +1,4 @@
-package info.pionas.rental.domain.agreeement;
+package info.pionas.rental.domain.agreement;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

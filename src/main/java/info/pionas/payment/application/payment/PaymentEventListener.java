@@ -2,7 +2,7 @@ package info.pionas.payment.application.payment;
 
 import info.pionas.payment.domain.payment.Payment;
 import info.pionas.payment.domain.payment.PaymentFactory;
-import info.pionas.rental.domain.agreeement.AgreementAccepted;
+import info.pionas.rental.domain.agreement.AgreementAccepted;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 

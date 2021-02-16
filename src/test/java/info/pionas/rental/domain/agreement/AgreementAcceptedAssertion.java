@@ -1,4 +1,4 @@
-package info.pionas.rental.domain.agreeement;
+package info.pionas.rental.domain.agreement;
 
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;

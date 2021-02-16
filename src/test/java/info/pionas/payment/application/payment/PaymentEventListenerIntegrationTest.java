@@ -5,9 +5,9 @@ import info.pionas.payment.domain.payment.PaymentCompleted;
 import info.pionas.payment.domain.payment.PaymentCompletedAssertion;
 import info.pionas.payment.domain.payment.PaymentFailed;
 import info.pionas.payment.domain.payment.PaymentFailedAssertion;
-import info.pionas.payment.infrastructure.paymentservice.RestPaymentClient;
-import info.pionas.rental.domain.agreeement.AgreementAccepted;
-import info.pionas.rental.domain.agreeement.AgreementAcceptedTestFactory;
+import info.pionas.payment.infrastructure.paymentservice.FakePaymentService;
+import info.pionas.rental.domain.agreement.AgreementAccepted;
+import info.pionas.rental.domain.agreement.AgreementAcceptedTestFactory;
 import info.pionas.rental.domain.event.FakeEventIdFactory;
 import info.pionas.rental.domain.eventchannel.EventChannel;
 import info.pionas.rental.domain.rentalplaceidentifier.RentalType;
@@ -18,6 +18,7 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -31,7 +32,8 @@ import static org.mockito.BDDMockito.then;
 
 @SpringBootTest
 @Tag("IntegrationTest")
-public class PaymentEventListenerIntegrationTest {
+@ActiveProfiles("FakePaymentService")
+class PaymentEventListenerIntegrationTest {
     private static final String EVENT_ID = FakeEventIdFactory.UUID;
     private static final LocalDateTime CREATION_TIME = FakeClock.NOW;
     private static final String RENTAL_TYPE = RentalType.APARTMENT.name();
@@ -45,7 +47,7 @@ public class PaymentEventListenerIntegrationTest {
     @Autowired
     private EventChannel eventChannel;
     @Autowired
-    private RestPaymentClient restPaymentClient;
+    private FakePaymentService restPaymentClient;
     @SpyBean
     private PaymentEventChannel paymentEventChannel;
 
@@ -65,7 +67,7 @@ public class PaymentEventListenerIntegrationTest {
     }
 
     @Test
-    void shouldConsumePublishedAgreementFailedAndPublishPaymentCompleted() {
+    void shouldConsumePublishedAgreementAcceptedAndPublishPaymentFailed() {
         restPaymentClient.change(NOT_ENOUGH_MONEY);
         ArgumentCaptor<PaymentFailed> captor = ArgumentCaptor.forClass(PaymentFailed.class);
 

@@ -3,6 +3,7 @@ package info.pionas.rental.infrastructure.persistence.jpa.agreement;
 import info.pionas.rental.domain.agreement.Agreement;
 import info.pionas.rental.domain.agreement.AgreementRepository;
 import info.pionas.rental.domain.money.Money;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -45,18 +46,11 @@ class JpaAgreementRepositoryIntegrationTest {
 
     @Test
     void shouldSaveAgreement() {
-        Agreement agreement = agreement()
-                .withRentalType(APARTMENT)
-                .withRentalPlaceId(RENTAL_PLACE_ID)
-                .withOwnerId(OWNER_ID)
-                .withTenantId(TENANT_ID)
-                .withDays(DAYS)
-                .withPrice(PRICE)
-                .build();
+        agreementId = agreementRepository.save(createAgreement());
+        Agreement actual = agreementRepository.findById(agreementId);
 
-        agreementId = agreementRepository.save(agreement);
+        Assertions.assertThat(actual).hasFieldOrPropertyWithValue("rentalPlaceId", RENTAL_PLACE_ID);
     }
-
 
     @Test
     void shouldThrowExceptionWhenApartmentDoesNotExist() {
@@ -67,5 +61,16 @@ class JpaAgreementRepositoryIntegrationTest {
         });
 
         assertThat(actual).hasMessage("Agreement with id " + nonExistingAgreementId + " does not exist");
+    }
+
+    private Agreement createAgreement() {
+        return agreement()
+                .withRentalType(APARTMENT)
+                .withRentalPlaceId(RENTAL_PLACE_ID)
+                .withOwnerId(OWNER_ID)
+                .withTenantId(TENANT_ID)
+                .withDays(DAYS)
+                .withPrice(PRICE)
+                .build();
     }
 }
