@@ -74,6 +74,7 @@ class QueryTenantRepositoryIntegrationTest {
                 .hasSize(2)
                 .anySatisfy(tenantReadModel -> {
                     TenantReadModelAssertion.assertThat(tenantReadModel)
+                            .hasTenantId()
                             .hasLoginEqualsTo(LOGIN_1)
                             .hasFirstNameEqualsTo(FIRST_NAME_1)
                             .hasLastNameEqualsTo(LAST_NAME_1)
@@ -81,6 +82,7 @@ class QueryTenantRepositoryIntegrationTest {
                 })
                 .anySatisfy(tenantReadModel -> {
                     TenantReadModelAssertion.assertThat(tenantReadModel)
+                            .hasTenantId()
                             .hasLoginEqualsTo(LOGIN_2)
                             .hasFirstNameEqualsTo(FIRST_NAME_2)
                             .hasLastNameEqualsTo(LAST_NAME_2)
