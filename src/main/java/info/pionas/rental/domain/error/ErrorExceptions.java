@@ -1,17 +1,13 @@
 package info.pionas.rental.domain.error;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import java.util.List;
 
+@AllArgsConstructor
+@Getter
 public class ErrorExceptions extends RuntimeException {
-    public ErrorExceptions(String message) {
-        super(message);
-    }
 
-    public static RuntimeException listExceptions(List<RuntimeException> exceptions) {
-        String message = "";
-        for (RuntimeException runtimeException : exceptions) {
-            message = message.concat(runtimeException.getMessage()).concat("\n");
-        }
-        return new ErrorExceptions(message.substring(0, message.length() - 2));
-    }
+    private final List<RuntimeException> exceptions;
 }

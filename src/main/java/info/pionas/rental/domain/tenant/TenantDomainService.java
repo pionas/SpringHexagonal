@@ -41,7 +41,7 @@ public class TenantDomainService {
         verifyEmail(exceptions, tenant, newTenantDto);
         verifyLogin(exceptions, tenant, newTenantDto);
         if (exceptions.size() > 0) {
-            throw ErrorExceptions.listExceptions(exceptions);
+            throw new ErrorExceptions(exceptions);
         }
     }
 
