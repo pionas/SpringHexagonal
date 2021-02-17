@@ -1,6 +1,8 @@
 package info.pionas.rental.application.tenant;
 
 import info.pionas.rental.domain.error.ErrorExceptions;
+import info.pionas.rental.domain.error.ErrorExceptionsAssertion;
+import info.pionas.rental.domain.error.RuntimeExceptionAssertion;
 import info.pionas.rental.domain.password.PasswordEncoderFactory;
 import info.pionas.rental.domain.tenant.Tenant;
 import info.pionas.rental.domain.tenant.TenantAssertion;
@@ -12,7 +14,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static info.pionas.rental.domain.tenant.Tenant.Builder.tenant;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -52,7 +53,9 @@ class TenantApplicationServiceTest {
 
         ErrorExceptions actual = assertThrows(ErrorExceptions.class, () -> service.add(givenTenantDto()));
 
-        assertThat(actual).hasMessage("Login " + LOGIN + " already exist");
+        ErrorExceptionsAssertion.assertThat(actual).hasOnlyOneException(exception -> {
+            RuntimeExceptionAssertion.assertThat(exception).hasMessage("Login " + LOGIN + " already exists");
+        });
         then(tenantRepository).should(never()).save(any());
     }
 

@@ -1,6 +1,8 @@
 package info.pionas.rental.domain.tenant;
 
 import info.pionas.rental.domain.error.ErrorExceptions;
+import info.pionas.rental.domain.error.ErrorExceptionsAssertion;
+import info.pionas.rental.domain.error.RuntimeExceptionAssertion;
 import info.pionas.rental.domain.password.PasswordEncoderFactory;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -52,7 +54,9 @@ class TenantDomainServiceTest {
 
         ErrorExceptions actual = assertThrows(ErrorExceptions.class, () -> service.create(givenNewTenantDto(PASSWORD, null)));
 
-        assertThat(actual).hasMessage("Login " + LOGIN_1 + " already exist");
+        ErrorExceptionsAssertion.assertThat(actual).hasOnlyOneException(exception -> {
+            RuntimeExceptionAssertion.assertThat(exception).hasMessage("Login " + LOGIN_1 + " already exists");
+        });
     }
 
     @Test
@@ -61,7 +65,9 @@ class TenantDomainServiceTest {
 
         ErrorExceptions actual = assertThrows(ErrorExceptions.class, () -> service.create(givenNewTenantDto(PASSWORD, null)));
 
-        assertThat(actual).hasMessage("Email " + EMAIL_1 + " already exist");
+        ErrorExceptionsAssertion.assertThat(actual).hasOnlyOneException(exception -> {
+            RuntimeExceptionAssertion.assertThat(exception).hasMessage("Email " + EMAIL_1 + " already exists");
+        });
     }
 
     @Test
@@ -78,7 +84,7 @@ class TenantDomainServiceTest {
         ArgumentCaptor<Tenant> captor = ArgumentCaptor.forClass(Tenant.class);
         givenExistingTenant();
         passwordMatches();
-        NewTenantDto dto = getUpdateTenant(LOGIN_1, EMAIL_1, FIRST_NAME_2, LAST_NAME_2, PASSWORD, PASSWORD, "123456");
+        NewTenantDto dto = getTenant(LOGIN_1, EMAIL_1, FIRST_NAME_2, LAST_NAME_2, PASSWORD, PASSWORD, "123456");
         service.update(ID, dto);
 
         then(tenantRepository).should().save(captor.capture());
@@ -94,10 +100,13 @@ class TenantDomainServiceTest {
     void shouldRecognizeTenantLoginExistWhenTryChangeLogin() {
         givenExistingTenantByLogin();
         given(tenantRepository.findById(ID)).willReturn(givenTenant2());
-        NewTenantDto dto = getUpdateTenant(LOGIN_1, EMAIL_2, FIRST_NAME_2, LAST_NAME_2, PASSWORD, PASSWORD, "123456");
+        NewTenantDto dto = getTenant(LOGIN_1, EMAIL_2, FIRST_NAME_2, LAST_NAME_2, PASSWORD, PASSWORD, "123456");
         ErrorExceptions actual = assertThrows(ErrorExceptions.class, () -> service.update(ID, dto));
 
-        assertThat(actual).hasMessage("Login " + LOGIN_1 + " already exist");
+        ErrorExceptionsAssertion.assertThat(actual).hasOnlyOneException(exception -> {
+            RuntimeExceptionAssertion.assertThat(exception).hasMessage("Login " + LOGIN_1 + " already exists");
+        });
+
     }
 
     @Test
@@ -105,17 +114,38 @@ class TenantDomainServiceTest {
         givenExistingTenantByEmail();
         given(tenantRepository.findById(ID)).willReturn(givenTenant2());
 
-        NewTenantDto dto = getUpdateTenant(LOGIN_2, EMAIL_1, FIRST_NAME_2, LAST_NAME_2, PASSWORD, PASSWORD, "123456");
+        NewTenantDto dto = getTenant(LOGIN_2, EMAIL_1, FIRST_NAME_2, LAST_NAME_2, PASSWORD, PASSWORD, "123456");
         ErrorExceptions actual = assertThrows(ErrorExceptions.class, () -> service.update(ID, dto));
 
-        assertThat(actual).hasMessage("Email " + EMAIL_1 + " already exist");
+        ErrorExceptionsAssertion.assertThat(actual).hasOnlyOneException(exception -> {
+            RuntimeExceptionAssertion.assertThat(exception).hasMessage("Email " + EMAIL_1 + " already exists");
+        });
+    }
+
+    @Test
+    void shouldRecognizeTenantLoginExistAndEmailExistWhenTryChangeEmail() {
+        givenExistingTenantByLogin();
+        givenExistingTenantByEmail();
+        passwordMatches();
+        given(tenantRepository.findById(ID)).willReturn(givenTenant2());
+
+        NewTenantDto dto = getTenant(LOGIN_1, EMAIL_1, FIRST_NAME_2, LAST_NAME_2, PASSWORD, PASSWORD, "123456");
+        ErrorExceptions actual = assertThrows(ErrorExceptions.class, () -> service.update(ID, dto));
+
+        ErrorExceptionsAssertion.assertThat(actual).hasRuntimeExceptions(2)
+                .hasRuntimeException(exception -> {
+                    RuntimeExceptionAssertion.assertThat(exception).hasMessage("Email " + EMAIL_1 + " already exists");
+                })
+                .hasRuntimeException(exception -> {
+                    RuntimeExceptionAssertion.assertThat(exception).hasMessage("Login " + LOGIN_1 + " already exists");
+                });
     }
 
     @Test
     void shouldRecognizeTenantInvalidPasswordWhenTryChangePassword() {
         givenExistingTenant();
         passwordNoMatches();
-        NewTenantDto dto = getUpdateTenant(LOGIN_2, EMAIL_2, FIRST_NAME_2, LAST_NAME_2, PASSWORD, "sas", "123456");
+        NewTenantDto dto = getTenant(LOGIN_2, EMAIL_2, FIRST_NAME_2, LAST_NAME_2, PASSWORD, "sas", "123456");
         TenantException actual = assertThrows(TenantException.class, () -> service.update(ID, dto));
 
         assertThat(actual).hasMessage("Password not matches");
@@ -126,7 +156,7 @@ class TenantDomainServiceTest {
     void shouldRecognizeTenantInvalidCurrentPassword() {
         givenExistingTenant();
         passwordNoMatches();
-        NewTenantDto dto = getUpdateTenant(LOGIN_1, EMAIL_1, FIRST_NAME_1, LAST_NAME_1, PASSWORD, PASSWORD, "sda");
+        NewTenantDto dto = getTenant(LOGIN_1, EMAIL_1, FIRST_NAME_1, LAST_NAME_1, PASSWORD, PASSWORD, "sda");
         TenantException actual = assertThrows(TenantException.class, () -> service.update(ID, dto));
 
         assertThat(actual).hasMessage("Password not matches");
@@ -185,11 +215,11 @@ class TenantDomainServiceTest {
     }
 
     private NewTenantDto givenNewTenantDto(String passwordRepeat, String currentPassword) {
-        return getUpdateTenant(LOGIN_1, EMAIL_1, FIRST_NAME_1, LAST_NAME_1, PASSWORD, passwordRepeat, currentPassword);
+        return getTenant(LOGIN_1, EMAIL_1, FIRST_NAME_1, LAST_NAME_1, PASSWORD, passwordRepeat, currentPassword);
     }
 
 
-    private NewTenantDto getUpdateTenant(String login, String email, String firstName, String lastName, String password, String passwordRepeat, String currentPassword) {
+    private NewTenantDto getTenant(String login, String email, String firstName, String lastName, String password, String passwordRepeat, String currentPassword) {
         return new NewTenantDto(login, email, firstName, lastName, password, passwordRepeat, currentPassword);
     }
 
