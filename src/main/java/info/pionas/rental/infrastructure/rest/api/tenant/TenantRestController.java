@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 @RequiredArgsConstructor
@@ -18,7 +19,7 @@ public class TenantRestController {
     private final QueryTenantRepository queryTenantRepository;
 
     @PostMapping
-    public ResponseEntity<String> add(@RequestBody TenantDto tenantDto) {
+    public ResponseEntity<String> add(@Valid @RequestBody TenantDto tenantDto) {
         String tenantId = tenantApplicationService.add(tenantDto);
         return ResponseEntity.created(URI.create("/tenant/" + tenantId)).build();
     }

@@ -3,7 +3,6 @@ package info.pionas.rental.infrastructure.rest.api.exception;
 import info.pionas.rental.domain.error.ErrorExceptions;
 import info.pionas.rental.domain.tenant.TenantException;
 import info.pionas.rental.domain.tenant.TenantNotFoundException;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -42,10 +39,10 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(body, headers, status);
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    public void constraintViolationException(HttpServletResponse response) throws IOException {
-        response.sendError(HttpStatus.BAD_REQUEST.value());
-    }
+//    @ExceptionHandler(ConstraintViolationException.class)
+//    public void constraintViolationException(HttpServletResponse response) throws IOException {
+//        response.sendError(HttpStatus.BAD_REQUEST.value());
+//    }
 
     @ExceptionHandler(TenantNotFoundException.class)
     public ResponseEntity<Object> notFoundException(Exception ex) {
