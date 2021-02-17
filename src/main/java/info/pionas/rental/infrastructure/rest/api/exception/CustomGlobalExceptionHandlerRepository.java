@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 import static java.util.Arrays.asList;
 
 @ControllerAdvice(basePackages = "info.pionas.rental.infrastructure.rest.api")
-public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
+public class CustomGlobalExceptionHandlerRepository extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers,
