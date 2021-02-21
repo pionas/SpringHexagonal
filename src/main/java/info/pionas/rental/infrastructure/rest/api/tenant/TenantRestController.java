@@ -56,6 +56,9 @@ public class TenantRestController {
     @GetMapping("/{id}")
     public TenantReadModel findById(@PathVariable String id) {
         TenantReadModel tenantReadModel = queryTenantRepository.findById(id);
+        if (tenantReadModel == null) {
+            return null;
+        }
         tenantReadModel.add(linkTo(methodOn(TenantRestController.class).findById(id)).withSelfRel());
         return tenantReadModel;
     }
