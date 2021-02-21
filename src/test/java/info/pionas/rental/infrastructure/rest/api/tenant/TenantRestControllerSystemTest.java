@@ -56,7 +56,12 @@ class TenantRestControllerSystemTest {
         mockMvc.perform(get("/tenant"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isNotEmpty())
-                .andExpect(jsonPath("$").isArray());
+                .andExpect(jsonPath("$.data").isNotEmpty())
+                .andExpect(jsonPath("$.pageNumber").value(0))
+                .andExpect(jsonPath("$.totalPages").value(1))
+                .andExpect(jsonPath("$._links.prev").doesNotExist())
+                .andExpect(jsonPath("$._links.next").doesNotExist())
+                .andExpect(jsonPath("$._links.self.href").value(containsString("/tenant")));
     }
 
     @Test
@@ -83,7 +88,8 @@ class TenantRestControllerSystemTest {
                 .andExpect(jsonPath("$.login").value(LOGIN_1))
                 .andExpect(jsonPath("$.email").value(EMAIL_1))
                 .andExpect(jsonPath("$.firstName").value(FIRST_NAME_1))
-                .andExpect(jsonPath("$.lastName").value(LAST_NAME_1));
+                .andExpect(jsonPath("$.lastName").value(LAST_NAME_1))
+                .andExpect(jsonPath("$._links.self.href").value(containsString(mvcResult.getResponse().getRedirectedUrl())));
     }
 
     @Test
