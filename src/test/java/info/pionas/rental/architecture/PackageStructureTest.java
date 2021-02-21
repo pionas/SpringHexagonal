@@ -17,6 +17,7 @@ class PackageStructureTest {
     private static final String TENANT_COMMONS = "info.pionas.common..";
     private static final String QUERY = "..query..";
     private static final String INFRASTRUCTURE = "..infrastructure..";
+    private static final String HATEOS = "org.springframework.hateoas..";
 
     private final JavaClasses classes = RentalApplicationClasses.get();
 
@@ -37,7 +38,7 @@ class PackageStructureTest {
     @Test
     void queryShouldTalkOnlyWithQuery() {
         classes().that().resideInAPackage(QUERY)
-                .should().onlyAccessClassesThat().resideInAnyPackage(QUERY, JAVA)
+                .should().onlyAccessClassesThat().resideInAnyPackage(QUERY, JAVA, HATEOS)
                 .check(classes);
     }
 
