@@ -91,6 +91,31 @@ class QueryTenantRepositoryIntegrationTest {
     }
 
     @Test
+    @Transactional
+    void shouldFindTenantsFromFirstPage() {
+        Iterable<TenantReadModel> actual = queryTenantRepository.findAllFromPageWithPageSize(0, 10);
+
+        assertThat(actual)
+                .hasSize(2)
+                .anySatisfy(tenantReadModel -> {
+                    TenantReadModelAssertion.assertThat(tenantReadModel)
+                            .hasTenantId()
+                            .hasLoginEqualsTo(LOGIN_1)
+                            .hasFirstNameEqualsTo(FIRST_NAME_1)
+                            .hasLastNameEqualsTo(LAST_NAME_1)
+                            .hasEmailEqualsTo(EMAIL_1);
+                })
+                .anySatisfy(tenantReadModel -> {
+                    TenantReadModelAssertion.assertThat(tenantReadModel)
+                            .hasTenantId()
+                            .hasLoginEqualsTo(LOGIN_2)
+                            .hasFirstNameEqualsTo(FIRST_NAME_2)
+                            .hasLastNameEqualsTo(LAST_NAME_2)
+                            .hasEmailEqualsTo(EMAIL_2);
+                });
+    }
+
+    @Test
     void shouldReturnNotExistingTenant() {
         TenantReadModel actual = queryTenantRepository.findById(UUID.randomUUID().toString());
         Assertions.assertThat(actual).isNull();
