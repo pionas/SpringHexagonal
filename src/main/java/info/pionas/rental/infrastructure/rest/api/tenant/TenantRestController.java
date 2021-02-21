@@ -46,9 +46,11 @@ public class TenantRestController {
     @GetMapping
     public PagedResultTransferObject findAll(@RequestParam(defaultValue = "0") int pageNumber,
                                              @RequestParam(defaultValue = "5") int pageSize) {
-        Page<TenantReadModel> tenantReadModels = queryTenantRepository.findAll(pageNumber, pageSize);
+        Page<TenantReadModel> tenantReadModels = queryTenantRepository.findAllFromPageWithPageSize(pageNumber, pageSize);
 
-        PagedResultTransferObject pagedResultTransferObject = new PagedResultTransferObject(tenantReadModels.getContent(), tenantReadModels.getNumber(), tenantReadModels.getTotalPages());
+        PagedResultTransferObject pagedResultTransferObject = new PagedResultTransferObject(tenantReadModels.getContent(),
+                tenantReadModels.getNumber(),
+                tenantReadModels.getTotalPages());
         pagedResultTransferObject.add(getLinks(pageNumber, pageSize, tenantReadModels.getTotalPages()));
         return pagedResultTransferObject;
     }

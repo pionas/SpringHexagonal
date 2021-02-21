@@ -1,7 +1,6 @@
 package info.pionas.rental.query.tenant;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
@@ -13,7 +12,6 @@ import javax.persistence.Table;
 import java.util.UUID;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor
 @Getter
 @Entity
 @Table(name = "TENANT")

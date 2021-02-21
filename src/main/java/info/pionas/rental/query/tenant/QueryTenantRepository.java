@@ -20,7 +20,7 @@ public class QueryTenantRepository {
         return springQueryTenantRepository.findById(UUID.fromString(id)).orElse(null);
     }
 
-    public Page<TenantReadModel> findAll(int pageNumber, int pageSize) {
+    public Page<TenantReadModel> findAllFromPageWithPageSize(int pageNumber, int pageSize) {
         return springQueryTenantRepository.findAll(PageRequest.of(pageNumber, pageSize));
     }
 }
