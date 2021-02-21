@@ -2,8 +2,8 @@ package info.pionas.rental.infrastructure.rest.api.tenant;
 
 import info.pionas.rental.application.tenant.TenantApplicationService;
 import info.pionas.rental.application.tenant.TenantDto;
-import info.pionas.rental.query.PagedResultTransferObject;
-import info.pionas.rental.query.PaginationLinkBuilder;
+import info.pionas.common.PagedResultTransferObject;
+import info.pionas.common.PaginationLinkBuilder;
 import info.pionas.rental.query.tenant.QueryTenantRepository;
 import info.pionas.rental.query.tenant.TenantReadModel;
 import lombok.RequiredArgsConstructor;

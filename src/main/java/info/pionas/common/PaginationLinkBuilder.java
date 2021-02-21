@@ -1,4 +1,4 @@
-package info.pionas.rental.query;
+package info.pionas.common;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.Link;

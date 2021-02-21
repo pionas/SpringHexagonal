@@ -14,10 +14,11 @@ class PackageStructureTest {
     private static final String APACHE_COMMONS = "org.apache.commons.lang3..";
     private static final String GOOGLE_COMMONS = "com.google.common..";
     private static final String SPRING_SECURITY = "org.springframework.security..";
+    private static final String SPRING_DATA = "org.springframework.data..";
     private static final String TENANT_COMMONS = "info.pionas.common..";
     private static final String QUERY = "..query..";
     private static final String INFRASTRUCTURE = "..infrastructure..";
-    private static final String HATEOS = "org.springframework.hateoas..";
+    private static final String HATEOAS = "org.springframework.hateoas..";
 
     private final JavaClasses classes = RentalApplicationClasses.get();
 
@@ -38,14 +39,14 @@ class PackageStructureTest {
     @Test
     void queryShouldTalkOnlyWithQuery() {
         classes().that().resideInAPackage(QUERY)
-                .should().onlyAccessClassesThat().resideInAnyPackage(QUERY, JAVA, HATEOS)
+                .should().onlyAccessClassesThat().resideInAnyPackage(QUERY, JAVA, HATEOAS, SPRING_DATA)
                 .check(classes);
     }
 
     @Test
     void infrastructureShouldNotTalkWithDomain() {
         classes().that().resideInAPackage(INFRASTRUCTURE)
-                .should().onlyAccessClassesThat().resideOutsideOfPackage(DOMAIN)
+                .should().onlyAccessClassesThat().resideOutsideOfPackages(DOMAIN, HATEOAS, SPRING_DATA)
                 .orShould().haveSimpleNameContaining("Repository")
                 .check(classes);
     }
