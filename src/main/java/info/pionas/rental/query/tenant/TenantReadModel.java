@@ -3,6 +3,7 @@ package info.pionas.rental.query.tenant;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,7 +15,7 @@ import java.util.UUID;
 @Getter
 @Entity
 @Table(name = "TENANT")
-public class TenantReadModel {
+public class TenantReadModel extends RepresentationModel<TenantReadModel> {
     @Id
     @GeneratedValue
     private UUID id;
