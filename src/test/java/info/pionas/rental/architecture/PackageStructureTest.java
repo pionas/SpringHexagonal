@@ -46,7 +46,7 @@ class PackageStructureTest {
     @Test
     void infrastructureShouldNotTalkWithDomain() {
         classes().that().resideInAPackage(INFRASTRUCTURE)
-                .should().onlyAccessClassesThat().resideOutsideOfPackages(DOMAIN, HATEOAS, SPRING_DATA)
+                .should().onlyAccessClassesThat().resideOutsideOfPackage(DOMAIN)
                 .orShould().haveSimpleNameContaining("Repository")
                 .check(classes);
     }
