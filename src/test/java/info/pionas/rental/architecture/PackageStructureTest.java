@@ -8,7 +8,7 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
 @Tag("ArchitectureTest")
 class PackageStructureTest {
-    private static final String DOMAIN = "..domain..";
+    private static final String DOMAIN = "info.pionas..domain..";
     private static final String APPLICATION = "..application..";
     private static final String JAVA = "java..";
     private static final String APACHE_COMMONS = "org.apache.commons.lang3..";
