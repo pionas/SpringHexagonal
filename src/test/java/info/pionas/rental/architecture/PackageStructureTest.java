@@ -8,15 +8,17 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
 @Tag("ArchitectureTest")
 class PackageStructureTest {
-    private static final String DOMAIN = "..domain..";
+    private static final String DOMAIN = "info.pionas..domain..";
     private static final String APPLICATION = "..application..";
     private static final String JAVA = "java..";
     private static final String APACHE_COMMONS = "org.apache.commons.lang3..";
     private static final String GOOGLE_COMMONS = "com.google.common..";
     private static final String SPRING_SECURITY = "org.springframework.security..";
+    private static final String SPRING_DATA = "org.springframework.data..";
     private static final String TENANT_COMMONS = "info.pionas.common..";
     private static final String QUERY = "..query..";
     private static final String INFRASTRUCTURE = "..infrastructure..";
+    private static final String HATEOAS = "org.springframework.hateoas..";
 
     private final JavaClasses classes = RentalApplicationClasses.get();
 
@@ -37,7 +39,7 @@ class PackageStructureTest {
     @Test
     void queryShouldTalkOnlyWithQuery() {
         classes().that().resideInAPackage(QUERY)
-                .should().onlyAccessClassesThat().resideInAnyPackage(QUERY, JAVA)
+                .should().onlyAccessClassesThat().resideInAnyPackage(QUERY, JAVA, HATEOAS, SPRING_DATA)
                 .check(classes);
     }
 
